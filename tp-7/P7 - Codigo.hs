@@ -42,6 +42,7 @@ cantidadDeCapas :: Pizza -> Int
 cantidadDeCapas Prepizza   = 0
 cantidadDeCapas (Capa i p) = 1 + cantidadDeCapas p
 
+
 -- 3.B
 
 cantidadDeAceitunas :: Pizza -> Int
@@ -56,6 +57,7 @@ cantidadDeAceitunas (Capa i p) = cantAceitunas i + cantidadDeAceitunas p
 cantAceitunas :: Ingrediente -> Int
 cantAceitunas (Aceitunas n) = n
 cantAceitunas _             = 0
+
 
 -- 3.C
 
@@ -75,6 +77,7 @@ duplicarAc i             = i
 -- ¿p​. cantidadDeAceitunas (duplicarAceitunas ​p​) ​=​ 2 * cantidadDeAceitunas ​p?
 -- ¿Se puede demostrar sin un ejemplo concreto? Sí, pero con el principio de inducción estructural. 
 
+
 -- 3.D
 
 sinLactosa :: Pizza -> Pizza
@@ -90,6 +93,7 @@ capaSinLactosa :: Ingrediente -> Pizza -> Pizza
 capaSinLactosa Queso p = p
 capaSinLactosa i     p = Capa i p
 
+
 -- 3.E
 
 aptaIntoleranteLactosa :: Pizza -> Bool
@@ -104,6 +108,7 @@ aptaIntoleranteLactosa (Capa i p) = sinLactosaIng i && aptaIntoleranteLactosa p
 sinLactosaIng :: Ingrediente -> Bool
 sinLactosaIng Queso = False
 sinLactosaIng _     = True
+
 
 -- 3.F
 
@@ -122,6 +127,145 @@ juntarAc i            p                       = Capa i p
 
 
 > Ejercicio 4:
+
+-- 4.A
+
+cantidadDeAceitunas Prepizza = cantidadDeAceitunas (conDescripcionMejorada Prepizza)
+
+-- LADO IZQUIERDO
+
+    cantAcs Prepizza
+=                                       (cantAcs.1)
+    0
+
+-- LADO DERECHO
+
+    cantAcs (conDescM Prepizza)
+=                                       (conDescM.1)
+    cantAcs Prepizza
+=                                       (cantAcs.1)
+    0
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
+
+
+-- 4.B
+
+cantidadDeAceitunas (Capa Queso Prepizza) = cantidadDeAceitunas (conDescripcionMejorada (Capa Queso Prepizza))
+
+-- LADO IZQUIERDO
+
+    cantAcs (Capa Queso Prepizza)
+=                                                   (cantAcs.2)
+    cantAceitunas Queso + cantAcs Prepizza
+=                                                   (cantAceitunas.2)
+    0 + cantAcs Prepizza
+=                                                   (cantAcs.1)
+    0 + 0
+=                                                   (aritmética)
+    0
+
+-- LADO DERECHO
+
+    cantAcs (conDescM (Capa Queso Prepizza))
+=                                                   (conDescM.2)
+    cantAcs (juntarAc Queso (conDescM Prepizza))
+=                                                   (conDescM.1)
+    cantAcs (juntarAc Queso Prepizza)
+=                                                   (juntarAc.2)
+    cantAcs Prepizza
+=                                                   (cantAcs.1)
+    0
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
+
+
+-- 4.C
+
+cantidadDeAceitunas (Capa (Aceitunas 8) (Capa Queso Prepizza)) = 
+cantidadDeAceitunas (conDescripcionMejorada (Capa (Aceitunas 8) (Capa Queso Prepizza)))
+
+-- LADO IZQUIERDO
+
+    cantAcs (C (Ac 8) (C Q Pp))
+=                                                           (cantAcs.2)
+    cantAceitunas (Ac 8) + cantAcs (C Q Pp)
+=                                                           (cantAcs.2)
+    cantAceitunas (Ac 8) + cantAceitunas Q + cantAcs Pp
+=                                                           (cantAcs.1)
+    cantAceitunas (Ac 8) + cantAceitunas Q + 0
+=                                                           (cantAceitunas.1)
+    8 + cantAceitunas Q + 0
+=                                                           (cantAceitunas.2)
+    8 + 0 + 0
+=                                                           (aritmética)
+    8
+
+-- LADO DERECHO
+
+    cantAcs (conDescM (C (Ac 8) (C Q Pp)))
+=                                                           (conDescM.2)
+    cantAcs (juntarAc (Ac 8) (conDescM (C Q Pp)))
+=                                                           (conDescM.2)
+    cantAcs (juntarAc (Ac 8) (juntarAc Q (conDescM Pp)))
+=                                                           (conDescM.1)
+    cantAcs (juntarAc (Ac 8) (juntarAc Q Pp))
+=                                                           (juntarAc.2)
+    cantAcs (juntarAc (Ac 8) (C Q Pp))
+=                                                           (juntarAc.2)
+    cantAcs (C (Ac 8) (C Q Pp))
+=                                                           (cantAcs.2)
+    cantAceitunas (Ac 8) + cantAcs (C Q Pp)
+=                                                           (cantAceitunas.1)
+    8 + cantAcs (C Q Pp)
+=                                                           (cantAcs.1)
+    8 + cantAceitunas Q + + cantAcs Pp
+=                                                           (cantAceitunas.2)
+    8 + 0 + cantAcs Pp
+=                                                           (cantAcs.1)
+    8 + 0 + 0
+=                                                           (aritmética)
+    8
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
+
+
+-- 4.D
+
+cantidadDeAceitunas (Capa (Aceitunas 9) (Capa (Aceitunas 8) (Capa Queso Prepizza))) = 
+cantidadDeAceitunas (conDescripcionMejorada (Capa (Aceitunas 9) (Capa (Aceitunas 8) (Capa Queso Prepizza))))
+
+-- LADO IZQUIERDO
+
+    cantAcs (C (Ac 9) (C (Ac 8) (C Q Pp)))
+=                                                                   (cantAcs.2)
+    cantAceitunas (Ac 9) + cantAcs (C (Ac 8) (C Q Pp))
+=                                                                   (cantAcs.2)
+    cantAceitunas (Ac 9) + cantAceitunas (Ac 8) + cantAcs (C Q Pp)
+=                                                                   (cantAceitunas.1)
+    9 + cantAceitunas (Ac 8) + cantAcs (C Q Pp)
+=                                                                   (cantAceitunas.1)
+    9 + 8 + cantAcs (C Q Pp)
+=                                                                   (aritmética)
+    17 + cantAcs (C Q Pp)
+
+-- LADO DERECHO
+
+    cantAcs (conDescM (C (Ac 9) (C (Ac 8) (C Q Pp))))
+=                                                                   (conDescM.2)
+    cantAcs (juntarAc (Ac 9) (conDescM (C (Ac 8) (C Q Pp))))
+=                                                                   (conDescM.2)
+    cantAcs (juntarAc (Ac 9) (juntarAc (Ac 8) (C Q Pp)))
+=                                                                   (juntarAc.2)
+    cantAcs (juntarAc (Ac 9) (C (Ac 8) (C Q Pp)))
+=                                                                   (juntarAc.1)
+    cantAcs (C (Ac 17) (C Q Pp))
+=                                                                   (cantAcs.2)
+    cantAceitunas (Ac 17) + cantAcs (C Q Pp)
+=                                                                   (cantAceitunas.1)
+    17 + cantAcs (C Q Pp)
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
 
 --------------------------------------------------------------------------------------------------------
