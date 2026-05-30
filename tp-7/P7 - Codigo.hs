@@ -2146,13 +2146,13 @@ data Dungeon a = Habitacion a
 > Ejercicio 1:
 
 DUNGEON:
-    Regla base: 'Habitacion a' existe en 'Dungeon a'.
+    Regla base: Habitacion a existe en Dungeon a.
 
-    Regla inductiva 1: Sea m un elemento de tipo 'Maybe a', y d un elemento de tipo 'Dungeon a',
-                       entonces Pasaje m d pertenece al conjunto 'Dungeon a'.
+    Regla inductiva 1: Sea m un elemento de tipo Maybe a, y d un elemento de tipo Dungeon a,
+                       entonces Pasaje m d pertenece al conjunto Dungeon a.
     
-    Regla inductiva 2: Sea m un elemento de tipo 'Maybe a', d1 y d2 elementos de tipo 'Dungeon a',
-                       entonces Bifurcacion m d1 d2 pertenece al conjunto 'Dungeon a'.
+    Regla inductiva 2: Sea m un elemento de tipo Maybe a, d1 y d2 elementos de tipo Dungeon a,
+                       entonces Bifurcacion m d1 d2 pertenece al conjunto Dungeon a.
 
 
 > Ejercicio 2:
@@ -2799,6 +2799,7 @@ cantidadDePuntosCon (Criatura Troll)
     1 + 1 + 1 + 0 + 1 + 1 
 =                                                                                                       (aritmética)
     5
+    
 -- LADO DERECHO
 
     5
