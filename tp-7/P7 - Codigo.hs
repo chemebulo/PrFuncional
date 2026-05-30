@@ -15,9 +15,8 @@ data Ingrediente = Aceitunas Int | Anchoas | Cebolla
 > Ejercicio 1:
 
 PIZZA:
-    -- Aseguramos que el caso base exista en el conjunto.
     Regla base: Prepizza existe en el conjunto Pizza.
-    -- Aseguramos que el caso inductivo exista en el conjunto. 
+
     Regla inductiva: Sea que i pertenece al conjunto Ingrediente, y p pertenece al conjunto Pizza, entonces
                      Capa i p pertenece al conjunto Pizza.
 
@@ -34,21 +33,11 @@ f (Capa i p) = ... i ... f p
 -- 3.A
 
 cantidadDeCapas :: Pizza -> Int
-p :: Pizza
---------------------------------
-cantidadDeCapas p :: Int
-
-cantidadDeCapas :: Pizza -> Int
 cantidadDeCapas Prepizza   = 0
 cantidadDeCapas (Capa i p) = 1 + cantidadDeCapas p
 
 
 -- 3.B
-
-cantidadDeAceitunas :: Pizza -> Int
-p :: Pizza
------------------------------------
-cantidadDeAceitunas p :: Int
 
 cantidadDeAceitunas :: Pizza -> Int
 cantidadDeAceitunas Prepizza   = 0
@@ -60,11 +49,6 @@ cantAceitunas _             = 0
 
 
 -- 3.C
-
-duplicarAceitunas :: Pizza -> Pizza
-p :: Pizza
------------------------------------
-duplicarAceitunas p :: Pizza
 
 duplicarAceitunas :: Pizza -> Pizza
 duplicarAceitunas Prepizza   = Prepizza
@@ -81,11 +65,6 @@ duplicarAc i             = i
 -- 3.D
 
 sinLactosa :: Pizza -> Pizza
-p :: Pizza
-----------------------------
-sinLactosa p :: Pizza
-
-sinLactosa :: Pizza -> Pizza
 sinLactosa Prepizza   = Prepizza
 sinLactosa (Capa i p) = capaSinLactosa i (sinLactosa p)
 
@@ -97,11 +76,6 @@ capaSinLactosa i     p = Capa i p
 -- 3.E
 
 aptaIntoleranteLactosa :: Pizza -> Bool
-p :: Pizza
----------------------------------------
-aptaIntoleranteLactosa p :: Bool
-
-aptaIntoleranteLactosa :: Pizza -> Bool
 aptaIntoleranteLactosa Prepizza   = True
 aptaIntoleranteLactosa (Capa i p) = sinLactosaIng i && aptaIntoleranteLactosa p
 
@@ -111,11 +85,6 @@ sinLactosaIng _     = True
 
 
 -- 3.F
-
-conDescripcionMejorada :: Pizza -> Pizza
-p :: Pizza
----------------------------------------
-conDescripcionMejorada p :: Pizza
 
 conDescripcionMejorada :: Pizza -> Pizza
 conDescripcionMejorada Prepizza   = Prepizza
@@ -283,16 +252,14 @@ data Equipo = Becario Nombre
 > Ejercicio 1:
 
 PLANILLA:
-    -- Aseguramos que el caso base exista en el conjunto.
     Regla base: Fin existe en el conjunto Planilla. 
-    -- Aseguramos que el caso inductivo exista en el conjunto. 
+
     Regla inductiva: Sea que n pertenece al conjunto Nombre y p pertenece al conjunto Planilla, entonces
                      Registro n p pertenece al conjunto Planilla. 
 
 EQUIPO:
-    -- Aseguramos que el caso base exista en el conjunto.
     Regla base: Becario n existe en el conjunto Equipo, además que n pertenece al conjunto Nombre.
-    -- Aseguramos que el caso inductivo exista en el conjunto. 
+
     Regla inductiva: Sea que n pertenece al conjunto Nombre, e1 pertenece al conjunto Equipo, e2 pertenece
                      al conjunto equipo, e3 pertenece al conjunto equipo, entonces Ingestigador n e1 e2 e3 
                      pertenece al conjunto Equipo.
@@ -2179,18 +2146,661 @@ data Dungeon a = Habitacion a
 > Ejercicio 1:
 
 DUNGEON:
-    -- Aseguramos que el caso base exista en el conjunto.
-    Regla base: 
-    -- Aseguramos que el caso inductivo exista en el conjunto. 
-    Regla inductiva: 
+    Regla base: 'Habitacion a' existe en 'Dungeon a'.
+
+    Regla inductiva 1: Sea m un elemento de tipo 'Maybe a', y d un elemento de tipo 'Dungeon a',
+                       entonces Pasaje m d pertenece al conjunto 'Dungeon a'.
+    
+    Regla inductiva 2: Sea m un elemento de tipo 'Maybe a', d1 y d2 elementos de tipo 'Dungeon a',
+                       entonces Bifurcacion m d1 d2 pertenece al conjunto 'Dungeon a'.
 
 
 > Ejercicio 2:
 
-f :: Dungeon -> ...
-f Fin            = ...
-f (Registro n p) = ... n ... f p ... 
-f (Ingestigador n e1 e2 e3) = ... n ... f e1 ... f e2 ... f e3 ...
+f :: Dungeon a -> ...
+f (Habitacion n)        = ... n ...
+f (Pasaje m d)          = ... m ... f d ... 
+f (Bifurcacion m d1 d2) = ... m ... f d1 ... f d2 ...
 
 
 > Ejercicio 3:
+
+-- 3.A
+
+cantidadDeBifurcaciones :: Dungeon a -> Int
+cantidadDeBifurcaciones (Habitacion _)        = 0
+cantidadDeBifurcaciones (Pasaje _ d)          = cantidadDeBifurcaciones d 
+cantidadDeBifurcaciones (Bifurcacion _ d1 d2) = 1 + cantidadDeBifurcaciones d1 + cantidadDeBifurcaciones d2
+
+
+-- 3.B
+
+cantidadDePuntosInteresantes :: Dungeon a -> Int
+cantidadDePuntosInteresantes (Habitacion _)        = 1
+cantidadDePuntosInteresantes (Pasaje _ d)          = 1 + cantidadDePuntosInteresantes d 
+cantidadDePuntosInteresantes (Bifurcacion _ d1 d2) = 1 + cantidadDePuntosInteresantes d1 + cantidadDePuntosInteresantes d2
+
+
+-- 3.C
+
+cantidadDePuntosVacios :: Dungeon a -> Int
+cantidadDePuntosVacios (Habitacion _)        = 0
+cantidadDePuntosVacios (Pasaje m d)          = unoSiNoHayNada m + cantidadDePuntosVacios d 
+cantidadDePuntosVacios (Bifurcacion m d1 d2) = unoSiNoHayNada m + cantidadDePuntosVacios d1 + cantidadDePuntosVacios d2
+
+unoSiNoHayNada :: Maybe a -> Int
+unoSiNoHayNada Nothing  = 1
+unoSiNoHayNada (Just _) = 0
+
+
+-- 3.D
+
+cantidadDePuntosCon :: Eq a => a -> Dungeon a -> Int
+cantidadDePuntosCon x (Habitacion n)        = unoSiEs x n
+cantidadDePuntosCon x (Pasaje m d)          = unoSiEstaElementoEn x m + cantidadDePuntosCon x d
+cantidadDePuntosCon x (Bifurcacion m d1 d2) = unoSiEstaElementoEn x m + cantidadDePuntosCon x d1 + cantidadDePuntosCon x d2
+
+unoSiEstaElementoEn :: Eq a => a -> Maybe a -> Int
+unoSiEstaElementoEn x Nothing  = 0
+unoSiEstaElementoEn x (Just y) = unoSiEs x y
+
+unoSiEs :: Eq a => a -> a -> Int
+unoSiEs x y = if x == y then 1 else 0
+
+
+-- 3.E
+
+esLineal :: Dungeon a -> Bool
+esLineal (Habitacion _)        = True
+esLineal (Pasaje _ d)          = True && esLineal d
+esLineal (Bifurcacion _ d1 d2) = False && esLineal d1 && esLineal d2
+
+
+-- 3.F
+
+llenoDe :: Eq a => a -> Dungeon a -> Bool
+llenoDe x (Habitacion n)        = esElMismo' x n
+llenoDe x (Pasaje m d)          = esElMismo x m && llenoDe x d 
+llenoDe x (Bifurcacion m d1 d2) = esElMismo x m && llenoDe x d1 && llenoDe x d2
+
+esElMismo :: Eq a => a -> Maybe a -> Bool
+esElMismo x Nothing  = False
+esElMismo x (Just y) = esElMismo' x y
+
+esElMismo' :: Eq a => a -> a -> Bool
+esElMismo' x y = x == y
+
+
+> Ejercicio 4:
+
+data Tesoro = Cofre | Oro | Joyas
+
+-- 4.A
+
+Para todo x :: a . cantidadDePuntosVacios (Habitacion x) = 0
+
+-- LADO IZQUIERDO
+
+    cantidadDePuntosVacios (Habitacion x)
+=                                               (cantidadDePuntosVacios.1)
+    0
+
+-- LADO DERECHO
+
+    0
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
+
+
+-- 4.B
+
+cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas)) = 1
+
+-- LADO IZQUIERDO
+
+    cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas))
+=                                                                   (cantidadDePuntosVacios.2)
+    unoSiNoHayNada Nothing + cantidadDePuntosVacios (Habitacion Joyas)
+=                                                                   (cantidadDePuntosVacios.1)
+    unoSiNoHayNada Nothing + 0
+=                                                                   (unoSiNoHayNada.1)
+    1 + 0
+=                                                                   (aritmética)
+    1
+
+-- LADO DERECHO
+
+    1
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
+
+
+-- 4.C
+
+Para todo y :: a . para todo x :: a . cantidadDePuntosVacios (Pasaje (Just y) (Habitacion x)) = 0
+
+-- LADO IZQUIERDO
+
+    cantidadDePuntosVacios (Pasaje (Just y) (Habitacion x))
+=                                                                   (cantidadDePuntosVacios.2)
+    unoSiNoHayNada (Just y) + cantidadDePuntosVacios (Habitacion x)
+=                                                                   (cantidadDePuntosVacios.1)
+    unoSiNoHayNada (Just y) + 0
+=                                                                   (unoSiNoHayNada.2)
+    0 + 0
+=                                                                   (aritmética)
+    0
+
+-- LADO DERECHO
+
+    0
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
+
+
+-- 4.D
+
+cantidadDePuntosVacios (Bifurcacion Nothing (Pasaje Nothing (Habitacion Joyas)) (Pasaje (Just Oro) (Habitacion Cofre))) = 2
+
+-- LADO IZQUIERDO
+
+    cantidadDePuntosVacios (Bifurcacion Nothing (Pasaje Nothing (Habitacion Joyas)) (Pasaje (Just Oro) (Habitacion Cofre)))
+=                                                                                                   (cantidadDePuntosVacios.3)
+    unoSiNoHayNada Nothing + cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas)) + cantidadDePuntosVacios (Pasaje (Just Oro) (Habitacion Cofre))
+=                                                                                                   (cantidadDePuntosVacios.2)
+    unoSiNoHayNada Nothing + unoSiNoHayNada Nothing + cantidadDePuntosVacios (Habitacion Joyas) + cantidadDePuntosVacios (Pasaje (Just Oro) (Habitacion Cofre))
+=                                                                                                   (cantidadDePuntosVacios.1)
+    unoSiNoHayNada Nothing + unoSiNoHayNada Nothing + 0 + cantidadDePuntosVacios (Pasaje (Just Oro) (Habitacion Cofre))
+=                                                                                                   (cantidadDePuntosVacios.2)
+    unoSiNoHayNada Nothing + unoSiNoHayNada Nothing + 0 + unoSiNoHayNada (Just Oro) + cantidadDePuntosVacios (Habitacion Cofre)
+=                                                                                                   (cantidadDePuntosVacios.1)
+    unoSiNoHayNada Nothing + unoSiNoHayNada Nothing + 0 + unoSiNoHayNada (Just Oro) + 0
+=                                                                                                   (unoSiNoHayNada.1)
+    1 + unoSiNoHayNada Nothing + 0 + unoSiNoHayNada (Just Oro) + 0
+=                                                                                                   (unoSiNoHayNada.1)
+    1 + 1 + 0 + unoSiNoHayNada (Just Oro) + 0
+=                                                                                                   (unoSiNoHayNada.2)
+    1 + 1 + 0 + 0 + 0
+=                                                                                                   (aritmética)
+    2
+
+-- LADO DERECHO
+
+    2
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
+
+
+-- 4.E
+
+Para todo z :: a . para todo y :: a . para todo x :: a . 
+    cantidadDePuntosVacios (Bifurcacion Nothing (Pasaje Nothing  (Habitacion z)) (Pasaje (Just y) (Habitacion x))) = 2
+
+-- LADO IZQUIERDO
+
+    cantidadDePuntosVacios (Bifurcacion Nothing (Pasaje Nothing  (Habitacion z)) (Pasaje (Just y) (Habitacion x)))
+=                                                                                                   (cantidadDePuntosVacios.3)
+    unoSiNoHayNada Nothing + cantidadDePuntosVacios (Pasaje Nothing  (Habitacion z)) + cantidadDePuntosVacios (Pasaje (Just y) (Habitacion x))
+=                                                                                                   (cantidadDePuntosVacios.2)
+    unoSiNoHayNada Nothing + unoSiNoHayNada Nothing + cantidadDePuntosVacios (Habitacion z) + cantidadDePuntosVacios (Pasaje (Just y) (Habitacion x))
+=                                                                                                   (cantidadDePuntosVacios.1)
+    unoSiNoHayNada Nothing + unoSiNoHayNada Nothing + 0 + cantidadDePuntosVacios (Pasaje (Just y) (Habitacion x))
+=                                                                                                   (cantidadDePuntosVacios.2)
+    unoSiNoHayNada Nothing + unoSiNoHayNada Nothing + 0 + unoSiNoHayNada (Just y) + cantidadDePuntosVacios (Habitacion x)
+=                                                                                                   (cantidadDePuntosVacios.1)
+    unoSiNoHayNada Nothing + unoSiNoHayNada Nothing + 0 + unoSiNoHayNada (Just y) + 0
+=                                                                                                   (unoSiNoHayNada.1)
+    1 + unoSiNoHayNada Nothing + 0 + unoSiNoHayNada (Just y) + 0
+=                                                                                                   (unoSiNoHayNada.1)
+    1 + 1 + 0 + unoSiNoHayNada (Just y) + 0
+=                                                                                                   (unoSiNoHayNada.2)
+    1 + 1 + 0 + 0 + 0
+=                                                                                                   (aritmética)
+    2
+
+-- LADO DERECHO
+
+    2
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
+
+
+-- 4.F
+
+cantidadDePuntosVacios 
+    (Bifurcacion (Just Cofre) 
+        (Bifurcacion Nothing 
+            (Pasaje Nothing    (Habitacion Joyas)) 
+            (Pasaje (Just Oro) (Habitacion Cofre))
+        ) 
+        (Bifurcacion Nothing 
+            (Pasaje (Just Oro) (Habitacion Oro))
+            (Pasaje Nothing    (Habitacion Joyas))
+        )
+    ) = 4
+
+-- LADO IZQUIERDO
+
+    cantidadDePuntosVacios 
+        (Bifurcacion (Just Cofre) 
+            (Bifurcacion Nothing 
+                (Pasaje Nothing    (Habitacion Joyas)) 
+                (Pasaje (Just Oro) (Habitacion Cofre))
+            ) 
+            (Bifurcacion Nothing 
+                (Pasaje (Just Oro) (Habitacion Oro))
+                (Pasaje Nothing    (Habitacion Joyas))
+            )
+        )
+=                                                                                               (cantidadDePuntosVacios.3)
+    unoSiNoHayNada (Just Cofre) +
+            cantidadDePuntosVacios 
+                (Bifurcacion Nothing 
+                    (Pasaje Nothing    (Habitacion Joyas)) 
+                    (Pasaje (Just Oro) (Habitacion Cofre))
+                )
+            +
+            cantidadDePuntosVacios
+                (Bifurcacion Nothing 
+                    (Pasaje (Just Oro) (Habitacion Oro))
+                    (Pasaje Nothing    (Habitacion Joyas))
+                )
+=                                                                                               (cantidadDePuntosVacios.3)
+    unoSiNoHayNada (Just Cofre) +
+            unoSiNoHayNada Nothing +
+                cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas)) +
+                cantidadDePuntosVacios (Pasaje (Just Oro) (Habitacion Cofre))
+            +
+            cantidadDePuntosVacios
+                (Bifurcacion Nothing 
+                    (Pasaje (Just Oro) (Habitacion Oro))
+                    (Pasaje Nothing    (Habitacion Joyas))
+                )
+=                                                                                               (cantidadDePuntosVacios.3)
+    unoSiNoHayNada (Just Cofre) +
+            unoSiNoHayNada Nothing +
+                cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas)) +
+                cantidadDePuntosVacios (Pasaje (Just Oro) (Habitacion Cofre))
+            +
+            unoSiNoHayNada Nothing +
+                cantidadDePuntosVacios (Pasaje (Just Oro) (Habitacion Oro)) +
+                cantidadDePuntosVacios (Pasaje Nothing    (Habitacion Joyas))
+=                                                                                               (cantidadDePuntosVacios.2)
+    unoSiNoHayNada (Just Cofre) +
+            unoSiNoHayNada Nothing +
+                unoSiNoHayNada Nothing + cantidadDePuntosVacios (Habitacion Joyas) +
+                cantidadDePuntosVacios (Pasaje (Just Oro) (Habitacion Cofre))
+            +
+            unoSiNoHayNada Nothing +
+                cantidadDePuntosVacios (Pasaje (Just Oro) (Habitacion Oro)) +
+                cantidadDePuntosVacios (Pasaje Nothing    (Habitacion Joyas))
+=                                                                                               (cantidadDePuntosVacios.2)
+    unoSiNoHayNada (Just Cofre) +
+            unoSiNoHayNada Nothing +
+                unoSiNoHayNada Nothing + cantidadDePuntosVacios (Habitacion Joyas) +
+                unoSiNoHayNada (Just Oro) + cantidadDePuntosVacios (Habitacion Cofre)
+            +
+            unoSiNoHayNada Nothing +
+                cantidadDePuntosVacios (Pasaje (Just Oro) (Habitacion Oro)) +
+                cantidadDePuntosVacios (Pasaje Nothing    (Habitacion Joyas))
+=                                                                                               (cantidadDePuntosVacios.2)
+    unoSiNoHayNada (Just Cofre) +
+            unoSiNoHayNada Nothing +
+                unoSiNoHayNada Nothing + cantidadDePuntosVacios (Habitacion Joyas) +
+                unoSiNoHayNada (Just Oro) + cantidadDePuntosVacios (Habitacion Cofre)
+            +
+            unoSiNoHayNada Nothing +
+                unoSiNoHayNada (Just Oro) + cantidadDePuntosVacios (Habitacion Oro) +
+                cantidadDePuntosVacios (Pasaje Nothing    (Habitacion Joyas))
+=                                                                                               (cantidadDePuntosVacios.2)
+    unoSiNoHayNada (Just Cofre) +
+            unoSiNoHayNada Nothing +
+                unoSiNoHayNada Nothing + cantidadDePuntosVacios (Habitacion Joyas) +
+                unoSiNoHayNada (Just Oro) + cantidadDePuntosVacios (Habitacion Cofre)
+            +
+            unoSiNoHayNada Nothing +
+                unoSiNoHayNada (Just Oro) + cantidadDePuntosVacios (Habitacion Oro) +
+                unoSiNoHayNada Nothing + cantidadDePuntosVacios (Habitacion Joyas)
+=                                                                                               (cantidadDePuntosVacios.1)
+    unoSiNoHayNada (Just Cofre) +
+            unoSiNoHayNada Nothing +
+                unoSiNoHayNada Nothing + 0 +
+                unoSiNoHayNada (Just Oro) + cantidadDePuntosVacios (Habitacion Cofre)
+            +
+            unoSiNoHayNada Nothing +
+                unoSiNoHayNada (Just Oro) + cantidadDePuntosVacios (Habitacion Oro) +
+                unoSiNoHayNada Nothing + cantidadDePuntosVacios (Habitacion Joyas)
+=                                                                                               (cantidadDePuntosVacios.1)
+    unoSiNoHayNada (Just Cofre) +
+            unoSiNoHayNada Nothing +
+                unoSiNoHayNada Nothing + 0 +
+                unoSiNoHayNada (Just Oro) + 0
+            +
+            unoSiNoHayNada Nothing +
+                unoSiNoHayNada (Just Oro) + cantidadDePuntosVacios (Habitacion Oro) +
+                unoSiNoHayNada Nothing + cantidadDePuntosVacios (Habitacion Joyas)
+=                                                                                               (cantidadDePuntosVacios.1)
+    unoSiNoHayNada (Just Cofre) +
+            unoSiNoHayNada Nothing +
+                unoSiNoHayNada Nothing + 0 +
+                unoSiNoHayNada (Just Oro) + 0
+            +
+            unoSiNoHayNada Nothing +
+                unoSiNoHayNada (Just Oro) + 0 +
+                unoSiNoHayNada Nothing + cantidadDePuntosVacios (Habitacion Joyas)
+=                                                                                               (cantidadDePuntosVacios.1)
+    unoSiNoHayNada (Just Cofre) +
+            unoSiNoHayNada Nothing + unoSiNoHayNada Nothing + 0 + unoSiNoHayNada (Just Oro) + 0
+            +
+            unoSiNoHayNada Nothing + unoSiNoHayNada (Just Oro) + 0 + unoSiNoHayNada Nothing + 0
+=                                                                                               (unoSiNoHayNada.2)
+    unoSiNoHayNada (Just Cofre) +
+            unoSiNoHayNada Nothing + unoSiNoHayNada Nothing + 0 + 0 + 0
+            +
+            unoSiNoHayNada Nothing + unoSiNoHayNada (Just Oro) + 0 + unoSiNoHayNada Nothing + 0
+=                                                                                               (unoSiNoHayNada.2)
+    unoSiNoHayNada (Just Cofre) +
+            unoSiNoHayNada Nothing + unoSiNoHayNada Nothing + 0 + 0 + 0
+            +
+            unoSiNoHayNada Nothing + 0 + 0 + unoSiNoHayNada Nothing + 0
+=                                                                                               (unoSiNoHayNada.1)
+    unoSiNoHayNada (Just Cofre) +
+            unoSiNoHayNada Nothing + 1 + 0 + 0 + 0
+            +
+            unoSiNoHayNada Nothing + 0 + 0 + unoSiNoHayNada Nothing + 0
+=                                                                                               (unoSiNoHayNada.1)
+    unoSiNoHayNada (Just Cofre) +
+            unoSiNoHayNada Nothing + 1 + 0 + 0 + 0
+            +
+            unoSiNoHayNada Nothing + 0 + 0 + 1 + 0
+=                                                                                               (unoSiNoHayNada.1)
+    unoSiNoHayNada (Just Cofre) +
+            unoSiNoHayNada Nothing + 1 + 0 + 0 + 0
+            +
+            1 + 0 + 0 + 1 + 0
+=                                                                                               (unoSiNoHayNada.1)
+    unoSiNoHayNada (Just Cofre) + 1 + 1 + 0 + 0 + 0 + 1 + 0 + 0 + 1 + 0
+=                                                                                               (unoSiNoHayNada.2)
+    0 + 1 + 1 + 0 + 0 + 0 + 1 + 0 + 0 + 1 + 0
+=                                                                                               (aritmética)
+    4
+
+-- LADO DERECHO
+
+    4
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
+
+
+> Ejercicio 5:
+
+data VariasCosas a b = Objeto a | Criatura b 
+
+data Monstruo = Gargola | Dragon | Troll 
+
+-- 5.A
+
+cantidadDePuntosCon (Criatura Troll) (Habitacion (Objeto Oro)) = 0 
+
+-- LADO IZQUIERDO
+
+    cantidadDePuntosCon (Criatura Troll) (Habitacion (Objeto Oro))
+=                                                                           (cantidadDePuntosCon.1)
+    unoSiEs (Criatura Troll) (Objeto Oro)
+=                                                                           (unoSiEs.1)
+    0
+
+-- LADO DERECHO
+
+    0
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
+
+
+-- 5.B
+
+cantidadDePuntosCon (Criatura Troll) (Pasaje (Just (Criatura Troll)) (Habitacion (Objeto Oro))) = 1 
+
+-- LADO IZQUIERDO
+
+    cantidadDePuntosCon (Criatura Troll) (Pasaje (Just (Criatura Troll)) (Habitacion (Objeto Oro)))
+=                                                                                                   (cantidadDePuntosCon.2)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + cantidadDePuntosCon (Criatura Troll) (Habitacion (Objeto Oro))
+=                                                                                                   (cantidadDePuntosCon.1)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + unoSiEs (Criatura Troll) (Objeto Oro)
+=                                                                                                   (unoSiEs.1)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + 0
+=                                                                                                   (unoSiEstaElementoEn.2)
+    unoSiEs (Criatura Troll) (Criatura Troll) + 0
+=                                                                                                   (unoSiEs.1)
+    1 + 0
+=                                                                                                   (aritmética)
+    1
+
+-- LADO DERECHO
+
+    1
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
+
+
+-- 5.C
+
+cantidadDePuntosCon (Criatura Troll) (Pasaje (Just (Criatura Troll)) (Habitacion (Criatura Troll))) = 2 
+
+-- LADO IZQUIERDO
+
+    cantidadDePuntosCon (Criatura Troll) (Pasaje (Just (Criatura Troll)) (Habitacion (Criatura Troll)))
+=                                                                                                   (cantidadDePuntosCon.2)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + cantidadDePuntosCon (Criatura Troll) (Habitacion (Criatura Troll))
+=                                                                                                   (cantidadDePuntosCon.1)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + unoSiEs (Criatura Troll) (Criatura Troll)
+=                                                                                                   (unoSiEs.1)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + 1
+=                                                                                                   (unoSiEstaElementoEn.2)
+    unoSiEs (Criatura Troll) (Criatura Troll) + 1
+=                                                                                                   (unoSiEs.1)
+    1 + 1
+=                                                                                                   (aritmética)
+    2
+
+-- LADO DERECHO
+
+    2
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
+
+
+-- 5.D
+
+cantidadDePuntosCon (Criatura Troll) 
+                        (Bifurcacion (Just (Criatura Troll))
+                            (Pasaje (Just (Criatura Troll)) 
+                                    (Habitacion (Objeto Oro))
+                            ) 
+                            (Pasaje (Just (Criatura Troll)) 
+                                    (Habitacion (Criatura Troll))
+                            )
+                        ) = 4 
+
+-- LADO IZQUIERDO
+
+    cantidadDePuntosCon (Criatura Troll) 
+                            (Bifurcacion (Just (Criatura Troll))
+                                (Pasaje (Just (Criatura Troll)) 
+                                        (Habitacion (Objeto Oro))
+                                ) 
+                                (Pasaje (Just (Criatura Troll)) 
+                                        (Habitacion (Criatura Troll))
+                                )
+                            )
+=                                                                                               (cantidadDePuntosCon.3)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+                            cantidadDePuntosCon (Criatura Troll) (Pasaje (Just (Criatura Troll)) (Habitacion (Objeto Oro))) +
+                            cantidadDePuntosCon (Criatura Troll) (Pasaje (Just (Criatura Troll)) (Habitacion (Criatura Troll)))
+=                                                                                               (cantidadDePuntosCon.2)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+                            unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + cantidadDePuntosCon (Criatura Troll) (Habitacion (Objeto Oro)) +
+                            cantidadDePuntosCon (Criatura Troll) (Pasaje (Just (Criatura Troll)) (Habitacion (Criatura Troll)))
+=                                                                                               (cantidadDePuntosCon.2)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+                            unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + 
+                                cantidadDePuntosCon (Criatura Troll) (Habitacion (Objeto Oro)) +
+                            unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + 
+                                cantidadDePuntosCon (Criatura Troll) (Habitacion (Criatura Troll))
+=                                                                                               (cantidadDePuntosCon.1)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+                            unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + 
+                                unoSiEs (Criatura Troll) (Objeto Oro) +
+                            unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + 
+                                cantidadDePuntosCon (Criatura Troll) (Habitacion (Criatura Troll))
+=                                                                                               (cantidadDePuntosCon.1)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+                            unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + unoSiEs (Criatura Troll) (Objeto Oro) +
+                            unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + unoSiEs (Criatura Troll) (Criatura Troll)
+=                                                                                               (unoSiEs.1)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+                            unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + unoSiEs (Criatura Troll) (Objeto Oro) +
+                            unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + 1
+=                                                                                               (unoSiEs.1)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+                            unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + 0 +
+                            unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + 1
+=                                                                                               (unoSiEstaElementoEn.2)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+                            unoSiEs (Criatura Troll) (Criatura Troll) + 0 +
+                            unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + 1
+=                                                                                               (unoSiEstaElementoEn.2)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+                            unoSiEs (Criatura Troll) (Criatura Troll) + 0 +
+                            unoSiEs (Criatura Troll) (Criatura Troll) + 1
+=                                                                                               (unoSiEstaElementoEn.2)
+    unoSiEs (Criatura Troll) (Criatura Troll) + unoSiEs (Criatura Troll) (Criatura Troll) + 0 +
+                                                unoSiEs (Criatura Troll) (Criatura Troll) + 1
+=                                                                                               (unoSiEs.1)
+    unoSiEs (Criatura Troll) (Criatura Troll) + unoSiEs (Criatura Troll) (Criatura Troll) + 0 + 1 + 1
+=                                                                                               (unoSiEs.1)
+    unoSiEs (Criatura Troll) (Criatura Troll) + 1 + 0 + 1 + 1
+=                                                                                               (unoSiEs.1)
+    1 + 1 + 0 + 1 + 1
+=                                                                                               (aritmética)
+    4
+
+-- LADO DERECHO
+
+    4
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
+
+
+-- 5.E
+
+cantidadDePuntosCon (Criatura Troll) 
+                        (Pasaje (Just (Criatura Troll)) 
+                            (Bifurcacion (Just (Criatura Troll)) 
+                                (Pasaje (Just (Criatura Troll)) 
+                                        (Habitacion (Objeto Oro))
+                                ) 
+                                (Pasaje (Just (Criatura Troll)) 
+                                        (Habitacion (Criatura Troll))
+                                )
+                            )
+                        ) = 5
+
+-- LADO IZQUIERDO
+
+    cantidadDePuntosCon (Criatura Troll) 
+                            (Pasaje (Just (Criatura Troll)) 
+                                (Bifurcacion (Just (Criatura Troll)) 
+                                    (Pasaje (Just (Criatura Troll)) 
+                                            (Habitacion (Objeto Oro))
+                                    ) 
+                                    (Pasaje (Just (Criatura Troll)) 
+                                            (Habitacion (Criatura Troll))
+                                    )
+                                )
+                            )
+=                                                                                                       (cantidadDePuntosCon.2)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+        cantidadDePuntosCon (Criatura Troll)
+                                (Bifurcacion (Just (Criatura Troll)) 
+                                    (Pasaje (Just (Criatura Troll)) 
+                                            (Habitacion (Objeto Oro))
+                                    ) 
+                                    (Pasaje (Just (Criatura Troll)) 
+                                            (Habitacion (Criatura Troll))
+                                    )
+                                )
+=                                                                                                       (cantidadDePuntosCon.3)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+            cantidadDePuntosCon (Criatura Troll) (Pasaje (Just (Criatura Troll)) (Habitacion (Objeto Oro))) +
+            cantidadDePuntosCon (Criatura Troll) (Pasaje (Just (Criatura Troll)) (Habitacion (Criatura Troll)))
+=                                                                                                       (cantidadDePuntosCon.2)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+            unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + cantidadDePuntosCon (Criatura Troll) (Habitacion (Objeto Oro)) +
+            cantidadDePuntosCon (Criatura Troll) (Pasaje (Just (Criatura Troll)) (Habitacion (Criatura Troll)))
+=                                                                                                       (cantidadDePuntosCon.2)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + cantidadDePuntosCon (Criatura Troll) (Habitacion (Objeto Oro)) +
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + cantidadDePuntosCon (Criatura Troll) (Habitacion (Criatura Troll))
+=                                                                                                       (cantidadDePuntosCon.1)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + unoSiEs (Criatura Troll) (Objeto Oro) +
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + cantidadDePuntosCon (Criatura Troll) (Habitacion (Criatura Troll))
+=                                                                                                       (cantidadDePuntosCon.1)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + unoSiEs (Criatura Troll) (Objeto Oro) +
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + unoSiEs (Criatura Troll) (Criatura Troll)
+=                                                                                                       (unoSiEs.1)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + 0 +
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + unoSiEs (Criatura Troll) (Criatura Troll)
+=                                                                                                       (unoSiEs.1)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + 0 +
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + 1
+=                                                                                                       (unoSiEstaElementoEn.2)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+        unoSiEs (Criatura Troll) (Criatura Troll) +
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + 0 +
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + 1 
+=                                                                                                       (unoSiEstaElementoEn.2)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+        unoSiEs (Criatura Troll) (Criatura Troll) +
+        unoSiEs (Criatura Troll) (Criatura Troll) + 0 +
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) + 1 
+=                                                                                                       (unoSiEstaElementoEn.2)
+    unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll)) +
+        unoSiEs (Criatura Troll) (Criatura Troll) +
+        unoSiEs (Criatura Troll) (Criatura Troll) + 0 +
+        unoSiEs (Criatura Troll) (Criatura Troll) + 1 
+=                                                                                                       (unoSiEstaElementoEn.2)
+    unoSiEs (Criatura Troll) (Criatura Troll) +
+    unoSiEs (Criatura Troll) (Criatura Troll) +
+    unoSiEs (Criatura Troll) (Criatura Troll) + 0 +
+    unoSiEs (Criatura Troll) (Criatura Troll) + 1 
+=                                                                                                       (unoSiEs.1)
+    unoSiEs (Criatura Troll) (Criatura Troll) +
+    unoSiEs (Criatura Troll) (Criatura Troll) +
+    unoSiEs (Criatura Troll) (Criatura Troll) + 0 +
+    1 + 1 
+=                                                                                                       (unoSiEs.1)
+    unoSiEs (Criatura Troll) (Criatura Troll) + unoSiEs (Criatura Troll) (Criatura Troll) + 1 + 0 + 1 + 1 
+=                                                                                                       (unoSiEs.1)
+    unoSiEs (Criatura Troll) (Criatura Troll) + 1 + 1 + 0 + 1 + 1 
+=                                                                                                       (unoSiEs.1)
+    1 + 1 + 1 + 0 + 1 + 1 
+=                                                                                                       (aritmética)
+    5
+-- LADO DERECHO
+
+    5
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
