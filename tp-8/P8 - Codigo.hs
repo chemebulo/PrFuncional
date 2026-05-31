@@ -79,7 +79,7 @@ subset (x:xs) ys = elem x ys && subset xs ys
 
 (++) :: [a] -> [a] -> [a]
 (++) []     ys = ys
-(++) (x:xs) ys = x : (++) xs ys
+(++) (x:xs) ys = x : ((++) xs ys)
 
 
 -- 1.K
@@ -134,7 +134,11 @@ Demostración:
     -- LADO IZQUIERDO
 
         length ([] ++ ws)
-    =                               (++.1)
+    =                               ((++))
+        length ((++) [] ws)
+    =                               ((++).1)
+        length (ws)
+    =                               (aritmética)
         length ws
 
     -- LADO DERECHO
@@ -145,7 +149,7 @@ Demostración:
     =                               (aritmética)
         length ws
 
-    -- Ambos lados llegan a lo mismo, este caso es válido.
+    -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
         ¿length ((z:zs') ++ ws) = length (z:zs') + length ws?
@@ -156,7 +160,7 @@ Demostración:
     =                               ((++))
         length ((++) (z:zs') ws)
     =                               ((++).2)
-        length (z : (++) zs' ws)
+        length (z : ((++) zs' ws))
     =                               ((++))
         length (z : (zs' ++ ws))
     =                               (length.2)
@@ -172,7 +176,7 @@ Demostración:
     =                               (aritmética)
         1 + (length zs' + length ws)
 
-    -- Ambos lados llegan a lo mismo, este caso es válido y la propiedad también.
+    -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 2.B
@@ -194,4 +198,70 @@ Demostración:
             ¿((a:as') ++ bs) ++ cs = (a:as') ++ (bs ++ cs)?
 
     Demostración caso base:
-        
+        ¿([] ++ bs) ++ cs = [] ++ (bs ++ cs)?
+
+    -- LADO IZQUIERDO
+
+        ([] ++ bs) ++ cs
+    =                           ((++))
+        ((++) [] bs) ++ cs
+    =                           ((++).1)
+        (bs) ++ cs
+    =                           (aritmética)
+        bs ++ cs
+
+    -- LADO DERECHO
+
+        [] ++ (bs ++ cs)
+    =                           ((++))
+        (++) [] (bs ++ cs)
+    =                           ((++).1)
+        (bs ++ cs)
+    =                           (aritmética)
+        bs ++ cs
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo:
+        ¿((a:as') ++ bs) ++ cs = (a:as') ++ (bs ++ cs)? -- ¿Tiene sentido pasar toda la demostración al operador prefijo (++)?
+
+    -- LADO IZQUIERDO
+
+        ((a:as') ++ bs) ++ cs
+    =                               ((++))
+        ((++) (a:as') bs) ++ cs
+    =                               ((++))
+        (++) ((++) (a:as') bs) cs
+    =                               ((++).2)
+        (++) (a : ((++) as' bs)) cs
+    =                               ((++).2)
+        a : ((++) ((++) as' bs) cs)
+    =                               ((++))
+        a : (((++) as' bs) ++ cs)
+    =                               ((++))
+        a : ((as' ++ bs) ++ cs)
+    =                               (HI)
+        a : (as' ++ (bs ++ cs))
+    =                               (aritmética)
+        a : as' ++ (bs ++ cs)
+
+    -- LADO DERECHO
+
+        (a:as') ++ (bs ++ cs)
+    =                               ((++))
+        (++) (a:as') (bs ++ cs)
+    =                               ((++).2)
+        a : ((++) as' (bs ++ cs))
+    =                               ((++))
+        a : (as' ++ (bs ++ cs))
+    =                               (aritmética)
+        a : as' ++ (bs ++ cs)
+
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
+
+-- 2.C
+
+count (const True) = length
+
+Demostración:
