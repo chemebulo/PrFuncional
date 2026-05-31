@@ -384,3 +384,147 @@ Demostración:
         (==) b a || any ((==) b) as'
 
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
+-- 2.E
+
+
+
+-- 2.F
+
+
+
+-- 2.G
+
+
+
+-- 2.H
+
+
+
+-- 2.I
+
+
+
+-- 2.J
+
+
+
+-- 2.K
+
+
+## SECCIÓN 2
+
+
+> Ejercicio 1:
+
+data N = Z | S N
+
+-- 1.A.I
+
+evalN :: N -> Int
+evalN Z     = 0
+evalN (S n) = 1 + evalN n
+
+
+-- 1.A.II
+
+addN :: N -> N -> N
+addN Z     m = m
+addN (S n) m = S (addN n m)
+
+
+-- 1.A.III
+
+prodN :: N -> N -> N
+prodN Z     _ = Z
+prodN (S n) m = addN m (prodN n m)
+
+
+-- 1.A.IV
+
+int2N  ::  Int  ->  N
+int2N 0 = Z
+int2N n = S (int2N (n-1))
+
+
+-- 1.B.I
+
+¿Para todo n1. para todo n2. evalN (addN n1 n2) = evalN n1 + evalN n2?
+
+
+
+-- 1.B.II
+
+¿Para todo n1. para todo n2. evalN (prodN n1 n2) = evalN n1 * evalN n2?
+
+
+
+-- 1.B.III
+
+int2N . evalN = id
+
+
+
+-- 1.B.IV
+
+evalN . int2N = id 
+
+
+
+
+> Ejercicio 2:
+
+type NU = [()]
+data Unit = Unit
+
+-- 2.A.I
+
+evalNU :: NU -> Int
+evalNU []     =
+evalNU (u:us) =
+
+
+-- 2.A.II
+
+succNU :: NU -> NU
+evalNU []     =
+evalNU (u:us) =
+
+
+-- 2.A.III
+
+addNU :: NU -> NU -> NU
+addNU []     n =
+addNU (u:us) n =
+
+-- 2.A.IV
+
+nu2n :: NU -> N
+nu2n []     =
+nu2n (u:us) =
+
+
+-- 2.A.V
+
+n2nu :: N -> NU
+n2nu Z     =
+n2nu (S n) =
+
+
+-- 2.B.I
+
+evalNU . succNU = (+1) . evalNU 
+
+
+-- 2.B.II
+
+Para todo n1. para todo n2. evalNU (addNU n1 n2) = evalNU n1 + evalNU n2 
+
+
+-- 2.B.III
+
+nu2n . n2nu = id 
+
+-- 2.B.IV
+
+n2nu . nu2n = id
