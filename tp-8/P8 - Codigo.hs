@@ -387,6 +387,134 @@ Demostración:
 
 -- 2.E
 
+¿Para todo x. any (elem x) = elem x . concat?
+
+Demostración:
+    Por principio de extensionalidad, es equivalente demostrar que
+    ¿Para todo x. para todo xs. any (elem x) xs = elem x . concat xs?
+
+    Sea as una lista (finita y bien definida) y b un elemento. Por principio de inducción
+    sobre la estructura as es equivalente demostrar que:
+
+    Caso base (as = []):
+        ¿any (elem b) [] = elem b . concat []?
+
+    Caso inductivo (as = (a:as')):
+        Hipotesis inductiva:
+            ¡any (elem b) as' = elem b . concat as'!
+
+        Tesis inductiva:
+            ¿any (elem b) (a:as') = elem b . concat (a:as')?
+
+    Demostración caso base:
+        ¿any (elem b) [] = elem b . concat []?
+
+    -- LADO IZQUIERDO
+
+        any (elem b) []
+    =                           (any.1)
+        False
+
+    -- LADO DERECHO
+
+        elem b . concat []
+    =                           (.)
+        elem b (concat [])
+    =                           (concat.1)
+        elem b []
+    =                           (elem.1)
+        False
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo:
+        ¿any (elem b) (a:as') = elem b . concat (a:as')?
+
+    -- LADO IZQUIERDO
+
+        any (elem b) (a:as')
+    =                                           (any.2)
+        elem b a || any (elem b) as'
+    =                                           (HI)
+        elem b a || elem b . concat as'
+    =                                           (.)
+        elem b a || elem b (concat as')
+    =                                           (Lema ElemB)
+        elem b (a ++ concat as')
+
+    -- LADO DERECHO
+
+        elem b . concat (a:as')
+    =                                           (.)
+        elem b (concat (a:as'))
+    =                                           (concat.2)
+        elem b (a ++ concat as')
+
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
+    Lema ElemB: elem w xs || elem w ys = elem w (xs ++ ys)
+
+    Demostración:
+        Sea as' y bs' dos listas (finitas y bien definidas), y c' un elemento. Por principio de inducción
+        sobre la estructura as' es equivalente demostrar que:
+
+        Caso base (as' = []):
+            ¿elem c' [] || elem c' bs' = elem c' ([] ++ bs')?
+
+        Caso inductivo (as' = (a':as'')):
+            Hipotesis inductiva:
+                ¡elem c' as'' || elem c' bs' = elem c' (as'' ++ bs')!
+
+            Tesis inductiva:
+                ¿elem c' (a':as'') || elem c' bs' = elem c' ((a':as'') ++ bs')?
+
+        Demostración caso base:
+            ¿elem c' [] || elem c' bs' = elem c' ([] ++ bs')?
+
+        -- LADO IZQUIERDO
+
+            elem c' [] || elem c' bs'
+        =                                       (elem.1)
+            False || elem c' bs'
+        =                                       (||)
+            elem c' bs'
+
+        -- LADO DERECHO
+
+            elem c' ([] ++ bs')
+        =                                       ((++))
+            elem c' ((++) [] bs')
+        =                                       ((++))
+            elem c' (bs')
+        =                                       (aritmética)
+            elem c' bs'
+        
+            -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Demostración caso inductivo:
+            ¿elem c' (a':as'') || elem c' bs' = elem c' ((a':as'') ++ bs')?
+
+        -- LADO IZQUIERDO
+
+            elem c' (a':as'') || elem c' bs'
+        =                                       (elem.2)
+            c' == a' || elem c' as'' || elem c' bs'
+        =                                       (HI)
+            c' == a' || elem c' (as'' ++ bs')
+
+        -- LADO DERECHO
+
+            elem c' ((a':as'') ++ bs')
+        =                                       ((++))
+            elem c' ((++) (a':as'') bs')
+        =                                       ((++))
+            elem c' (a' : ((++) as'' bs'))
+        =                                       ((++))
+            elem c' (a' : (as'' ++ bs'))
+        =                                       (elem.2)
+            c' == a' || elem c' (as'' ++ bs')
+
+            -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 2.F
