@@ -326,4 +326,61 @@ elem = any . (==)
 
 Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
-    ¿para todo xs. elem xs = any . (==) xs?
+    ¿para todo x. para todo xs. elem x xs = any . (==) x xs?
+
+    Sea as una lista (finita y bien definida) y b un elemento del mismo tipo de la lista. Por principio de inducción 
+    en la estructura as es equivalente demostrar que:
+
+    Caso base (as = []):
+        ¿elem b [] = any . (==) b []?
+
+    Caso inductivo (as = (a:as')):
+        Hipotesis inductiva:
+            ¡elem b as' = any . (==) b as'!
+
+        Tesis inductiva:
+            ¿elem b (a:as') = any . (==) b (a:as')?
+
+    Demostración caso base:
+        ¿elem b [] = any . (==) b []?
+
+    -- LADO IZQUIERDO
+
+        elem b []
+    =                       (elem.1)
+        False
+
+    -- LADO DERECHO
+
+        any . (==) b []
+    =                       (.)
+        any ((==) b) []
+    =                       (any.1)
+        False
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo:
+        ¿elem b (a:as') = any . (==) b (a:as')?
+
+    -- LADO IZQUIERDO
+
+        elem b (a:as')
+    =                                   (elem.2)
+        b == a || elem b as'
+    =                                   (HI)
+        b == a || any . (==) b as'
+    =                                   ((==))
+        (==) b a || any . (==) b as'
+    =                                   (.)
+        (==) b a || any ((==) b) as'
+
+    -- LADO DERECHO
+
+        any . (==) b (a:as')
+    =                                   (.)
+        any ((==) b) (a:as')
+    =                                   (any.2)
+        (==) b a || any ((==) b) as'
+
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
