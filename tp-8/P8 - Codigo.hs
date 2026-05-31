@@ -127,3 +127,71 @@ Demostración:
         
         Tesis inductiva:
             ¿length ((z:zs') ++ ws) = length (z:zs') + length ws?
+
+    Demostración caso base:
+        ¿length ([] ++ ws) = length [] + length ws?
+
+    -- LADO IZQUIERDO
+
+        length ([] ++ ws)
+    =                               (++.1)
+        length ws
+
+    -- LADO DERECHO
+
+        length [] + length ws
+    =                               (length.1)
+        0 + length ws
+    =                               (aritmética)
+        length ws
+
+    -- Ambos lados llegan a lo mismo, este caso es válido.
+
+    Demostración caso inductivo:
+        ¿length ((z:zs') ++ ws) = length (z:zs') + length ws?
+
+    -- LADO IZQUIERDO
+
+        length ((z:zs') ++ ws)
+    =                               ((++))
+        length ((++) (z:zs') ws)
+    =                               ((++).2)
+        length (z : (++) zs' ws)
+    =                               ((++))
+        length (z : (zs' ++ ws))
+    =                               (length.2)
+        1 + length (zs' ++ ws)
+    =                               (HI)
+        1 + (length zs' + length ws)
+
+    -- LADO DERECHO
+
+        length (z:zs') + length ws
+    =                               (length.2)
+        1 + length zs' + length ws
+    =                               (aritmética)
+        1 + (length zs' + length ws)
+
+    -- Ambos lados llegan a lo mismo, este caso es válido y la propiedad también.
+
+
+-- 2.B
+
+¿Para todo xs. para todo ys. para todo zs. (xs ++ ys) ++ zs = xs ++ (ys ++ zs)?
+
+Demostración:
+    Sea as, bs y cs listas cualquiera (finitas y bien definidas). Por principio de inducción en la estructura
+    de as es equivalente demostrar:
+
+    Caso base (as = []):
+        ¿([] ++ bs) ++ cs = [] ++ (bs ++ cs)?
+
+    Caso inductivo (as = a:as'):
+        Hipotesis inductiva:
+            ¡(as' ++ bs) ++ cs = as' ++ (bs ++ cs)!
+
+        Tesis inductiva:
+            ¿((a:as') ++ bs) ++ cs = (a:as') ++ (bs ++ cs)?
+
+    Demostración caso base:
+        
