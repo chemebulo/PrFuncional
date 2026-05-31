@@ -576,21 +576,261 @@ Demostración:
 
 -- 2.G
 
+all null = null . concat
+
+Demostración:
+    Por principio de extensionalidad, es equivalente demostrar que
+    ¿para todo xs. all null xs = null . concat xs?
+
+    Sea as una lista cualquiera (finita y bien definida). Por princpio de inducción en la estructura
+    as es equivalente demostrar que:
+
+    Caso base (as = []):
+        ¿all null [] = null . concat []?
+
+    Caso inductivo (as = (a:as')):
+        Hipotesis inductiva:
+            ¡all null as' = null . concat as'!
+        
+        Tesis inductiva:
+            ¿all null (a:as') = null . concat (a:as')?
+
+    Demostración caso base:
+        ¿all null [] = null . concat []?
+
+    -- LADO IZQUIERDO
+
+        all null []
+    =                       (all.1)
+        True
+
+    -- LADO DERECHO
+
+        null . concat []
+    =                       (.)
+        null (concat [])
+    =                       (concat.1)
+        null []
+    =                       (null.1)
+        True
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo:
+        ¿all null (a:as') = null . concat (a:as')?
+        
+    -- LADO IZQUIERDO
+
+        all null (a:as')
+    =                                   (all.2)
+        null a && all null as'
+    =                                   (HI)
+        null a && null . concat as'
+    =                                   (.)
+        null a && null (concat as')
+    =                                   (Lema NullA)
+        null (a ++ concat as')
+
+    -- LADO DERECHO
+
+        null . concat (a:as')
+    =                                   (.)
+        null (concat (a:as'))
+    =                                   (concat.2)
+        null (a ++ concat as')
+
+        -- Ambos lados llegan a lo imsmo, el caso es válido y la propiedad también.
+
+    Lema NullA: null xs && null ys = null (xs ++ ys)
+
+    Demostración:
+        Sea ws y zs dos listas cualquiera (finitas y bien definidas). Por principio de inducción 
+        sobre la estructura de ws es equivalente demostrar que:
+
+        Caso base (ws = []):
+            ¿null [] && null zs = null ([] ++ zs)?
+
+        Caso inductivo (ws = (w:ws')):
+            Hipotesis inductiva:
+                ¡null ws' && null zs = null (ws' ++ zs)!
+
+            Tesis inductiva:
+                ¿null (w:ws') && null zs = null ((w:ws') ++ zs)?
+
+        Demostración caso base:
+            ¿null [] && null zs = null ([] ++ zs)?
+
+        -- LADO IZQUIERDO
+
+            null [] && null zs
+        =                           (null.1)
+            True && null zs
+        =                           (&&)
+            null zs
+
+        -- LADO DERECHO
+
+            null ([] ++ zs)
+        =                           ((++))
+            null ((++) [] zs)
+        =                           ((++).1)
+            null (zs)
+        =                           (aritmética)
+            null zs
+
+            -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Demostración caso inductivo:
+            ¿null (w:ws') && null zs = null ((w:ws') ++ zs)?
+
+        -- LADO IZQUIERDO
+
+            null (w:ws') && null zs
+        =                                   (null.2)
+            False && null zs
+        =                                   (&&)
+            False
+
+        -- LADO DERECHO
+
+            null ((w:ws') ++ zs)
+        =                                   ((++))
+            null ((++) (w:ws') zs)
+        =                                   ((++).2)
+            null (w : ((++) ws' zs))
+        =                                   ((++))
+            null (w : (ws' ++ zs))
+        =                                   (null.2)
+            False
+
+            -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 2.H
 
+length = length . reverse
+
+Demostración:
+    Por principio de extensionalidad es equivalente demostrar que
+    ¿para todo xs. length xs = length . reverse xs?
+
+    Sea ws una lista cualquiera (finita y bien definida). Por principio de inducción
+    sobre la estructura ws es equivalente demostrar que:
+
+    Caso base (ws = []):
+        ¿length [] = length . reverse []?
+
+    Caso inductivo (ws = (w:ws')):
+        Hipotesis inductiva:
+            ¡length ws' = length . reverse ws'!
+
+        Tesis inductiva:
+            ¿length (w:ws') = length . reverse (w:ws')?
+
+    Demostración caso base:
+        ¿length [] = length . reverse []?
+
+    -- LADO IZQUIERDO
+
+        length []
+    =                           (length.1)
+        0
+
+    -- LADO DERECHO
+
+        length . reverse []
+    =                           (.)
+        length (reverse [])
+    =                           (reverse.1)
+        length []
+    =                           (length.1)
+        0
+
+        -- Ambos lados llegan a lo mismo, la propiedad es válida.
+
+    Demostración caso inductivo:
+        ¿length (w:ws') = length . reverse (w:ws')?
+
+    -- LADO IZQUIERDO
+
+        length (w:ws')
+    =                                   (length.2)
+        1 + length ws'
+    =                                   (HI)
+        1 + length . reverse ws'
+    =                                   (.)
+        1 + length (reverse ws')
+
+
+    -- LADO DERECHO
+
+        length . reverse (w:ws')
+    =                                           (.)
+        length (reverse (w:ws'))
+    =                                           (reverse.2)
+        length (reverse ws' ++ [w])
+    =                                           (length (xs ++ ys) = length xs + length ys)
+        length (reverse ws') + length [w]
+    =                                           ((:))
+        length (reverse ws') + length (w:[])
+    =                                           (length.2)
+        length (reverse ws') + 1 + length []
+    =                                           (length.1)
+        length (reverse ws') + 1 + 0
+    =                                           (aritmética)
+        1 + length (reverse ws')
+
+        -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
 
 -- 2.I
 
+¿Para todo xs. para todo ys. reverse (xs ++ ys) = reverse ys ++ reverse xs?
+
+Demostración:
+    Sea as y bs listas cualquiera (finitas y bien definidas). Por principio de inducción 
+    sobre la estructura as es equivalente demostrar que:
+
+    Caso base (as = []):
+        ¿reverse ([] ++ bs) = reverse bs ++ reverse []?
+
+    Caso inductivo (as = (a:as')):
+        Hipotesis inductiva:
+            ¡reverse (as' ++ bs) = reverse bs ++ reverse as'!
+
+        Tesis inductiva:
+            ¿reverse ((a:as') ++ bs) = reverse bs ++ reverse (a:as')?
+
+    Demostración caso base:
+        ¿reverse ([] ++ bs) = reverse bs ++ reverse []?
+
+    -- LADO IZQUIERDO
+
+        reverse ([] ++ bs)
+    =                           ((++))
+        reverse ((++) [] bs)
+    =                           ((++))
+        reverse (bs)
+    =                           (aritmética)
+        reverse bs
+
+    -- LADO DERECHO
+
+        -- Ambos lados llegan a lo mismo, este caso es válido.
 
 
 -- 2.J
 
+¿Para todo xs. para todo ys. all p (xs++ys) = all p (reverse xs) && all p (reverse ys)?
+
+
 
 
 -- 2.K
+
+¿Para todo xs. para todo ys. unzip (zip xs ys) = (xs, ys)?  (En este caso, mostrar que no vale...)
+
+
 
 
 ## SECCIÓN 2
