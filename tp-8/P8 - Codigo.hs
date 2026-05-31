@@ -121,7 +121,7 @@ Demostración:
     Caso base (zs = []):
         ¿length ([] ++ ws) = length [] + length ws?
 
-    Caso inductivo (zs = z:zs'):
+    Caso inductivo (zs = (z:zs')):
         Hipotesis inductiva:
             ¡length (zs' ++ ws) = length zs' + length ws!
         
@@ -190,7 +190,7 @@ Demostración:
     Caso base (as = []):
         ¿([] ++ bs) ++ cs = [] ++ (bs ++ cs)?
 
-    Caso inductivo (as = a:as'):
+    Caso inductivo (as = (a:as')):
         Hipotesis inductiva:
             ¡(as' ++ bs) ++ cs = as' ++ (bs ++ cs)!
 
@@ -223,7 +223,7 @@ Demostración:
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
-        ¿((a:as') ++ bs) ++ cs = (a:as') ++ (bs ++ cs)? -- ¿Tiene sentido pasar toda la demostración al operador prefijo (++)?
+        ¿((a:as') ++ bs) ++ cs = (a:as') ++ (bs ++ cs)? -- ¿Tiene sentido pasar toda la demostración al prefijo (++)?
 
     -- LADO IZQUIERDO
 
@@ -265,3 +265,65 @@ Demostración:
 count (const True) = length
 
 Demostración:
+    Por principio de extensionalidad, es equivalente demostrar que 
+    ¿para todo xs. count (const True) xs = length xs?
+
+    Sea as una lista cualquiera (finita y bien definida). Por principio de inducción en la estructura as
+    es equivalente demostrar:
+
+    Caso base (as = [])
+        ¿count (const True) [] = length []? 
+
+    Caso inductivo (as = (a:as'))
+        Hipotesis inductiva:
+            ¡count (const True) as' = length as'!
+
+        Tesis inductiva:
+            ¿count (const True) (a:as') = length (a:as')?
+
+    Demostración caso base:
+        ¿count (const True) [] = length []? 
+
+    -- LADO IZQUIERDO
+
+        count (const True) []
+    =                               (count.1)
+        0
+
+    -- LADO DERECHO
+
+        length []
+    =                               (length.1)
+        0
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo:
+        ¿count (const True) (a:as') = length (a:as')?
+
+    -- LADO IZQUIERDO
+
+        count (const True) (a:as')
+    =                                                   (count.2)
+        unoSi (const True) a + count (const True) as'
+    =                                                   (unoSi.1)
+        1 + count (const True) as'
+    =                                                   (HI)
+        1 + length as'
+
+    -- LADO DERECHO
+
+        length (a:as')
+    =                                                   (length.2)
+        1 + length as'
+
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
+
+-- 2.D
+
+elem = any . (==)
+
+Demostración:
+    Por principio de extensionalidad, es equivalente demostrar que
+    ¿para todo xs. elem xs = any . (==) xs?
