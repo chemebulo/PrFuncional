@@ -328,7 +328,7 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
     ¿para todo x. para todo xs. elem x xs = any . (==) x xs?
 
-    Sea as una lista (finita y bien definida) y b un elemento del mismo tipo de la lista. Por principio de inducción 
+    Sea as una lista cualquiera (finita y bien definida) y b un elemento del mismo tipo de la lista. Por principio de inducción 
     en la estructura as es equivalente demostrar que:
 
     Caso base (as = []):
@@ -393,7 +393,7 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
     ¿Para todo x. para todo xs. any (elem x) xs = elem x . concat xs?
 
-    Sea as una lista (finita y bien definida) y b un elemento. Por principio de inducción
+    Sea as una lista cualquiera (finita y bien definida) y b un elemento. Por principio de inducción
     sobre la estructura as es equivalente demostrar que:
 
     Caso base (as = []):
@@ -455,7 +455,7 @@ Demostración:
     Lema ElemB: elem w xs || elem w ys = elem w (xs ++ ys)
 
     Demostración:
-        Sea as' y bs' dos listas (finitas y bien definidas), y c' un elemento. Por principio de inducción
+        Sea as' y bs' dos listas cualquiera (finitas y bien definidas), y c' un elemento. Por principio de inducción
         sobre la estructura as' es equivalente demostrar que:
 
         Caso base (as' = []):
@@ -519,6 +519,59 @@ Demostración:
 
 -- 2.F
 
+¿Para todo xs. para todo ys. subset xs ys = all (flip elem ys) xs?
+
+Demostración:
+    Sea as y bs listas cualquiera (finitas y bien definidas). Por el principio de inducción sobre la 
+    estructura as es equivalente demostrar que:
+
+    Caso base (as = []):
+        ¿subset [] bs = all (flip elem bs) []?
+
+    Caso inductivo (as = (a:as')):
+        Hipotesis inductiva:
+            ¡subset as' bs = all (flip elem bs) as'!
+
+        Tesis inductiva:
+            ¿subset (a:as') bs = all (flip elem bs) (a:as')?
+
+    Demostración caso base:
+        ¿subset [] bs = all (flip elem bs) []?
+
+    -- LADO IZQUIERDO
+
+        subset [] bs
+    =                           (subset.1)
+        True
+
+    -- LADO DERECHO
+
+        all (flip elem bs) []
+    =                           (all.1)
+        True
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo:
+        ¿subset (a:as') bs = all (flip elem bs) (a:as')?
+    
+    -- LADO IZQUIERDO
+
+        subset (a:as') bs
+    =                                               (subset.2)
+        elem a bs && subset as' bs
+    =                                               (HI)
+        elem a bs && all (flip elem bs) as'
+
+    -- LADO DERECHO
+
+        all (flip elem bs) (a:as')
+    =                                               (all.2)
+        (flip elem bs) a && all (flip elem bs) as'
+    =                                               (flip.1)
+        elem a bs && all (flip elem bs) as'
+
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 2.G
