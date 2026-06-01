@@ -710,7 +710,7 @@ Demostración:
 length = length . reverse
 
 Demostración:
-    Por principio de extensionalidad es equivalente demostrar que
+    Por principio de extensionalidad, es equivalente demostrar que
     ¿para todo xs. length xs = length . reverse xs?
 
     Sea ws una lista cualquiera (finita y bien definida). Por principio de inducción
@@ -1183,7 +1183,7 @@ int2N n = S (int2N (n-1))
 ¿Para todo n1. para todo n2. evalN (addN n1 n2) = evalN n1 + evalN n2?
 
 Demostración:
-    Sea n y m dos elementos :: N. Por principio de inducción sobre la estructura n
+    Sea n y m dos elementos cualquiera de tipo N. Por principio de inducción sobre la estructura n
     es equivalente demostrar que:
 
     Caso base (n = Z):
@@ -1246,7 +1246,7 @@ Demostración:
 ¿Para todo n1. para todo n2. evalN (prodN n1 n2) = evalN n1 * evalN n2?
 
 Demostración:
-    Sea n y m dos elementos :: N. Por principio de inducción sobre la estructura n
+    Sea n y m dos elementos cualquiera de tipo N. Por principio de inducción sobre la estructura n
     es equivalente demostrar que:
 
     Caso base (n = Z):
@@ -1306,7 +1306,7 @@ Demostración:
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
     Lema EvalN: ¿evalN (addN x (prodN y x)) = evalN x + evalN (prodN y x)?
-        Sea a y b dos elementos :: N. Por principio de inducción sobre la estructura a
+        Sea a y b dos elementos cualquiera de tipo N. Por principio de inducción sobre la estructura a
         es equivalente demostrar que:
 
         Caso base (a = Z):
@@ -1365,8 +1365,73 @@ Demostración:
 int2N . evalN = id
 
 Demostración:
+    Por principio de extensionalidad, es equivalente demostrar que
+    ¿para todo n. int2N . evalN n = id n?
 
+    Sea m un elemento cualquiera de tipo N. Por principio de inducción en la estructura m
+    es equivalente demostrar que:
 
+    Caso base (m = Z):
+        ¿int2N . evalN Z = id Z?
+
+    Caso inductivo (m = (S m')):
+        Hipotesis inductiva:
+            ¡int2N . evalN m' = id m'!
+
+        Tesis inductiva:
+            ¿int2N . evalN (S m') = id (S m')?
+
+    Demostración caso base:
+        ¿int2N . evalN Z = id Z?
+
+    -- LADO IZQUIERDO
+
+        int2N . evalN Z
+    =                           (.)
+        int2N (evalN Z)
+    =                           (evalN.1)
+        int2N 0
+    =                           (int2N.1)
+        Z
+
+    -- LADO DERECHO
+
+        id Z
+    =                           (id.1)
+        Z
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo.
+            ¿int2N . evalN (S m') = id (S m')?
+
+    -- LADO IZQUIERDO
+
+        int2N . evalN (S m')
+    =                               (.)
+        int2N (evalN (S m'))
+    =                               (int2N.2)
+        S (int2N ((evalN (S m'))-1))
+    =                               (evalN.2)
+        S (int2N ((1 + evalN m')-1))
+    =                               (aritmética)
+        S (int2N (evalN m'))
+    =                               (.)
+        S (int2N . evalN m')
+    =                               (HI)
+        S (id m')
+    =                               (id.1)
+        S (m')
+    =                               (aritmética)
+        (S m')
+
+    -- LADO DERECHO
+
+        id (S m')
+    =                               (id.1)
+        (S m')
+
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 1.B.IV
@@ -1374,8 +1439,71 @@ Demostración:
 evalN . int2N = id 
 
 Demostración:
+    Por principio de extensionalidad, es equivalente demostrar que
+    ¿para todo x. evalN . int2N x = id x?
 
+    Sea n un número cualquiera. Por principio de inducción sobre la estructura n
+    es equivalente demostrar que:
 
+    Caso base (n = 0):
+        ¿evalN . int2N 0 = id 0?
+
+    Caso inductivo (n = (n-1)+1):
+        Hipotesis inductiva:
+            ¡evalN . int2N (n-1) = id (n-1)!
+
+        Tesis inductiva:
+            ¿evalN . int2N n = id n? -- En realidad es ¿evalN . int2N (n-1)+1 = id (n-1)+1? Pero se simplifica.
+
+    Demostración caso base:
+        ¿evalN . int2N 0 = id 0?
+
+    -- LADO IZQUIERDO
+
+        evalN . int2N 0
+    =                           (.)
+        evalN (int2N 0)
+    =                           (int2N.1)
+        evalN Z
+    =                           (evalN.1)
+        0
+
+    -- LADO DERECHO
+
+        id 0
+    =                           (id.1)
+        0
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo:
+        ¿evalN . int2N n = id n?
+
+    -- LADO IZQUIERDO
+
+        evalN . int2N n
+    =                               (.)
+        evalN (int2N n)
+    =                               (int2N.2)
+        evalN (S (int2N (n-1)))
+    =                               (evalN.2)
+        1 + evalN (int2N (n-1))
+    =                               (.)
+        1 + evalN . int2N (n-1)
+    =                               (HI)
+        1 + (id (n-1))
+    =                               (id.1)
+        1 + (n-1)
+    =                               (aritmética)
+        1
+
+    -- LADO DERECHO
+
+        id n
+    =                                   (id.1)
+        n
+
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 > Ejercicio 2:
