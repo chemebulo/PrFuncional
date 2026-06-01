@@ -825,15 +825,27 @@ Demostración:
         -- Ambos lados llegan a lo mismo, este caso es válido.
 
     Demostración caso inductivo:
-            ¿reverse ((a:as') ++ bs) = reverse bs ++ reverse (a:as')?
+        ¿reverse ((a:as') ++ bs) = reverse bs ++ reverse (a:as')?
     
     -- LADO IZQUIERDO
 
-
+        reverse ((a:as') ++ bs)
+    =                                       ((++))
+        reverse ((++) (a:as') bs)
+    =                                       ((++).2)
+        reverse (a : ((++) as' bs))
+    =                                       (reverse.2)
+        reverse ((++) as' bs) ++ [a]
+    =                                       ((++))
+        reverse (as' ++ bs) ++ [a]
 
     -- LADO DERECHO
 
-
+        reverse bs ++ reverse (a:as')
+    =                                       (reverse.2)
+        reverse bs ++ reverse as' ++ [a]
+    =                                       (HI)
+        reverse (as' ++ bs) ++ [a]
 
         -- Ambos lados llegan a lo mismo, este caso es válido y la propiedad también.
 
