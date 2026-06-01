@@ -1168,7 +1168,7 @@ addN (S n) m = S (addN n m)
 
 prodN :: N -> N -> N
 prodN Z     _ = Z
-prodN (S n) m = addN (prodN n m) m
+prodN (S n) m = addN m (prodN n m)
 
 
 -- 1.A.IV
@@ -1183,7 +1183,7 @@ int2N n = S (int2N (n-1))
 ¿Para todo n1. para todo n2. evalN (addN n1 n2) = evalN n1 + evalN n2?
 
 Demostración:
-    Sea n y m dos elementos N. Por principio de inducción sobre la estructura n
+    Sea n y m dos elementos :: N. Por principio de inducción sobre la estructura n
     es equivalente demostrar que:
 
     Caso base (n = Z):
@@ -1246,8 +1246,118 @@ Demostración:
 ¿Para todo n1. para todo n2. evalN (prodN n1 n2) = evalN n1 * evalN n2?
 
 Demostración:
+    Sea n y m dos elementos :: N. Por principio de inducción sobre la estructura n
+    es equivalente demostrar que:
 
+    Caso base (n = Z):
+        ¿evalN (prodN Z m) = evalN Z * evalN m?
 
+    Caso inductivo (n = (S n')):
+        Hipotesis inductiva:
+            ¡evalN (prodN n' m) = evalN n' * evalN m!
+
+        Tesis inductiva:
+            ¿evalN (prodN (S n') m) = evalN (S n') * evalN m?
+
+    Demostración caso base:
+        ¿evalN (prodN Z m) = evalN Z * evalN m?
+
+    -- LADO IZQUIERDO
+
+        evalN (prodN Z m)
+    =                           (prodN.1)
+        evalN Z
+    =                           (evalN.1)
+        0
+
+    -- LADO DERECHO
+
+        evalN Z * evalN m
+    =                           (evalN.1)
+        0 * evalN m
+    =                           (aritmética)
+        0
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo:
+        ¿evalN (prodN (S n') m) = evalN (S n') * evalN m?
+
+    -- LADO IZQUIERDO
+
+        evalN (prodN (S n') m)
+    =                                   (prodN.2)
+        evalN (addN m (prodN n' m))
+    =                                   (Lema EvalN)
+        evalN m + evalN (prodN n' m)
+    =                                   (HI)
+        evalN m + (evalN n' * evalN m)
+
+    -- LADO DERECHO
+
+        evalN (S n') * evalN m
+    =                                           (evalN.2)
+        (1 + evalN n') * evalN m
+    =                                           (aritmética)
+        (evalN m * 1) + (evalN n' * evalN m)
+    =                                           (aritmética)
+        evalN m + (evalN n' * evalN m)
+
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
+    Lema EvalN: ¿evalN (addN x (prodN y x)) = evalN x + evalN (prodN y x)?
+        Sea a y b dos elementos :: N. Por principio de inducción sobre la estructura a
+        es equivalente demostrar que:
+
+        Caso base (a = Z):
+            ¿evalN (addN Z (prodN b Z)) = evalN Z + evalN (prodN b Z)?
+
+        Caso inductivo (a = (S a')):
+            Hipotesis inductiva:
+                ¡evalN (addN a' (prodN b a')) = evalN a' + evalN (prodN b a')!
+
+            Tesis inductiva:
+                ¿evalN (addN (S a') (prodN b (S a'))) = evalN (S a') + evalN (prodN b (S a'))?
+
+        Demostración caso base:
+            ¿evalN (addN Z (prodN b Z)) = evalN Z + evalN (prodN b Z)?
+
+        -- LADO IZQUIERDO
+
+            evalN (addN Z (prodN b Z))
+        =                                       (addN.1)
+            evalN (prodN b Z)
+
+        -- LADO DERECHO
+
+            evalN Z + evalN (prodN b Z)
+        =                                       (evalN.1)
+            0 + evalN (prodN b Z)
+        =                                       (aritmética)
+            evalN (prodN b Z)
+
+            -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Demostración caso inductivo:
+            ¿evalN (addN (S a') (prodN b (S a'))) = evalN (S a') + evalN (prodN b (S a'))?
+
+        -- LADO IZQUIERDO
+
+            evalN (addN (S a') (prodN b (S a')))
+        =                                                   (add.2)
+            evalN (S (addN a' (prodN b (S a'))))
+        =                                                   (evalN.2)
+            1 + evalN (addN a' (prodN b (S a')))
+        =                                                   (Propiedad demostrada anteriormente en el 1.B.I)
+            1 + evalN a' + evalN (prodN b (S a'))
+
+        -- LADO DERECHO
+
+            evalN (S a') + evalN (prodN b (S a'))
+        =                                                   (evalN.2)
+            1 + evalN a' + evalN (prodN b (S a'))
+
+            -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 1.B.III
