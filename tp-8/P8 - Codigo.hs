@@ -6,7 +6,6 @@
 
 ## SECCIÓN 1
 
-
 > Ejercicio 1:
 
 -- 1.A
@@ -306,7 +305,7 @@ Demostración:
         count (const True) (a:as')
     =                                                   (count.2)
         unoSi (const True) a + count (const True) as'
-    =                                                   (unoSi.1)
+    =                                                   (unoSi.True)
         1 + count (const True) as'
     =                                                   (HI)
         1 + length as'
@@ -1047,7 +1046,7 @@ Demostración:
     Lema AllDist: ¿all p (xs ++ ys) = all p xs && all p ys?
 
     Demostración:
-        Sea ks, js dos listas cualquiera (finitas y bien definidas). Por principio de inducción
+        Sea ks y js dos listas cualquiera (finitas y bien definidas). Por principio de inducción
         estructural en ks es equivalente demostrar que:
 
         Caso base (ks = []):
@@ -1113,11 +1112,39 @@ Demostración:
 
 ¿Para todo xs. para todo ys. unzip (zip xs ys) = (xs, ys)?  (En este caso, mostrar que no vale...)
 
+    Esta propiedad no se cumple para todo xs y para todo ys. Para demostrarlo, propongo el siguiente ejemplo:
+        xs = [1, 2, 3]
+        ys = [4, 5]
 
+    -- LADO IZQUIERDO
+
+        unzip (zip [1, 2, 3] [4, 5])
+    =                                           (zip.3)
+        unzip ((1, 4) : zip [2, 3] [5])
+    =                                           (zip.3)
+        unzip ((1, 4) : (2, 5) : zip [3] [])
+    =                                           (zip.2)
+        unzip ((1, 4) : (2, 5) : [])
+    =                                           (unzip.2)
+        merge 1 4 (unzip ((2, 5) : []))
+    =                                           (unzip.2)
+        merge 1 4 (merge 2 5 (unzip []))
+    =                                           (unzip.1)
+        merge 1 4 (merge 2 5 ([], []))
+    =                                           (merge.1)
+        merge 1 4 ([2], [5])
+    =                                           (merge.1)
+        ([1, 2], [4, 5])
+
+    -- LADO DERECHO
+
+        ([1, 2, 3], [4, 5])
+
+    Con este contraejemplo, queda evidenciado que ambos lados llegan a conclusiones distintas, y por ende,
+    es inválida la propiedad. No vale para todo xs y para todo ys.
 
 
 ## SECCIÓN 2
-
 
 > Ejercicio 1:
 
@@ -1141,7 +1168,7 @@ addN (S n) m = S (addN n m)
 
 prodN :: N -> N -> N
 prodN Z     _ = Z
-prodN (S n) m = addN m (prodN n m)
+prodN (S n) m = addN (prodN n m) m
 
 
 -- 1.A.IV
@@ -1155,11 +1182,71 @@ int2N n = S (int2N (n-1))
 
 ¿Para todo n1. para todo n2. evalN (addN n1 n2) = evalN n1 + evalN n2?
 
+Demostración:
+    Sea n y m dos elementos N. Por principio de inducción sobre la estructura n
+    es equivalente demostrar que:
+
+    Caso base (n = Z):
+        ¿evalN (addN Z m) = evalN Z + evalN m?
+
+    Caso inductivo (n = (S n')):
+        Hipotesis inductiva:
+            ¡evalN (addN n' m) = evalN n' + evalN m!
+
+        Tesis inductiva:
+            ¿evalN (addN (S n') m) = evalN (S n') + evalN m?
+
+    Demostración caso base:
+        ¿evalN (addN Z m) = evalN Z + evalN m?
+
+    -- LADO IZQUIERDO
+
+        evalN (addN Z m)
+    =                           (addN.1)
+        evalN m
+
+    -- LADO DERECHO
+
+        evalN Z + evalN m
+    =                           (evalN.1)
+        0 + evalN m
+    =                           (aritmética)
+        evalN m
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo:
+        ¿evalN (addN (S n') m) = evalN (S n') + evalN m?
+
+    -- LADO IZQUIERDO
+
+        evalN (addN (S n') m)
+    =                               (addN.2)
+        evalN (S (addN n' m))
+    =                               (evalN.2)
+        1 +  evalN (addN n' m)
+    =                               (HI)
+        1 + (evalN n' + evalN m)
+    =                               (aritmética)
+        1 + evalN n' + evalN m
+
+    -- LADO DERECHO
+
+        evalN (S n') + evalN m
+    =                               (evalN.2)
+        (1 + evalN n') + evalN m
+    =                               (aritmética)
+        1 + evalN n' + evalN m
+
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 1.B.II
 
 ¿Para todo n1. para todo n2. evalN (prodN n1 n2) = evalN n1 * evalN n2?
+
+Demostración:
+
 
 
 
@@ -1167,11 +1254,16 @@ int2N n = S (int2N (n-1))
 
 int2N . evalN = id
 
+Demostración:
+
+
 
 
 -- 1.B.IV
 
 evalN . int2N = id 
+
+Demostración:
 
 
 
@@ -1232,3 +1324,87 @@ nu2n . n2nu = id
 -- 2.B.IV
 
 n2nu . nu2n = id
+
+
+> Ejercicio 3:
+
+type NBin = [DigBin]
+
+-- 3.A.I:
+
+
+-- 3.A.II:
+
+
+-- 3.A.III:
+
+
+-- 3.A.IV:
+
+
+-- 3.A.V:
+
+
+-- 3.A.VI:
+
+
+
+-- 3.B.I:
+
+
+-- 3.B.II:
+
+
+-- 3.B.III:
+
+
+-- 3.B.IV:
+
+
+-- 3.B.V:
+
+
+-- 3.C.I:
+
+
+-- 3.C.II:
+
+
+> Ejercicio 4:
+
+-- 4.A.I:
+
+
+-- 4.A.II:
+
+-- 4.A.III:
+
+
+-- 4.A.IV:
+
+
+-- 4.A.V:
+
+
+-- 4.A.VI:
+
+
+-- 4.B.I:
+
+
+-- 4.B.II:
+
+
+-- 4.B.III:
+
+
+-- 4.B.IV:
+
+
+> Ejercicio 5:
+
+
+
+# SECCIÓN 3
+
+> Ejercicio 1:
