@@ -452,7 +452,7 @@ Demostración:
 
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
-    Lema ElemB: elem w xs || elem w ys = elem w (xs ++ ys)
+    Lema ElemB: ¿elem w xs || elem w ys = elem w (xs ++ ys)?
 
     Demostración:
         Sea as' y bs' dos listas cualquiera (finitas y bien definidas), y c' un elemento. Por principio de inducción
@@ -522,7 +522,7 @@ Demostración:
 ¿Para todo xs. para todo ys. subset xs ys = all (flip elem ys) xs?
 
 Demostración:
-    Sea as y bs listas cualquiera (finitas y bien definidas). Por el principio de inducción sobre la 
+    Sea as y bs listas cualquiera (finitas y bien definidas). Por principio de inducción sobre la 
     estructura as es equivalente demostrar que:
 
     Caso base (as = []):
@@ -582,7 +582,7 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
     ¿para todo xs. all null xs = null . concat xs?
 
-    Sea as una lista cualquiera (finita y bien definida). Por princpio de inducción en la estructura
+    Sea as una lista cualquiera (finita y bien definida). Por principio de inducción en la estructura
     as es equivalente demostrar que:
 
     Caso base (as = []):
@@ -641,7 +641,7 @@ Demostración:
 
         -- Ambos lados llegan a lo imsmo, el caso es válido y la propiedad también.
 
-    Lema NullA: null xs && null ys = null (xs ++ ys)
+    Lema NullA: ¿null xs && null ys = null (xs ++ ys)?
 
     Demostración:
         Sea ws y zs dos listas cualquiera (finitas y bien definidas). Por principio de inducción 
@@ -769,7 +769,7 @@ Demostración:
         length (reverse (w:ws'))
     =                                           (reverse.2)
         length (reverse ws' ++ [w])
-    =                                           (length (xs ++ ys) = length xs + length ys)
+    =                                           (Propiedad demostrada anteriormente en el 2.A)
         length (reverse ws') + length [w]
     =                                           ((:))
         length (reverse ws') + length (w:[])
@@ -807,23 +807,252 @@ Demostración:
     -- LADO IZQUIERDO
 
         reverse ([] ++ bs)
-    =                           ((++))
+    =                               ((++))
         reverse ((++) [] bs)
-    =                           ((++))
+    =                               ((++))
         reverse (bs)
-    =                           (aritmética)
+    =                               (aritmética)
         reverse bs
 
     -- LADO DERECHO
 
+        reverse bs ++ reverse []
+    =                               (reverse.1)
+        reverse bs ++ []
+    =                               (Lema AppEmpty)
+        reverse bs
+
         -- Ambos lados llegan a lo mismo, este caso es válido.
+
+    Demostración caso inductivo:
+            ¿reverse ((a:as') ++ bs) = reverse bs ++ reverse (a:as')?
+    
+    -- LADO IZQUIERDO
+
+
+
+    -- LADO DERECHO
+
+
+
+        -- Ambos lados llegan a lo mismo, este caso es válido y la propiedad también.
+
+    Lema AppEmpty: ¿xs ++ [] = xs?
+
+    Demostración:
+        Sea ws una lista cualquiera (finita y bien definida). Por principio de inducción
+        sobre la estructura ws es equivalente demostrar que:
+
+        Caso base (ws = []):
+            ¿[] ++ [] = []?
+
+        Caso inductivo (w = (w:ws')):
+            Hipotesis inductiva:
+                ¡ws' ++ [] = ws'!
+
+            Tesis inductiva:
+                ¿(w:ws') ++ [] = (w:ws')?
+        
+        Demostración caso base:
+            ¿[] ++ [] = []?
+
+        -- LADO IZQUIERDO
+
+            [] ++ []
+        =               ((++))
+            (++) [] []
+        =               ((++).1)
+            []
+
+        -- LADO DERECHO
+
+            []
+
+            -- Ambos lados llegaron a lo mismo, el caso es válido.
+
+        Demostración caso inductivo:
+            ¿(w:ws') ++ [] = (w:ws')?
+
+        -- LADO IZQUIERDO
+
+            (w:ws') ++ []
+        =                       ((++))
+            (++) (w:ws') []
+        =                       ((++).2)
+            w : ((++) ws' [])
+        =                       ((++))
+            w : (ws' ++ [])
+        =                       (HI)
+            w : (ws')
+        =                       (aritmética)
+            (w:ws')
+
+        -- LADO DERECHO
+
+            (w:ws')
+
+            -- Ambos lados llegaron a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 2.J
 
-¿Para todo xs. para todo ys. all p (xs++ys) = all p (reverse xs) && all p (reverse ys)?
+¿Para todo xs. para todo ys. all p (xs ++ ys) = all p (reverse xs) && all p (reverse ys)?
 
+Demostración:
+    Sea as y bs listas cualquiera (finitas y bien definidas). Por principio de inducción
+    sobre la estructura as es equivalente a demostrar que:
 
+    Caso base (as = []):
+        ¿all p ([] ++ bs) = all p (reverse []) && all p (reverse bs)?
+
+    Caso inductivo (as = (a:as')):
+        Hipotesis inductiva:
+            ¡all p (as' ++ bs) = all p (reverse as') && all p (reverse bs)!
+
+        Tesis inductiva:
+            ¿all p ((a:as') ++ bs) = all p (reverse (a:as')) && all p (reverse bs)?
+
+    Demostración caso base:
+        ¿all p ([] ++ bs) = all p (reverse []) && all p (reverse bs)?
+
+    -- LADO IZQUIERDO
+
+        all p ([] ++ bs)
+    =                           ((++))
+        all p ((++) [] bs)
+    =                           ((++).1)
+        all p (bs)
+    =                           (aritmética)
+        all p bs
+
+    -- LADO DERECHO
+
+        all p (reverse []) && all p (reverse bs)
+    =                                               (reverse.1)
+        all p [] && all p (reverse bs)
+    =                                               (all.1)
+        True && all p (reverse bs)
+    =                                               (&&)
+        all p (reverse bs)
+    =                                               (Lema AllReverse)
+        all p bs
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo:
+        ¿all p ((a:as') ++ bs) = all p (reverse (a:as')) && all p (reverse bs)?
+
+    -- LADO IZQUIERDO
+
+        all p ((a:as') ++ bs)
+    =                                                       ((++))
+        all p ((++) (a:as') bs)
+    =                                                       ((++).2)
+        all p (a : ((++) as' bs))
+    =                                                       (all.2)
+        p a && all p ((++) as' bs)
+    =                                                       ((++))
+        p a && all p (as' ++ bs)
+    =                                                       (HI)
+        p a && all p (reverse as') && all p (reverse bs)
+    =                                                       (Lema AllReverse)
+        p a && all p as' && all p (reverse bs)
+
+    -- LADO DERECHO
+
+        all p (reverse (a:as')) && all p (reverse bs)
+    =                                                       (Lema AllReverse)
+        all p (a:as') && all p (reverse bs)
+    =                                                       (all.2)
+        p a && all p as' && all p (reverse bs)
+
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
+    Lema AllReverse: ¿all p xs = all p (reverse xs)?
+
+    Demostración:
+        Sea ws una lista cualquiera (finita y bien definida). Por principio de inducción
+        sobre la estructura ws es equivalente demostrar que:
+
+        Caso base (ws = []):
+            ¿all p [] = all p (reverse [])?
+
+        Caso inductivo (ws = (w:ws')):
+            Hipotesis inductiva:
+                ¡all p ws' = all p (reverse ws')!
+            
+            Tesis inductiva:
+                ¿all p (w:ws') = all p (reverse (w:ws'))?
+
+        Demostración caso base:
+            ¿all p [] = all p (reverse [])?
+
+        -- LADO IZQUIERDO
+
+            all p []
+        =                        (all.1)
+            True
+
+        -- LADO DERECHO
+
+            all p (reverse [])
+        =                       (reverse.1)
+            all p ([])
+        =                       (aritmética)
+            all p []
+
+            -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Demostración caso inductivo:
+            ¿all p (w:ws') = all p (reverse (w:ws'))?
+
+        -- LADO IZQUIERDO
+
+            all p (w:ws')
+        =                                       (all.2)
+            p w && all p ws'
+
+        -- LADO DERECHO
+
+            all p (reverse (w:ws'))
+        =                                       (reverse.2)
+            all p (reverse ws' ++ [w])
+        =                                       (Lema AllDist)
+            all p ws' && all p [w]
+        =                                       ((:))
+            all p ws' && all p (w:[])
+        =                                       (all.2)
+            all p ws' && p w && all p []
+        =                                       (all.1)
+            all p ws' && p w && True
+        =                                       (&&)
+            all p ws' && p w
+        =                                       (aritmética)
+            p w && all p ws'
+
+            -- Ambos lados legan a lo mismo, el caso es válido y la propiedad también.
+
+    Lema AllDist: ¿all p (xs ++ ys) = all p xs && all p ys?
+
+    Demostración:
+        Sea ks, js dos listas cualquiera (finitas y bien definidas). Por principio de inducción
+        estructural en ks es equivalente demostrar que:
+
+        Caso base (ks = []):
+            ¿all p ([] ++ js) = all p [] && all p js?
+
+        Caso inductivo (ks = (k:ks')):
+            Hipotesis inductiva:
+                ¡all p (ks' ++ js) = all p ks' && all p js!
+            
+            Tesis inductiva:
+                ¿all p ((k:ks') ++ js) = all p (k:ks') && all p js?
+
+        Demostración caso base:
+            ...
+
+        Demostración caso inductivo:
+            ...
 
 
 -- 2.K
