@@ -1049,10 +1049,52 @@ Demostración:
                 ¿all p ((k:ks') ++ js) = all p (k:ks') && all p js?
 
         Demostración caso base:
-            ...
+            ¿all p ([] ++ js) = all p [] && all p js?
+
+        -- LADO IZQUIERDO
+
+            all p ([] ++ js)
+        =                           ((++))
+            all p ((++) [] js)
+        =                           ((++).1)
+            all p (js)
+        =                           (aritmética)
+            all p js
+
+        -- LADO DERECHO
+
+            all p [] && all p js
+        =                           (all.1)
+            True && all p js
+        =                           (&&)
+            all p js
+
+            -- Ambos lados llegan a lo mismo, el caso es válido.
 
         Demostración caso inductivo:
-            ...
+            ¿all p ((k:ks') ++ js) = all p (k:ks') && all p js?
+
+        -- LADO IZQUIERDO
+
+            all p ((k:ks') ++ js)
+        =                                   ((++))
+            all p ((++) (k:ks') js)
+        =                                   ((++).2)
+            all p (k : ((++) ks' js))
+        =                                   (all.2)
+            p k && all p ((++) ks' js)
+        =                                   ((++))
+            p k && all p (ks' ++ js)
+        =                                   (HI)
+            p k && all p ks' && all p js
+
+        -- LADO DERECHO
+
+            all p (k:ks') && all p js
+        =                                   (all.2)
+            p k && all p ks' && all p js
+
+            -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 2.K
