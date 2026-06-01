@@ -1508,60 +1508,85 @@ Demostración:
 
 > Ejercicio 2:
 
-type NU = [()]
-data Unit = Unit
+type NU = [()]                  -- Interpretación alternativa: type NU = [Unit], donde data Unit = Unit
 
 -- 2.A.I
 
 evalNU :: NU -> Int
-evalNU []     =
-evalNU (u:us) =
+evalNU []     = 0
+evalNU (u:us) = 1 + evalNU us
 
 
 -- 2.A.II
 
-succNU :: NU -> NU
-evalNU []     =
-evalNU (u:us) =
+succNU :: NU -> NU              -- Hay una alternativa donde no es necesaria la recursión estructural.
+succNU []     = [()]
+succNU (u:us) = u : succNU us
 
 
 -- 2.A.III
 
 addNU :: NU -> NU -> NU
-addNU []     n =
-addNU (u:us) n =
+addNU []     n = n
+addNU (u:us) n = u : addNU us n
+
 
 -- 2.A.IV
 
 nu2n :: NU -> N
-nu2n []     =
-nu2n (u:us) =
+nu2n []     = Z
+nu2n (_:us) = S (nu2n us)
 
 
 -- 2.A.V
 
 n2nu :: N -> NU
-n2nu Z     =
-n2nu (S n) =
+n2nu Z     = []
+n2nu (S n) = () : n2nu n
 
 
 -- 2.B.I
 
 evalNU . succNU = (+1) . evalNU 
 
+Demostración:
+
+    Caso base:
+
+    Caso inductivo:
+
 
 -- 2.B.II
 
 Para todo n1. para todo n2. evalNU (addNU n1 n2) = evalNU n1 + evalNU n2 
+
+Demostración:
+
+    Caso base:
+
+    Caso inductivo:
 
 
 -- 2.B.III
 
 nu2n . n2nu = id 
 
+Demostración:
+
+    Caso base:
+
+    Caso inductivo:
+
+
 -- 2.B.IV
 
 n2nu . nu2n = id
+
+Demostración:
+
+    Caso base:
+
+    Caso inductivo:
 
 
 > Ejercicio 3:
