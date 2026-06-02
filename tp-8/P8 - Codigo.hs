@@ -305,7 +305,9 @@ Demostración:
         count (const True) (a:as')
     =                                                   (count.2)
         unoSi (const True) a + count (const True) as'
-    =                                                   (unoSi.True)
+    =                                                   (unoSi.1)
+        if (count True) a then 1 else 0 + count (const True) as'
+    =                                                   (if)
         1 + count (const True) as'
     =                                                   (HI)
         1 + length as'
@@ -1595,79 +1597,253 @@ type NBin = [DigBin]
 
 -- 3.A.I:
 
+evalNB  ::  NBin  -> Int
+evalNB []       =
+evalNB (nb:nbs) =
+
 
 -- 3.A.II:
+
+normalizarNB :: NBin -> NBin
+normalizarNB []       =
+normalizarNB (nb:nbs) =
 
 
 -- 3.A.III:
 
+succNB :: NBin -> NBin
+succNB []       =
+succNB (nb:nbs) =
+
 
 -- 3.A.IV:
+
+addNB  ::  NBin  ->  NBin  ->  NBin
+addNB []       mb =
+addNB (nb:nbs) mb =
 
 
 -- 3.A.V:
 
+nb2n :: NBin -> N
+nb2n []       =
+nb2n (nb:nbs) =
+
 
 -- 3.A.VI:
 
+n2nb  ::  N  ->  NBin
+evalNB Z     =
+evalNB (S n) =
 
 
 -- 3.B.I:
 
+evalNB . normalizarNB = evalNB
+
 
 -- 3.B.II:
+
+evalNB . succNB = (+1) . evalNB 
 
 
 -- 3.B.III:
 
+¿Para todo n1. para todo n2. evalNB (addNB n1 n2) = evalNB n1 + evalNB n2?
+
 
 -- 3.B.IV:
+
+nb2n . n2nb = id
 
 
 -- 3.B.V:
 
+normalizarNB . normalizarNB = normalizarNB
+
 
 -- 3.C.I:
+
+n2nb . nb2n = id
 
 
 -- 3.C.II:
 
+n2nb . nb2n = normalizarNB
+
 
 > Ejercicio 4:
 
+type NDec = [DigDec]
+
 -- 4.A.I:
+
+evalND :: NDec -> Int
+evalND []       =
+evalND (nd:nds) =
 
 
 -- 4.A.II:
 
+normalizarND :: NDec -> NDec
+normalizarND []       =
+normalizarND (nd:nds) =
+
+
 -- 4.A.III:
+
+succNDec :: NDec -> NDec
+succNDec []       =
+succNDec (nd:nds) =
 
 
 -- 4.A.IV:
 
+addNDec :: NDec -> NDec -> NDec
+addNDec []       md =
+addNDec (nd:nds) md =
+
 
 -- 4.A.V:
+
+nd2nb :: NDec -> NBin
+nd2nb []       =
+nd2nb (nd:nds) =
 
 
 -- 4.A.VI:
 
+nb2nd :: NBin -> NDec
+nb2nd []       =
+nb2nd (nb:nbs) =
+
 
 -- 4.B.I:
+
+evalNDec . succNDec = (+1) . evalNDec
 
 
 -- 4.B.II:
 
+¿Para todo n1. para todo n2. evalNDec (addNDec n1 n2) = evalNDec n1 + evalNDec n2?
+
 
 -- 4.B.III:
+
+nd2nb . nb2nd = normalizarNB
 
 
 -- 4.B.IV:
 
+nb2nd . nd2nb = id
+
 
 > Ejercicio 5:
 
+Representación en N:
+    - 17:
+    - 42:
+
+Representación en NU:
+    - 17:
+    - 42:
+
+Representación en NBin:
+    - 17:
+    - 42:
+
+Representación en NDec:
+    - 17:
+    - 42:
 
 
 # SECCIÓN 3
 
 > Ejercicio 1:
+
+data ExpA = Cte Int     
+          | Suma ExpA ExpA
+          | Prod ExpA ExpA 
+
+-- 1.A.I
+
+evalExpA :: ExpA -> Int
+evalExpA (Cte n)      =
+evalExpA (Suma e1 e2) =
+evalExpA (Prod e1 e2) =
+
+
+-- 1.A.II
+
+simplificarExpA :: ExpA -> ExpA
+simplificarExpA (Cte n)      =
+simplificarExpA (Suma e1 e2) =
+simplificarExpA (Prod e1 e2) =
+
+
+-- 1.A.III
+
+cantidadDeSumaCero :: ExpA -> Int
+cantidadDeSumaCero (Cte n)      =
+cantidadDeSumaCero (Suma e1 e2) =
+cantidadDeSumaCero (Prod e1 e2) =
+
+
+-- 1.B.I
+
+evalExpA . simplificarExpA = evalExpA
+
+
+-- 1.B.II
+
+cantidadSumaCero . simplificarExpA = const 0
+
+
+> Ejercicio 2:
+
+data ExpS = CteS N     
+          | SumS ExpS ExpS
+          | ProdS ExpS Exps
+
+-- 2.A.I
+
+evalES :: ExpS -> Int
+evalES (CteS n)      =
+evalES (SumS e1 e2)  =
+evalES (ProdS e1 e2) =
+
+
+-- 2.A.II
+
+es2ExpA :: ExpS -> ExpA
+es2ExpA (CteS n)      =
+es2ExpA (SumS e1 e2)  =
+es2ExpA (ProdS e1 e2) =
+
+
+-- 2.A.III
+
+expA2es :: ExpA -> ExpS
+expA2es (Cte n)      =
+expA2es (Suma e1 e2) =
+expA2es (Prod e1 e2) =
+
+
+-- 2.B.I
+
+evalExpA . es2ExpA = evalES
+
+
+-- 2.B.II
+
+evalES . expA2es = evalExpA
+
+
+-- 2.B.III
+
+es2ExpA . expA2es = id
+
+
+-- 2.B.IV
+
+expA2es . es2ExpA = id
