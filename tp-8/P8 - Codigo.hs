@@ -1843,82 +1843,129 @@ Demostración:
 > Ejercicio 3:
 
 type NBin = [DigBin]
+data DigBin = O | I
 
 -- 3.A.I:
 
-evalNB  ::  NBin  -> Int
-evalNB []       =
-evalNB (nb:nbs) =
+evalNB :: NBin -> Int
+evalNB []       = 0
+evalNB (nb:nbs) = dbAsInt nb + (2 * evalNB nbs)
+
+dbAsInt :: DigBin -> Int
+dbAsInt I = 1
+dbAsInt O = 0
 
 
 -- 3.A.II:
 
 normalizarNB :: NBin -> NBin
-normalizarNB []       =
-normalizarNB (nb:nbs) =
+normalizarNB []       = []
+normalizarNB (nb:nbs) = normalizarDB nb (normalizarNB nbs)
+
+normalizarDB :: DigBin -> NBin -> NBin
+normalizarDB O  [] = []
+normalizarDB db nbs = db : nbs
 
 
 -- 3.A.III:
 
 succNB :: NBin -> NBin
-succNB []       =
-succNB (nb:nbs) =
+succNB []      = [I]
+succNB (nb:nbs) = succDB nb nbs
+
+succDB :: DigBin -> NBin -> NBin
+succDB O nbs = I : nbs
+succDB I nbs = O : succNB nbs
 
 
 -- 3.A.IV:
 
-addNB  ::  NBin  ->  NBin  ->  NBin
-addNB []       mb =
-addNB (nb:nbs) mb =
+addNB :: NBin -> NBin -> NBin
+addNB []       []       = []
+addNB []       mbs      = mbs
+addNB nbs      []       = nbs
+addNB (nb:nbs) (mb:mbs) = addDB nb mb (addNB nbs mbs)
+
+addDB :: DigBin -> DigBin -> NBin -> NBin
+addDB O O nbs = O : nbs
+addDB O I nbs = I : nbs
+addDB I O nbs = I : nbs
+addDB I I nbs = O : succNB nbs     
 
 
 -- 3.A.V:
 
 nb2n :: NBin -> N
-nb2n []       =
-nb2n (nb:nbs) =
+nb2n []      = Z
+nb2n (O:nbs) = dobleN (nb2n nbs)
+nb2n (I:nbs) = S (dobleN (nb2n nbs))
+
+dobleN :: N -> N
+dobleN Z     = Z
+dobleN (S n) = S (S (dobleN n))
 
 
 -- 3.A.VI:
 
-n2nb  ::  N  ->  NBin
-evalNB Z     =
-evalNB (S n) =
+n2nb :: N -> NBin
+n2nb Z     = []
+n2nb (S n) = succNB (n2nb n)
 
 
 -- 3.B.I:
 
 evalNB . normalizarNB = evalNB
 
+Demostración:
+
+
 
 -- 3.B.II:
 
 evalNB . succNB = (+1) . evalNB 
+
+Demostración:
+
 
 
 -- 3.B.III:
 
 ¿Para todo n1. para todo n2. evalNB (addNB n1 n2) = evalNB n1 + evalNB n2?
 
+Demostración:
+
+
 
 -- 3.B.IV:
 
 nb2n . n2nb = id
+
+Demostración:
+
 
 
 -- 3.B.V:
 
 normalizarNB . normalizarNB = normalizarNB
 
+Demostración:
+
+
 
 -- 3.C.I:
 
 n2nb . nb2n = id
 
+Demostración:
+
+
 
 -- 3.C.II:
 
 n2nb . nb2n = normalizarNB
+
+Demostración:
+
 
 
 > Ejercicio 4:
@@ -2017,15 +2064,15 @@ data ExpA = Cte Int
 -- 1.A.I
 
 evalExpA :: ExpA -> Int
-evalExpA (Cte n)      =
-evalExpA (Suma e1 e2) =
-evalExpA (Prod e1 e2) =
+evalExpA (Cte  n)     = n
+evalExpA (Suma e1 e2) = evalExpA e1 + evalExpA e2
+evalExpA (Prod e1 e2) = evalExpA e1 * evalExpA e2
 
 
 -- 1.A.II
 
 simplificarExpA :: ExpA -> ExpA
-simplificarExpA (Cte n)      =
+simplificarExpA (Cte  n)     =
 simplificarExpA (Suma e1 e2) =
 simplificarExpA (Prod e1 e2) =
 
@@ -2033,7 +2080,7 @@ simplificarExpA (Prod e1 e2) =
 -- 1.A.III
 
 cantidadDeSumaCero :: ExpA -> Int
-cantidadDeSumaCero (Cte n)      =
+cantidadDeSumaCero (Cte  n)     =
 cantidadDeSumaCero (Suma e1 e2) =
 cantidadDeSumaCero (Prod e1 e2) =
 
@@ -2057,23 +2104,23 @@ data ExpS = CteS N
 -- 2.A.I
 
 evalES :: ExpS -> Int
-evalES (CteS n)      =
-evalES (SumS e1 e2)  =
-evalES (ProdS e1 e2) =
+evalES (CteS  n)     = evalN n
+evalES (SumS  e1 e2) = evalES e1 + evalES e2
+evalES (ProdS e1 e2) = evalES e1 * evalES e2
 
 
 -- 2.A.II
 
 es2ExpA :: ExpS -> ExpA
-es2ExpA (CteS n)      =
-es2ExpA (SumS e1 e2)  =
+es2ExpA (CteS  n)     =
+es2ExpA (SumS  e1 e2) =
 es2ExpA (ProdS e1 e2) =
 
 
 -- 2.A.III
 
 expA2es :: ExpA -> ExpS
-expA2es (Cte n)      =
+expA2es (Cte  n)     =
 expA2es (Suma e1 e2) =
 expA2es (Prod e1 e2) =
 
