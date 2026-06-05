@@ -395,7 +395,7 @@ Demostración:
     ¿Para todo x. para todo xs. any (elem x) xs = elem x . concat xs?
 
     Sea as una lista cualquiera (finita y bien definida) y b un elemento. Por principio de inducción
-    sobre la estructura as es equivalente demostrar que:
+    en la estructura as es equivalente demostrar que:
 
     Caso base (as = []):
         ¿any (elem b) [] = elem b . concat []?
@@ -457,7 +457,7 @@ Demostración:
 
     Demostración:
         Sea as' y bs' dos listas cualquiera (finitas y bien definidas), y c' un elemento. Por principio de inducción
-        sobre la estructura as' es equivalente demostrar que:
+        en la estructura as' es equivalente demostrar que:
 
         Caso base (as' = []):
             ¿elem c' [] || elem c' bs' = elem c' ([] ++ bs')?
@@ -523,7 +523,7 @@ Demostración:
 ¿Para todo xs. para todo ys. subset xs ys = all (flip elem ys) xs?
 
 Demostración:
-    Sea as y bs listas cualquiera (finitas y bien definidas). Por principio de inducción sobre la 
+    Sea as y bs listas cualquiera (finitas y bien definidas). Por principio de inducción en la 
     estructura as es equivalente demostrar que:
 
     Caso base (as = []):
@@ -646,7 +646,7 @@ Demostración:
 
     Demostración:
         Sea ws y zs dos listas cualquiera (finitas y bien definidas). Por principio de inducción 
-        sobre la estructura de ws es equivalente demostrar que:
+        en la estructura de ws es equivalente demostrar que:
 
         Caso base (ws = []):
             ¿null [] && null zs = null ([] ++ zs)?
@@ -716,7 +716,7 @@ Demostración:
     ¿Para todo xs. length xs = length . reverse xs?
 
     Sea ws una lista cualquiera (finita y bien definida). Por principio de inducción
-    sobre la estructura ws es equivalente demostrar que:
+    en la estructura ws es equivalente demostrar que:
 
     Caso base (ws = []):
         ¿length [] = length . reverse []?
@@ -790,7 +790,7 @@ Demostración:
 
 Demostración:
     Sea as y bs listas cualquiera (finitas y bien definidas). Por principio de inducción 
-    sobre la estructura as es equivalente demostrar que:
+    en la estructura as es equivalente demostrar que:
 
     Caso base (as = []):
         ¿reverse ([] ++ bs) = reverse bs ++ reverse []?
@@ -854,7 +854,7 @@ Demostración:
 
     Demostración:
         Sea ws una lista cualquiera (finita y bien definida). Por principio de inducción
-        sobre la estructura ws es equivalente demostrar que:
+        en la estructura ws es equivalente demostrar que:
 
         Caso base (ws = []):
             ¿[] ++ [] = []?
@@ -913,7 +913,7 @@ Demostración:
 
 Demostración:
     Sea as y bs listas cualquiera (finitas y bien definidas). Por principio de inducción
-    sobre la estructura as es equivalente a demostrar que:
+    en la estructura as es equivalente a demostrar que:
 
     Caso base (as = []):
         ¿all p ([] ++ bs) = all p (reverse []) && all p (reverse bs)?
@@ -985,7 +985,7 @@ Demostración:
 
     Demostración:
         Sea ws una lista cualquiera (finita y bien definida). Por principio de inducción
-        sobre la estructura ws es equivalente demostrar que:
+        en la estructura ws es equivalente demostrar que:
 
         Caso base (ws = []):
             ¿all p [] = all p (reverse [])?
@@ -1185,7 +1185,7 @@ int2N n = S (int2N (n-1))
 ¿Para todo n1. para todo n2. evalN (addN n1 n2) = evalN n1 + evalN n2?
 
 Demostración:
-    Sea n y m dos elementos cualquiera de tipo N. Por principio de inducción sobre la estructura n
+    Sea n y m dos elementos cualquiera de tipo N. Por principio de inducción en la estructura n
     es equivalente demostrar que:
 
     Caso base (n = Z):
@@ -1248,7 +1248,7 @@ Demostración:
 ¿Para todo n1. para todo n2. evalN (prodN n1 n2) = evalN n1 * evalN n2?
 
 Demostración:
-    Sea n y m dos elementos cualquiera de tipo N. Por principio de inducción sobre la estructura n
+    Sea n y m dos elementos cualquiera de tipo N. Por principio de inducción en la estructura n
     es equivalente demostrar que:
 
     Caso base (n = Z):
@@ -1308,7 +1308,7 @@ Demostración:
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
     Lema EvalN: ¿evalN (addN x (prodN y x)) = evalN x + evalN (prodN y x)?
-        Sea a y b dos elementos cualquiera de tipo N. Por principio de inducción sobre la estructura a
+        Sea a y b dos elementos cualquiera de tipo N. Por principio de inducción en la estructura a
         es equivalente demostrar que:
 
         Caso base (a = Z):
@@ -1444,7 +1444,7 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
     ¿Para todo x. evalN . int2N x = id x?
 
-    Sea n un número cualquiera. Por principio de inducción sobre la estructura n
+    Sea n un número cualquiera. Por principio de inducción en la estructura n
     es equivalente demostrar que:
 
     Caso base (n = 0):
@@ -1555,7 +1555,7 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
     ¿Para todo n1. evalNU . succNU n1 = (+1) . evalNU n1?
 
-    Sea n un elemento cualquiera de tipo NU. Por principio de inducción sobre la estructura n
+    Sea n un elemento cualquiera de tipo NU. Por principio de inducción en la estructura n
     es equivalente demostrar que:
 
     Caso base (n = []):
@@ -1704,7 +1704,7 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
     ¿Para todo n1. nu2n . n2nu n1 = id n1?
 
-    Sea n un elemento cualquiera de tipo N. Por principio de inducción sobre la estructura n
+    Sea n un elemento cualquiera de tipo N. Por principio de inducción en la estructura n
     es equivalente demostrar que:
 
     Caso base (n = Z):
@@ -1774,7 +1774,7 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
     ¿Para todo n1. n2nu . nu2n n1 = id n1?
 
-    Sea n un elemento cualquiera de tipo NU. Por principio de inducción sobre la estructura n
+    Sea n un elemento cualquiera de tipo NU. Por principio de inducción en la estructura n
     es equivalente demostrar que:
 
     Caso base (n = []):
@@ -1917,7 +1917,139 @@ n2nb (S n) = succNB (n2nb n)
 evalNB . normalizarNB = evalNB
 
 Demostración:
+    Por principio de extensionalidad es equivalente demostrar que:
+    ¿Para todo n. ¿evalNB . normalizarNB n = evalNB n?
 
+    Sea nbs un elemento cualquiera de tipo NBin. Por principio de inducción en la estructura nbs
+    es equivalente demostrar que:
+
+    Caso base (nbs = []):
+        ¿evalNB . normalizarNB [] = evalNB []?
+
+    Caso inductivo (nbs = (nb:nbs')):
+        Hipotesis inductiva:
+            ¡evalNB . normalizarNB nbs' = evalNB nbs'!
+
+        Tesis inductiva:
+            ¿evalNB . normalizarNB (nb:nbs') = evalNB (nb:nbs')?
+
+    Demostración caso base:
+        ¿evalNB . normalizarNB [] = evalNB []?
+
+    -- LADO IZQUIERDO
+
+        evalNB . normalizarNB []
+    =                                   (.)
+        evalNB (normalizarNB [])
+    =                                   (normalizarNB.1)
+        evalNB []
+
+    -- LADO DERECHO
+
+        evalNB []
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo:
+        ¿evalNB . normalizarNB (nb:nbs') = evalNB (nb:nbs')?
+
+    -- LADO IZQUIERDO
+
+        evalNB . normalizarNB (nb:nbs')
+    =                                                   (.)
+        evalNB (normalizarNB (nb:nbs'))
+    =                                                   (normalizarNB.2)
+        evalNB (normalizarDB nb (normalizarNB nbs'))
+    =                                                   (Lema EvalNorm)
+        dbAsInt nb + (2 * evalNB (normalizarNB nbs'))
+    =                                                   (.)
+        dbAsInt nb + (2 * evalNB . normalizarNB nbs')
+    =                                                   (HI)
+        dbAsInt nb + (2 * evalNB nbs')
+
+    -- LADO DERECHO
+
+        evalNB (nb:nbs')
+    =                                                   (evalNB.2)
+        dbAsInt nb + (2 * evalNB nbs')
+
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
+    Lema EvalNorm: ¿evalNB (normalizarDB xb nys) = dbAsInt xb + (2 * evalNB nys)?
+
+    Demostración:
+        Sea db un elemento cualquiera de tipo DigBin, y nbs un elemento cualquiera de tipo NBin.
+        Por principio de inducción en la estructura nbs es equivalente demostrar que:
+
+        Caso base (nbs = []):
+            ¿evalNB (normalizarDB db []) = dbAsInt db + (2 * evalNB [])?
+
+        Caso inductivo (nbs = (nb:nbs'))
+            Hipotesis inductiva:
+                ¡evalNB (normalizarDB db nbs') = dbAsInt db + (2 * evalNB nbs')!
+
+            Tesis inductiva:
+                ¿evalNB (normalizarDB db (nb:nbs')) = dbAsInt db + (2 * evalNB (nb:nbs'))?
+
+        Demostración caso base:
+            ¿evalNB (normalizarDB db []) = dbAsInt db + (2 * evalNB [])?
+
+            Caso db = O: ¿evalNB (normalizarDB O []) = dbAsInt O + (2 * evalNB [])?
+
+            -- LADO IZQUIERDO
+
+                evalNB (normalizarDB O [])
+            =                                   (normalizarDB.1)
+                evalNB []
+            =                                   (evalNB.1)
+                0
+
+            -- LADO DERECHO
+
+                dbAsInt O + (2 * evalNB [])
+            =                                   (evalNB.1)
+                dbAsInt O + (2 * 0)
+            =                                   (aritmética)
+                dbAsInt O + 0
+            =                                   (aritmética)
+                dbAsInt O
+            =                                   (dbAsInt.2)
+                0
+
+                -- Ambos lados llegan a lo mismo, el caso es válido.
+
+            Caso db = I: ¿evalNB (normalizarDB I []) = dbAsInt I + (2 * evalNB [])?
+
+            -- LADO IZQUIERDO
+
+                evalNB (normalizarDB I [])
+            =                                   (normalizarDB.2)
+                evalNB (I:[])
+            =                                   (evalNB.2)
+                dbAsInt I + (2 * evalNB [])
+
+            -- LADO DERECHO
+
+                dbAsInt I + (2 * evalNB [])
+
+                -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Demostración caso inductivo:
+            ¿evalNB (normalizarDB db (nb:nbs')) = dbAsInt db + (2 * evalNB (nb:nbs'))?
+
+        -- LADO IZQUIERDO
+
+            evalNB (normalizarDB db (nb:nbs'))
+        =                                               (normalizarDB.2) -- Aca ya sé que la lista no es [], por eso cae en el segundo caso.
+            evalNB (db:(nb:nbs'))
+        =                                               (evalNB.2)
+            dbAsInt db + (2 * evalNB (nb:nbs'))
+
+        -- LADO DERECHO
+
+            dbAsInt db + (2 * evalNB (nb:nbs'))
+
+            -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 3.B.II:
