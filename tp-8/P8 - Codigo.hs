@@ -303,19 +303,21 @@ Demostración:
     -- LADO IZQUIERDO
 
         count (const True) (a:as')
-    =                                                   (count.2)
+    =                                                               (count.2)
         unoSi (const True) a + count (const True) as'
-    =                                                   (unoSi.1)
-        if (count True) a then 1 else 0 + count (const True) as'
-    =                                                   (if)
+    =                                                               (unoSi.1)
+        if (const True) a then 1 else 0 + count (const True) as'
+    =                                                               (const.1)
+        if True then 1 else 0 + count (const True) as'
+    =                                                               (if.True)
         1 + count (const True) as'
-    =                                                   (HI)
+    =                                                               (HI)
         1 + length as'
 
     -- LADO DERECHO
 
         length (a:as')
-    =                                                   (length.2)
+    =                                                               (length.2)
         1 + length as'
 
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
