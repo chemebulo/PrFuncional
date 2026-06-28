@@ -2339,7 +2339,7 @@ Demostración:
 
     Lema AddCarryO: ¿evalNB (addNBConCarry (nb:nbs) (mb:mbs) O) = dbAsInt nb + dbAsInt mb + 2 * evalNB (addNBConCarry nbs mbs O)?
 
-        Demostración:
+        Demostración: TERMINAR 
 
 
 -- 3.B.IV:
@@ -2781,9 +2781,21 @@ evalExpA (Prod e1 e2) = evalExpA e1 * evalExpA e2
 -- 1.A.II
 
 simplificarExpA :: ExpA -> ExpA
-simplificarExpA (Cte  n)     =
-simplificarExpA (Suma e1 e2) =
-simplificarExpA (Prod e1 e2) =
+simplificarExpA (Cte  n)     = Cte n
+simplificarExpA (Suma e1 e2) = simplificarSuma (simplificarExpA e1) (simplificarExpA e2)
+simplificarExpA (Prod e1 e2) = simplificarProd (simplificarExpA e1) (simplificarExpA e2)
+
+simplificarSuma :: ExpA -> ExpA -> ExpA
+simplificarSuma e1       (Cte 0) = e1
+simplificarSuma (Cte  0) e2      = e2
+simplificarSuma e1       e2      = Suma e1 e2
+
+simplificarProd :: ExpA -> ExpA -> ExpA
+simplificarProd _        (Cte 0) = Cte 0
+simplificarProd (Cte  0) _       = Cte 0
+simplificarProd e1       (Cte 1) = e1
+simplificarProd (Cte  1) e2      = e2
+simplificarProd e1       e2      = Prod e1 e2
 
 
 -- 1.A.III
@@ -2813,7 +2825,7 @@ data ExpS = CteS N
 -- 2.A.I
 
 evalES :: ExpS -> Int
-evalES (CteS  n)     = evalN n
+evalES (CteS  n)     = evalES n
 evalES (SumS  e1 e2) = evalES e1 + evalES e2
 evalES (ProdS e1 e2) = evalES e1 * evalES e2
 
