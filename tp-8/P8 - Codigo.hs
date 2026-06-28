@@ -2801,9 +2801,14 @@ simplificarProd e1       e2      = Prod e1 e2
 -- 1.A.III
 
 cantidadDeSumaCero :: ExpA -> Int
-cantidadDeSumaCero (Cte  n)     =
-cantidadDeSumaCero (Suma e1 e2) =
-cantidadDeSumaCero (Prod e1 e2) =
+cantidadDeSumaCero (Cte  n)     = 0
+cantidadDeSumaCero (Suma e1 e2) = unoSiSumaCero e1 e2 + cantidadDeSumaCero e1 + cantidadDeSumaCero e2
+cantidadDeSumaCero (Prod e1 e2) = cantidadDeSumaCero e1 + cantidadDeSumaCero e2
+
+unoSiSumaCero :: ExpA -> ExpA -> Int
+unoSiSumaCero (Cte 0) _      = 1
+unoSiSumaCero _      (Cte 0) = 1
+unoSiSumaCero _       _      = 0
 
 
 -- 1.B.I
