@@ -1875,26 +1875,21 @@ normalizarDB db nbs = db : nbs
 
 succNB :: NBin -> NBin
 succNB []      = [I]
-succNB (nb:nbs) = succDB nb nbs
-
-succDB :: DigBin -> NBin -> NBin
-succDB O nbs = I : nbs
-succDB I nbs = O : succNB nbs
+succNB (O:nbs) = I : nbs
+succNB (I:nbs) = O : succNB nbs
 
 
 -- 3.A.IV:
 
 addNB :: NBin -> NBin -> NBin
-addNB []       []       = []
 addNB []       mbs      = mbs
 addNB nbs      []       = nbs
 addNB (nb:nbs) (mb:mbs) = addDB nb mb (addNB nbs mbs)
 
 addDB :: DigBin -> DigBin -> NBin -> NBin
+addDB I I nbs = O : succNB nbs
 addDB O O nbs = O : nbs
-addDB O I nbs = I : nbs
-addDB I O nbs = I : nbs
-addDB I I nbs = O : succNB nbs     
+addDB _ _ nbs = I : nbs
 
 
 -- 3.A.V:
@@ -1914,6 +1909,7 @@ dobleN (S n) = S (S (dobleN n))
 n2nb :: N -> NBin
 n2nb Z     = []
 n2nb (S n) = succNB (n2nb n)
+
 
 
 -- 3.B.I:
@@ -2127,8 +2123,6 @@ Demostración:
         =                                           (.)
             evalNB (succNB (O:nbs'))
         =                                           (succNB.2)
-            evalNB (succDB O nbs')
-        =                                           (succDB.1)
             evalNB (I:nbs')
         =                                           (evalNB.2)
             dbAsInt I + (2 * evalNB nbs')
@@ -2158,9 +2152,7 @@ Demostración:
             evalNB . succNB (I:nbs')
         =                                           (.)
             evalNB (succNB (I:nbs'))
-        =                                           (succNB.2)
-            evalNB (succDB I nbs')
-        =                                           (succDB.2)
+        =                                           (succNB.3)
             evalNB (O : succNB nbs')
         =                                           (evalNB.2)
             dbAsInt O + (2 * evalNB (succNB nbs'))
@@ -2224,14 +2216,16 @@ Demostración:
         ¿evalNB (addNB [] mbs) = evalNB [] + evalNB mbs?
 
     -- LADO IZQUIERDO
-
+        
         evalNB (addNB [] mbs)
-    =                                   (addNB.2)
+    =                                                   (addNB.1)
+        evalNB (addNBConCarry [] mbs O)
+    =                                                   (Lema AddNil)
         evalNB mbs
 
     -- LADO DERECHO
 
-        evalNB [] + evalNB mbs?
+        evalNB [] + evalNB mbs
     =                                   (evalNB.1)
         0 + evalNB mbs
     =                                   (aritmética)
@@ -2242,8 +2236,110 @@ Demostración:
     Demostración caso inductivo:
         ¿evalNB (addNB (nb:nbs') mbs) = evalNB (nb:nbs') + evalNB mbs?
 
-        -- No supe demostrarlo. Intenté inducción anidada, evaluar por casos y no llegué a nada.
-        -- ¿Será la definición de addNB la que me complica la demostración?
+    Caso mbs = []:
+
+    -- LADO IZQUIERDO
+
+        evalNB (addNB (nb:nbs') [])
+    =                                                                                               (addNB.1)
+        evalNB (addNBConCarry (nb:nbs') [] O)
+    =                                                                                               (addNBConCarry.4)
+        evalNB (fst (addDBConCarry nb O O)  : addNBConCarry nbs' [] (snd (addDBConCarry nb O O)))
+    =                                                                                               (Lema AddOO)
+        evalNB (fst (nb, O) : addNBConCarry nbs' [] (snd (nb, O)))
+    =                                                                                               (fst.1)
+        evalNB (nb : addNBConCarry nbs' [] (snd (nb, O)))
+    =                                                                                               (snd.1)
+        evalNB (nb : addNBConCarry nbs' [] O)
+    =                                                                                               (evalNB.2)
+        dbAsInt nb + 2 * evalNB (addNBConCarry nbs' [] O)
+    =                                                                                               (addNB, pero inversa)
+        dbAsInt nb + 2 * evalNB (addNB nbs' [])
+    =                                                                                               (HI, siendo mbs = [])
+        dbAsInt nb + 2 * (evalNB nbs' + evalNB [])
+    =                                                                                               (evalNB.1)
+        dbAsInt nb + 2 * (evalNB nbs' + 0)
+    =                                                                                               (aritmética)
+        dbAsInt nb + 2 * (evalNB nbs')
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    -- LADO DERECHO
+
+        evalNB (nb:nbs') + evalNB []
+    =                                                   (evalNB.1)
+        evalNB (nb:nbs') + 0 
+    =                                                   (aritmética)
+        evalNB (nb:nbs') 
+    =                                                   (evalNB.2)
+        dbAsInt nb + 2 * (evalNB nbs')
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Caso mbs = (mb:mbs'):
+
+    -- LADO IZQUIERDO:
+
+        evalNB (addNB (nb:nbs') (mb:mbs'))
+    =                                                                       (addNB.1)
+        evalNB (addNBConCarry (nb:nbs') (mb:mbs') O)
+    =                                                                       (Lema AddCarryO)
+        dbAsInt nb + dbAsInt mb + 2 * evalNB (addNBConCarry nbs' mbs' O)
+    =                                                                       (addNB, pero inversa)
+        dbAsInt nb + dbAsInt mb + 2 * evalNB (addNB nbs' mbs')
+    =                                                                       (HI)
+        dbAsInt nb + dbAsInt mb + 2 * (evalNB nbs' + evalNB mbs')
+    =                                                                       (aritmética)
+        dbAsInt nb + dbAsInt mb + 2 * (evalNB nbs') + 2 * (evalNB mbs')
+
+    -- LADO DERECHO:
+
+        evalNB (nb:nbs') + evalNB (mb:mbs')
+    =                                                                       (evalNB.2)
+        dbAsInt nb + 2 * (evalNB nbs') + evalNB (mb:mbs')
+    =                                                                       (evalNB.2)
+        dbAsInt nb + 2 * (evalNB nbs') + dbAsInt mb + 2 * (evalNB mbs')
+    =                                                                       (aritmética)
+        dbAsInt nb + dbAsInt mb + 2 * (evalNB nbs') + 2 * (evalNB mbs')
+
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
+    Lema AddOO: ¿addDBConCarry nb O O = (nb , O)?
+
+    Demostración:
+        Sea nb un elemento cualquiera de tipo DigBin.
+
+        Caso nb = I:
+
+        -- LADO IZQUIERDO
+
+            addDBConCarry I O O
+        =                               (addNBConCarry.5)
+            (I, O)
+
+        -- LADO DERECHO
+
+            (I , O)
+
+            -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Caso nb = O:
+
+        -- LADO IZQUIERDO
+
+            addDBConCarry O O O
+        =                               (addNBConCarry.5)
+            (O, O)
+
+        -- LADO DERECHO
+
+            (O , O)
+
+            -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
+    Lema AddCarryO: ¿evalNB (addNBConCarry (nb:nbs) (mb:mbs) O) = dbAsInt nb + dbAsInt mb + 2 * evalNB (addNBConCarry nbs mbs O)?
+
+        Demostración:
 
 
 -- 3.B.IV:
@@ -2756,3 +2852,33 @@ es2ExpA . expA2es = id
 -- 2.B.IV
 
 expA2es . es2ExpA = id
+
+
+-- SOLUCIONES ALTERNATIVAS A FUNCIONES:
+
+addNB :: NBin -> NBin -> NBin
+addNB nb1 nb2 = addNBConCarry nb1 nb2 O
+
+addNBConCarry :: NBin -> NBin -> DigBin -> NBin
+addNBConCarry []       []       O = []
+addNBConCarry []       []       I = [I]
+addNBConCarry []       (mb:mbs) c = let (s', c') = addDBConCarry O mb c
+                                        in s' : addNBConCarry [] mbs c'
+addNBConCarry (nb:nbs) []       c = let (s', c') = addDBConCarry nb O c
+                                        in s' : addNBConCarry nbs [] c'
+addNBConCarry (nb:nbs) (mb:mbs) c = let (s', c') = addDBConCarry nb mb c
+                                        in s' : addNBConCarry nbs mbs c'
+
+addNBConCarry :: NBin -> NBin -> DigBin -> NBin
+addNBConCarry []       []       O = []
+addNBConCarry []       []       I = [I]
+addNBConCarry []       (mb:mbs) c = fst (addDBConCarry O mb c)  : addNBConCarry [] mbs (snd (addDBConCarry O mb c))
+addNBConCarry (nb:nbs) []       c = fst (addDBConCarry nb O c)  : addNBConCarry nbs [] (snd (addDBConCarry nb O c))
+addNBConCarry (nb:nbs) (mb:mbs) c = fst (addDBConCarry nb mb c) : addNBConCarry nbs mbs (snd (addDBConCarry nb mb c))
+
+addDBConCarry :: DigBin -> DigBin -> DigBin -> (DigBin, DigBin)
+addDBConCarry I I O = (O, I)
+addDBConCarry I I I = (I, I)
+addDBConCarry O O c = (c, O)
+addDBConCarry _ _ I = (O, I)
+addDBConCarry _ _ O = (I, O)
