@@ -1882,14 +1882,21 @@ succNB (I:nbs) = O : succNB nbs
 -- 3.A.IV:
 
 addNB :: NBin -> NBin -> NBin
-addNB []       mbs      = mbs
-addNB nbs      []       = nbs
-addNB (nb:nbs) (mb:mbs) = addDB nb mb (addNB nbs mbs)
+addNB nb1 nb2 = addNBConCarry nb1 nb2 O
 
-addDB :: DigBin -> DigBin -> NBin -> NBin
-addDB I I nbs = O : succNB nbs
-addDB O O nbs = O : nbs
-addDB _ _ nbs = I : nbs
+addNBConCarry :: NBin -> NBin -> DigBin -> NBin
+addNBConCarry []       []       O = []
+addNBConCarry []       []       I = [I]
+addNBConCarry []       (mb:mbs) c = fst (addDBConCarry O  mb c) : addNBConCarry []  mbs (snd (addDBConCarry O  mb c))
+addNBConCarry (nb:nbs) []       c = fst (addDBConCarry nb O  c) : addNBConCarry nbs []  (snd (addDBConCarry nb O  c))
+addNBConCarry (nb:nbs) (mb:mbs) c = fst (addDBConCarry nb mb c) : addNBConCarry nbs mbs (snd (addDBConCarry nb mb c))
+
+addDBConCarry :: DigBin -> DigBin -> DigBin -> (DigBin, DigBin)
+addDBConCarry I I O = (O, I)
+addDBConCarry I I I = (I, I)
+addDBConCarry O O c = (c, O)
+addDBConCarry _ _ I = (O, I)
+addDBConCarry _ _ O = (I, O)
 
 
 -- 3.A.V:
@@ -1909,7 +1916,6 @@ dobleN (S n) = S (S (dobleN n))
 n2nb :: N -> NBin
 n2nb Z     = []
 n2nb (S n) = succNB (n2nb n)
-
 
 
 -- 3.B.I:
@@ -2815,10 +2821,403 @@ unoSiSumaCero _       _      = 0
 
 evalExpA . simplificarExpA = evalExpA
 
+Demostración:
+    Por principio de extensionalidad, es equivalente demostrar que
+    ¿Para todo n. evalExpA . simplificarExpA n = evalExpA n? 
+
+    Sea e un elemento cualquiera de tipo ExpA. Por principio de inducción sobre la 
+    estructura e es equivalente demostrar:
+
+    Caso base (e = Cte n):
+        ¿evalExpA . simplificarExpA (Cte n) = evalExpA (Cte n)?
+
+
+    Caso inductivo 1 (e = Suma e1 e2):
+        Hipotesis inductiva 1.1:
+            ¡evalExpA . simplificarExpA e1 = evalExpA e1!
+
+        Hipotesis inductiva 1.2:
+            ¡evalExpA . simplificarExpA e2 = evalExpA e2!
+
+        Tesis inductiva 1:
+            ¿evalExpA . simplificarExpA (Suma e1 e2) = evalExpA (Suma e1 e2)?
+
+
+    Caso inductivo 2 (e = Prod e1 e2):
+        Hipotesis inductiva 1.2:
+            ¡evalExpA . simplificarExpA e1 = evalExpA e1!
+
+        Hipotesis inductiva 2.2:
+            ¡evalExpA . simplificarExpA e2 = evalExpA e2!
+
+        Tesis inductiva 2:
+            ¿evalExpA . simplificarExpA (Prod e1 e2) = evalExpA (Prod e1 e2)?
+
+    
+    Demostración caso base:
+        ¿evalExpA . simplificarExpA (Cte n) = evalExpA (Cte n)?
+
+    -- LADO IZQUIERDO
+
+        evalExpA . simplificarExpA (Cte n)
+    =                                               (.)
+        evalExpA (simplificarExpA (Cte n))
+    =                                               (simplificarExpA.1)
+        evalExpA (Cte n)
+
+    -- LADO DERECHO
+
+        evalExpA (Cte n)
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo 1:
+        ¿evalExpA . simplificarExpA (Suma e1 e2) = evalExpA (Suma e1 e2)?
+
+    -- LADO IZQUIERDO
+
+        evalExpA . simplificarExpA (Suma e1 e2)
+    =                                                                           (.)
+        evalExpA (simplificarExpA (Suma e1 e2))
+    =                                                                           (simplificarExpA.2)
+        evalExpA (simplificarSuma (simplificarExpA e1) (simplificarExpA e2))
+    =                                                                           (Lema EvalSimpSuma)
+        evalExpA (simplificarExpA e1) + evalExpA (simplificarExpA e2)
+    =                                                                           (.)
+        evalExpA . simplificarExpA e1 + evalExpA (simplificarExpA e2)
+    =                                                                           (.)
+        evalExpA . simplificarExpA e1 + evalExpA . simplificarExpA e2
+    =                                                                           (HI 1.1)
+        evalExpA e1 + evalExpA . simplificarExpA e2
+    =                                                                           (HI 1.2)
+        evalExpA e1 + evalExpA e2
+
+    -- LADO DERECHO
+
+        evalExpA (Suma e1 e2)
+    =                                                                           (evalExpA.2)
+        (evalExpA e1) + (evalExpA e2)
+    =                                                                           (aritmética)
+        evalExpA e1 + evalExpA e2
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo 2:
+        ¿evalExpA . simplificarExpA (Prod e1 e2) = evalExpA (Prod e1 e2)?
+
+    -- LADO IZQUIERDO
+
+        evalExpA . simplificarExpA (Prod e1 e2)
+    =                                                                           (.)
+        evalExpA (simplificarExpA (Prod e1 e2))
+    =                                                                           (simplificarExpA.3)
+        evalExpA (simplificarProd (simplificarExpA e1) (simplificarExpA e2))
+    =                                                                           (Lema EvalSimpProd)
+        evalExpA (simplificarExpA e1) * evalExpA (simplificarExpA e2)
+    =                                                                           (.)
+        evalExpA . simplificarExpA e1 * evalExpA (simplificarExpA e2)
+    =                                                                           (.)
+        evalExpA . simplificarExpA e1 * evalExpA . simplificarExpA e2
+    =                                                                           (HI 2.1)
+        evalExpA e1 * evalExpA . simplificarExpA e2
+    =                                                                           (HI 2.2)
+        evalExpA e1 * evalExpA e2
+
+    -- LADO DERECHO
+
+        evalExpA (Prod e1 e2)
+    =                                                                           (evalExpA.3)
+        (evalExpA e1) * (evalExpA e2)
+    =                                                                           (aritmética)
+        evalExpA e1 * evalExpA e2
+
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
+    Lema EvalSimpSuma: ¿evalExpA (simplificarSuma x1 x2) = evalExpA x1 + evalExpA x2?
+
+    Demostración:
+        Sea e1 y e2 elementos cualquiera de tipo ExpA. 
+        Se verá que: evalExpA (simplificarSuma e1 e2) = evalExpA e1 + evalExpA e2
+
+        Caso 1 (e2 = (Cte 0)):
+
+        -- LADO IZQUIERDO
+
+            evalExpA (simplificarSuma e1 (Cte 0))
+        =                                           (simplificarSuma.1)
+            evalExpA e1
+
+        -- LADO DERECHO
+
+            evalExpA e1 + evalExpA (Cte 0)
+        =                                           (evalExpA.1)
+            evalExpA e1 + 0
+        =                                           (aritmética)
+            evalExpA e1
+
+            -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Caso 2 (e1 = (Cte 0)):
+
+        -- LADO IZQUIERDO
+
+            evalExpA (simplificarSuma (Cte 0) e2)
+        =                                           (simplificarSuma.2)
+            evalExpA e2
+
+        -- LADO DERECHO
+
+            evalExpA (Cte 0) + evalExpA e2
+        =                                           (evalExpA.1)
+            0 + evalExpA e2
+        =                                           (aritmética)
+            evalExpA e2
+
+            -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Caso 3 (e1 /= (Cte 0), e2 /= (Cte 0)):
+
+        -- LADO IZQUIERDO
+
+            evalExpA (simplificarSuma e1 e2)
+        =                                           (simplificarSuma.3)
+            evalExpA (Suma e1 e2)
+        =                                           (evalExpA.2)
+            evalExpA e1 + evalExpA e2
+
+        -- LADO DERECHO
+
+            evalExpA e1 + evalExpA e2
+
+            -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
+    Lema EvalSimpProd: ¿evalExpA (simplificarProd e1 e2) = evalExpA e1 * evalExpA e2?
+
+    Demostración:
+        Sea e1 y e2 elementos cualquiera de tipo ExpA. 
+        Se verá que: evalExpA (simplificarProd e1 e2) = evalExpA e1 * evalExpA e2
+
+        Caso 1 (e2 = (Cte 0)):
+
+        -- LADO IZQUIERDO
+
+            evalExpA (simplificarProd e1 (Cte 0))
+        =                                           (simplificarProd.1)
+            evalExpA (Cte 0)
+        =                                           (evalExpA.1)
+            0
+
+        -- LADO DERECHO
+
+            evalExpA e1 * evalExpA (Cte 0)
+        =                                           (evalExpA.1)
+            evalExpA e1 * 0
+        =                                           (aritmética)
+            0
+
+            -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Caso 2 (e1 = (Cte 0)):
+
+        -- LADO IZQUIERDO
+
+            evalExpA (simplificarProd (Cte 0) e2)
+        =                                           (simplificarProd.2)
+            evalExpA (Cte 0)
+        =                                           (evalExpA.1)
+            0
+
+        -- LADO DERECHO
+
+            evalExpA (Cte 0) * evalExpA e2
+        =                                           (evalExpA.1)
+            0 * evalExpA e2
+        =                                           (aritmética)
+            0
+
+            -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Caso 3 (e2 = (Cte 1)):
+
+        -- LADO IZQUIERDO
+
+            evalExpA (simplificarProd e1 (Cte 1))
+        =                                           (simplificarProd.3)
+            evalExpA e1
+
+        -- LADO DERECHO
+
+            evalExpA e1 * evalExpA (Cte 1)
+        =                                           (evalExpA.1)
+            evalExpA e1 * 1
+        =                                           (aritmética)
+            evalExpA e1
+
+            -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Caso 4 (e1 = (Cte 1)):
+
+        -- LADO IZQUIERDO
+
+            evalExpA (simplificarProd (Cte 1) e2)
+        =                                           (simplificarProd.4)
+            evalExpA e2
+
+        -- LADO DERECHO
+
+            evalExpA (Cte 1) * evalExpA e2
+        =                                           (evalExpA.1)
+            1 * evalExpA e2
+        =                                           (aritmética)
+            evalExpA e2
+
+            -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Caso 5 (e1 /= (Cte 0), e1 /= (Cte 1), e2 /= (Cte 0), e2 /= (Cte 1)):
+
+        -- LADO IZQUIERDO
+
+            evalExpA (simplificarProd e1 e2)
+        =                                           (simplificarProd.5)
+            evalExpA (Prod e1 e2)
+        =                                           (evalExpA.3)
+            evalExpA e1 * evalExpA e2
+
+        -- LADO DERECHO
+
+            evalExpA e1 * evalExpA e2
+
+            -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
 
 -- 1.B.II
 
-cantidadSumaCero . simplificarExpA = const 0
+cantidadSumaCero . simplificarExpA = const 0 REVISAR
+
+Demostración:
+
+    Por principio de extensionalidad, es equivalente demostrar que:
+    ¿Para todo x. cantidadDeSumaCero . simplificarExpA x = const 0 x?
+
+    Sea e un elemento cualquiera de tipo ExpA. Por principio de inducción sobre
+    la estructura e es equivalente demostrar que:
+
+    Caso base (e = Cte n):
+        ¿cantidadDeSumaCero . simplificarExpA (Cte n) = const 0 (Cte n)?
+
+
+    Caso inductivo 1 (e = Suma e1 e1):
+        Hipotesis inductiva 1.1:
+            ¡cantidadDeSumaCero . simplificarExpA e1 = const 0 e1!
+
+        Hipotesis inductiva 1.2:
+            ¡cantidadDeSumaCero . simplificarExpA e2 = const 0 e2!
+
+        Tesis inductiva 1:
+            ¿cantidadDeSumaCero . simplificarExpA (Suma e1 e2) = const 0 (Suma e1 e2)?
+
+
+    Caso inductivo 2 (e = Prod e1 e2):
+        Hipotesis inductiva 2.1:
+            ¡cantidadDeSumaCero . simplificarExpA e1 = const 0 e1!
+
+        Hipotesis inductiva 2.2:
+            ¡cantidadDeSumaCero . simplificarExpA e2 = const 0 e2!
+
+        Tesis inductiva 2:
+            ¿cantidadDeSumaCero . simplificarExpA (Prod e1 e2) = const 0 (Prod e1 e2)?
+
+
+    Demostración caso base:
+        ¿cantidadDeSumaCero . simplificarExpA (Cte n) = const 0 (Cte n)?
+
+    -- LADO IZQUIERDO
+
+        cantidadDeSumaCero . simplificarExpA (Cte n)
+    =                                                       (.)
+        cantidadDeSumaCero (simplificarExpA (Cte n))
+    =                                                       (simplificarExpA.1)
+        cantidadDeSumaCero (Cte n)
+    =                                                       (cantidadDeSumaCero.1)
+        0
+
+    -- LADO DERECHO
+
+        const 0 (Cte n)
+    =                                                       (const.1)
+        0
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo 1:
+        ¿cantidadDeSumaCero . simplificarExpA (Suma e1 e2) = const 0 (Suma e1 e2)?
+
+    -- LADO IZQUIERDO
+
+        cantidadDeSumaCero . simplificarExpA (Suma e1 e2)
+    =                                                                                       (.)
+        cantidadDeSumaCero (simplificarExpA (Suma e1 e2))
+    =                                                                                       (simplificarExpA.2)
+        cantidadDeSumaCero (simplificarSuma (simplificarExpA e1) (simplificarExpA e2))
+    =                                                                                       (Lema SimplSuma)
+        cantidadDeSumaCero (simplificarExpA e1) + cantidadDeSumaCero (simplificarExpA e2)
+    =                                                                                       (.)
+        cantidadDeSumaCero . simplificarExpA e1 + cantidadDeSumaCero (simplificarExpA e2)
+    =                                                                                       (.)
+        cantidadDeSumaCero . simplificarExpA e1 + cantidadDeSumaCero . simplificarExpA e2
+    =                                                                                       (HI 1.1)
+        const 0 e1 + cantidadDeSumaCero . simplificarExpA e2
+    =                                                                                       (HI 1.2)
+        const 0 e1 + const 0 e2
+    =                                                                                       (const.1)
+        0 + const 0 e2
+    =                                                                                       (const.1)
+        0 + 0
+    =                                                                                       (aritmética)
+        0
+
+    -- LADO DERECHO
+
+        const 0 (Suma e1 e2)
+    =                                   (const.1)
+        0
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo 2:
+        ¿cantidadDeSumaCero . simplificarExpA (Prod e1 e2) = const 0 (Prod e1 e2)?
+
+    -- LADO IZQUIERDO
+
+        cantidadDeSumaCero . simplificarExpA (Prod e1 e2)
+    =                                                                                       (.)
+        cantidadDeSumaCero (simplificarExpA (Prod e1 e2))
+    =                                                                                       (simplificarExpA.3)
+        cantidadDeSumaCero (simplificarProd (simplificarExpA e1) (simplificarExpA e2))
+    =                                                                                       (Lema SimplSuma)
+        cantidadDeSumaCero (simplificarExpA e1) + cantidadDeSumaCero (simplificarExpA e2)
+    =                                                                                       (.)
+        cantidadDeSumaCero . simplificarExpA e1 + cantidadDeSumaCero (simplificarExpA e2)
+    =                                                                                       (.)
+        cantidadDeSumaCero . simplificarExpA e1 + cantidadDeSumaCero . simplificarExpA e2
+    =                                                                                       (HI 1.1)
+        const 0 e1 + cantidadDeSumaCero . simplificarExpA e2
+    =                                                                                       (HI 1.2)
+        const 0 e1 + const 0 e2
+    =                                                                                       (const.1)
+        0 + const 0 e2
+    =                                                                                       (const.1)
+        0 + 0
+    =                                                                                       (aritmética)
+        0
+        
+    -- LADO DERECHO
+
+        const 0 (Prod e1 e2)
+    =                                   (const.1)
+        0
+
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 > Ejercicio 2:
@@ -2871,10 +3270,17 @@ es2ExpA . expA2es = id
 expA2es . es2ExpA = id
 
 
--- SOLUCIONES ALTERNATIVAS A FUNCIONES:
+-- IMPLEMENTACIONES ALTERNATIVAS A FUNCIONES:
 
 addNB :: NBin -> NBin -> NBin
-addNB nb1 nb2 = addNBConCarry nb1 nb2 O
+addNB []       mbs      = mbs
+addNB nbs      []       = nbs
+addNB (nb:nbs) (mb:mbs) = addDB nb mb (addNB nbs mbs)
+
+addDB :: DigBin -> DigBin -> NBin -> NBin
+addDB I I nbs = O : succNB nbs
+addDB O O nbs = O : nbs
+addDB _ _ nbs = I : nbs
 
 addNBConCarry :: NBin -> NBin -> DigBin -> NBin
 addNBConCarry []       []       O = []
@@ -2885,17 +3291,3 @@ addNBConCarry (nb:nbs) []       c = let (s', c') = addDBConCarry nb O c
                                         in s' : addNBConCarry nbs [] c'
 addNBConCarry (nb:nbs) (mb:mbs) c = let (s', c') = addDBConCarry nb mb c
                                         in s' : addNBConCarry nbs mbs c'
-
-addNBConCarry :: NBin -> NBin -> DigBin -> NBin
-addNBConCarry []       []       O = []
-addNBConCarry []       []       I = [I]
-addNBConCarry []       (mb:mbs) c = fst (addDBConCarry O mb c)  : addNBConCarry [] mbs (snd (addDBConCarry O mb c))
-addNBConCarry (nb:nbs) []       c = fst (addDBConCarry nb O c)  : addNBConCarry nbs [] (snd (addDBConCarry nb O c))
-addNBConCarry (nb:nbs) (mb:mbs) c = fst (addDBConCarry nb mb c) : addNBConCarry nbs mbs (snd (addDBConCarry nb mb c))
-
-addDBConCarry :: DigBin -> DigBin -> DigBin -> (DigBin, DigBin)
-addDBConCarry I I O = (O, I)
-addDBConCarry I I I = (I, I)
-addDBConCarry O O c = (c, O)
-addDBConCarry _ _ I = (O, I)
-addDBConCarry _ _ O = (I, O)
