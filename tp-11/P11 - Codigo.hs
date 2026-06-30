@@ -4,8 +4,6 @@
 
 --------------------------------------------------------------------------------------------------------
 
-## SECCIÓN 1
-
 > Ejercicio 1:
 
 data Ingrediente = Aceitunas Int | Jamon | Queso | Salsa
@@ -36,10 +34,12 @@ conCapasTransformadas f (Capa i p) = Capa (f i) (conCapasTransformadas f p)
 
 soloLasCapasQue :: (Ingrediente -> Bool) -> Pizza -> Pizza
 soloLasCapasQue f Prepizza   = Prepizza
-soloLasCapasQue f (Capa i p) = if f i
-                                  then Capa i (soloLasCapasQue f p)
-                                  else soloLasCapasQue f p
+soloLasCapasQue f (Capa i p) = capaSiCumple f i (soloLasCapasQue f p)
 
+capaSiCumple :: (Ingrediente -> Bool) -> Ingrediente -> Pizza -> Pizza
+capaSiCumple f i p = if f i
+                        then Capa i p
+                        else p
 
 
 > Ejercicio 2:
@@ -80,4 +80,52 @@ duplicarAceitunas i             = i
 
 pizzaProcesada :: (Ingrediente -> b -> b) -> b -> Pizza -> b
 pizzaProcesada fc fp = go
-    where 
+    where (Capa i p) = fc i (go p)
+          Prepizza   = fp
+
+pizzaProcesada :: (Ingrediente -> b -> b) -> b -> Pizza -> b
+pizzaProcesada fc fp Prepizza   = fp
+pizzaProcesada fc fp (Capa i p) = fc i (pizzaProcesada fc fp p)
+
+
+> Ejercicio 4:
+
+cantidadCapasQueCumplen :: (Ingrediente -> Bool) -> Pizza -> Int
+cantidadCapasQueCumplen f = pizzaProcesada (\ i p' -> unoSi (f i) + p') 0
+
+cantidadCapasQueCumplen :: (Ingrediente -> Bool) -> Pizza -> Int
+cantidadCapasQueCumplen = (\ f -> pizzaProcesada (\ i p' -> unoSi (f i) + p') 0)
+
+
+conCapasTransformadas :: (Ingrediente -> Ingrediente) -> Pizza -> Pizza
+conCapasTransformadas f = pizzaProcesada (\ i p' -> Capa (f i) p') Prepizza
+
+conCapasTransformadas :: (Ingrediente -> Ingrediente) -> Pizza -> Pizza
+conCapasTransformadas = (\ f -> pizzaProcesada (\ i p' -> Capa (f i) p') Prepizza)
+
+
+soloLasCapasQue :: (Ingrediente -> Bool) -> Pizza -> Pizza
+soloLasCapasQue f = pizzaProcesada (\ i p' -> capaSiCumple f i p') Prepizza
+
+soloLasCapasQue :: (Ingrediente -> Bool) -> Pizza -> Pizza
+soloLasCapasQue = (\ f -> pizzaProcesada (\ i p' -> capaSiCumple f i p') Prepizza)
+
+
+sinLactosa :: Pizza -> Pizza
+sinLactosa = pizzaProcesada (\ i p' -> capaSiCumple f i p') Prepizza
+    where f = (\ i -> not (esQueso i))
+
+sinLactosa :: Pizza -> Pizza
+sinLactosa = pizzaProcesada (\ i p' -> (\ f i p' -> if f i then Capa i p' else p') (\ i -> not (esQueso i)) i p') Prepizza
+
+
+aptaIntolerantesLactosa :: Pizza -> Bool
+aptaIntolerantesLactosa = pizzaProcesada (\ i p' -> esQueso i && p') False
+
+
+cantidadDeQueso :: Pizza -> Int
+cantidadDeQueso = pizzaProcesada (\ i p' -> unoSi (esQueso i) + p') 0
+
+
+conElDobleDeAceitunas :: Pizza -> Pizza
+conElDobleDeAceitunas = pizzaProcesada (\ i p' -> Capa (duplicarAceitunas i) p') Prepizza
