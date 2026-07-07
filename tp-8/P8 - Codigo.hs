@@ -133,8 +133,6 @@ Demostración:
     -- LADO IZQUIERDO
 
         length ([] ++ ws)
-    =                               ((++))
-        length ((++) [] ws)
     =                               ((++).1)
         length ws
 
@@ -154,8 +152,6 @@ Demostración:
     -- LADO IZQUIERDO
 
         length ((z:zs') ++ ws)
-    =                                   ((++))
-        length ((++) (z:zs') ws)
     =                                   ((++).2)
         length (z : (zs' ++ ws))
     =                                   (length.2)
@@ -179,8 +175,8 @@ Demostración:
 ¿Para todo xs. para todo ys. para todo zs. (xs ++ ys) ++ zs = xs ++ (ys ++ zs)?
 
 Demostración:
-    Sea as, bs y cs listas cualquiera (finitas y bien definidas). Por principio de inducción en la estructura
-    de as es equivalente demostrar:
+    Sea as, bs y cs listas cualquiera (finitas y bien definidas). Por principio de inducción
+    en la estructura as es equivalente demostrar:
 
     Caso base (as = []):
         ¿([] ++ bs) ++ cs = [] ++ (bs ++ cs)?
@@ -198,16 +194,12 @@ Demostración:
     -- LADO IZQUIERDO
 
         ([] ++ bs) ++ cs
-    =                           ((++))
-        ((++) [] bs) ++ cs
     =                           ((++).1)
         bs ++ cs
 
     -- LADO DERECHO
 
         [] ++ (bs ++ cs)
-    =                           ((++))
-        (++) [] (bs ++ cs)
     =                           ((++).1)
         bs ++ cs
 
@@ -219,12 +211,8 @@ Demostración:
     -- LADO IZQUIERDO
 
         ((a:as') ++ bs) ++ cs
-    =                               ((++))
-        ((++) (a:as') bs) ++ cs
     =                               ((++).2)
         (a : (as' ++ bs)) ++ cs
-    =                               ((++))
-        (++) (a : (as' ++ bs)) cs
     =                               ((++).2)
         a : ((as' ++ bs) ++ cs)
     =                               (HI)
@@ -233,8 +221,6 @@ Demostración:
     -- LADO DERECHO
 
         (a:as') ++ (bs ++ cs)
-    =                               ((++))
-        (++) (a:as') (bs ++ cs)
     =                               ((++).2)
         a : (as' ++ (bs ++ cs))
 
@@ -249,8 +235,8 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que 
     ¿Para todo ws. count (const True) ws = length ws?
 
-    Sea xs una lista cualquiera (finita y bien definida). Por principio de inducción en la estructura xs
-    es equivalente demostrar:
+    Sea xs una lista cualquiera (finita y bien definida). Por principio de inducción
+    en la estructura xs es equivalente demostrar:
 
     Caso base (xs = [])
         ¿count (const True) [] = length []? 
@@ -291,7 +277,7 @@ Demostración:
         if (const True) x then 1 else 0 + count (const True) xs'
     =                                                               (const.1)
         if True then 1 else 0 + count (const True) xs'
-    =                                                               (if.True)
+    =                                                               (if.then)
         1 + count (const True) xs'
     =                                                               (HI)
         1 + length xs'
@@ -311,194 +297,186 @@ elem = any . (==)
 
 Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
-    ¿Para todo z. para todo ws. elem z ws = (any . (==)) z ws?
+    ¿Para todo z'. para todo zs. elem z' zs = (any . (==)) z' zs?
 
-    Sea ws una lista cualquiera (finita y bien definida) y z un elemento del mismo tipo.
+    Sea xs una lista cualquiera (finita y bien definida) y x' un elemento del mismo tipo.
     Por principio de inducción en la estructura ws es equivalente demostrar que:
 
-    Caso base (ws = []):
-        ¿elem z [] = (any . (==)) z []?
+    Caso base (xs = []):
+        ¿elem x' [] = (any . (==)) x' []?
 
-    Caso inductivo (ws = (w:ws')):
+    Caso inductivo (xs = (x:xs')):
         Hipotesis inductiva:
-            ¡elem z ws' = (any . (==)) z ws'!
+            ¡elem x' xs' = (any . (==)) x' xs'!
 
         Tesis inductiva:
-            ¿elem z (w:ws') = (any . (==)) z (w:ws')?
+            ¿elem x' (x:xs') = (any . (==)) x' (x:xs')?
 
     Demostración caso base:
-        ¿elem z [] = (any . (==)) z []?
+        ¿elem x' [] = (any . (==)) x' []?
 
     -- LADO IZQUIERDO
 
-        elem z []
-    =                       (elem.1)
+        elem x' []
+    =                           (elem.1)
         False
 
     -- LADO DERECHO
 
-        (any . (==)) z []
-    =                       (.)
-        any ((==) z) []
-    =                       (any.1)
+        (any . (==)) x' []
+    =                           (.)
+        any ((==) x') []
+    =                           (any.1)
         False
 
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
-        ¿elem z (w:ws') = (any . (==)) z (w:ws')?
+        ¿elem x' (x:xs') = (any . (==)) x' (x:xs')?
 
     -- LADO IZQUIERDO
 
-        elem z (w:ws')
-    =                                   (elem.2)
-        z == w || elem z ws'
-    =                                   (HI)
-        z == w || (any . (==)) z ws'
-    =                                   (.)
-        z == w || any ((==) z) ws'
+        elem x' (x:xs')
+    =                                       (elem.2)
+        x' == x || elem x' xs'
+    =                                       (HI)
+        x' == x || (any . (==)) x' xs'
+    =                                       (.)
+        x' == x || any ((==) x') xs'
 
     -- LADO DERECHO
 
-        (any . (==)) z (w:ws')
-    =                                   (.)
-        any ((==) z) (w:ws')
-    =                                   (any.2)
-        ((==) z) w || any ((==) z) ws'
-    =                                   ((==))
-        z == w || any ((==) z) ws'
+        (any . (==)) x' (x:xs')
+    =                                       (.)
+        any ((==) x') (x:xs')
+    =                                       (any.2)
+        ((==) x') x || any ((==) x') xs'
+    =                                       ((==))
+        x' == x || any ((==) x') xs'
 
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 2.E
 
-¿Para todo x. any (elem x) = elem x . concat?
+¿Para todo xs'. any (elem xs') = elem xs' . concat?
 
 Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
-    ¿Para todo x. para todo xs. any (elem x) xs = elem x . concat xs?
+    ¿Para todo xs'. para todo xss. any (elem xs') xss = (elem xs' . concat) xss?
 
-    Sea ws una lista cualquiera (finita y bien definida) y z un elemento del mismo tipo.
-    Por principio de inducción en la estructura as es equivalente demostrar que:
+    Sea wss una lista cualquiera (finita y bien definida) y ws' un elemento del mismo tipo.
+    Por principio de inducción en la estructura wss es equivalente demostrar que:
 
-    Caso base (as = []):
-        ¿any (elem b) [] = elem b . concat []?
+    Caso base (wss = []):
+        ¿any (elem ws') [] = (elem ws' . concat) []?
 
-    Caso inductivo (as = (a:as')):
+    Caso inductivo (wss = (ws:wss')):
         Hipotesis inductiva:
-            ¡any (elem b) as' = elem b . concat as'!
+            ¡any (elem ws') wss' = (elem ws' . concat) wss'!
 
         Tesis inductiva:
-            ¿any (elem b) (a:as') = elem b . concat (a:as')?
+            ¿any (elem ws') (ws:wss') = (elem ws' . concat) (ws:wss')?
 
     Demostración caso base:
-        ¿any (elem b) [] = elem b . concat []?
+        ¿any (elem ws') [] = (elem ws' . concat) []?
 
     -- LADO IZQUIERDO
 
-        any (elem b) []
+        any (elem ws') []
     =                           (any.1)
         False
 
     -- LADO DERECHO
 
-        elem b . concat []
+        (elem ws' . concat) []
     =                           (.)
-        elem b (concat [])
+        elem ws' (concat [])
     =                           (concat.1)
-        elem b []
+        elem ws' []
     =                           (elem.1)
         False
 
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
-        ¿any (elem b) (a:as') = elem b . concat (a:as')?
+        ¿any (elem ws') (ws:wss') = (elem ws' . concat) (ws:wss')?
 
     -- LADO IZQUIERDO
 
-        any (elem b) (a:as')
+        any (elem ws') (ws:wss')
     =                                           (any.2)
-        elem b a || any (elem b) as'
+        elem ws' ws || any (elem ws') wss'
     =                                           (HI)
-        elem b a || elem b . concat as'
+        elem ws' ws || (elem ws' . concat) wss'
     =                                           (.)
-        elem b a || elem b (concat as')
-    =                                           (Lema ElemB)
-        elem b (a ++ concat as')
+        elem ws' ws || elem ws' (concat wss')
+    =                                           (Lema ElemAppend)
+        elem ws' (ws ++ concat wss')
 
     -- LADO DERECHO
 
-        elem b . concat (a:as')
+        (elem ws' . concat) (ws:wss')
     =                                           (.)
-        elem b (concat (a:as'))
+        elem ws' (concat (ws:wss'))
     =                                           (concat.2)
-        elem b (a ++ concat as')
+        elem ws' (ws ++ concat wss')
 
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
-    Lema ElemB: ¿elem w xs || elem w ys = elem w (xs ++ ys)?
+    Lema ElemAppend: ¿para todo ws1. para todo ws2. para todo w'. elem w' ws1 || elem w' ws2 = elem w' (ws1 ++ ws2)? 
 
     Demostración:
-        Sea as' y bs' dos listas cualquiera (finitas y bien definidas), y c' un elemento. Por principio de inducción
-        en la estructura as' es equivalente demostrar que:
+        Sea xs1 y xs2 dos listas cualquiera (finitas y bien definidas) y x' un elemento del mismo tipo.
+        Por principio de inducción en la estructura xs1 es equivalente demostrar que:
 
-        Caso base (as' = []):
-            ¿elem c' [] || elem c' bs' = elem c' ([] ++ bs')?
+        Caso base (xs1 = []):
+            ¿elem x' [] || elem x' xs2 = elem x' ([] ++ xs2)?
 
-        Caso inductivo (as' = (a':as'')):
+        Caso inductivo (xs1 = (x1:xs1')):
             Hipotesis inductiva:
-                ¡elem c' as'' || elem c' bs' = elem c' (as'' ++ bs')!
+                ¡elem x' xs1' || elem x' xs2 = elem x' (xs1' ++ xs2)!
 
             Tesis inductiva:
-                ¿elem c' (a':as'') || elem c' bs' = elem c' ((a':as'') ++ bs')?
+                ¿elem x' (x1:xs1') || elem x' xs2 = elem x' ((x1:xs1') ++ xs2)?
 
         Demostración caso base:
-            ¿elem c' [] || elem c' bs' = elem c' ([] ++ bs')?
+            ¿elem x' [] || elem x' xs2 = elem x' ([] ++ xs2)?
 
         -- LADO IZQUIERDO
 
-            elem c' [] || elem c' bs'
+            elem x' [] || elem x' xs2
         =                                       (elem.1)
-            False || elem c' bs'
-        =                                       (||)
-            elem c' bs'
+            False || elem x' xs2
+        =                                       ((||).2)
+            elem x' xs2
 
         -- LADO DERECHO
 
-            elem c' ([] ++ bs')
-        =                                       ((++))
-            elem c' ((++) [] bs')
-        =                                       ((++))
-            elem c' (bs')
-        =                                       (aritmética)
-            elem c' bs'
+            elem x' ([] ++ xs2)
+        =                                       ((++).1)
+            elem x' xs2
         
             -- Ambos lados llegan a lo mismo, el caso es válido.
 
         Demostración caso inductivo:
-            ¿elem c' (a':as'') || elem c' bs' = elem c' ((a':as'') ++ bs')?
+            ¿elem x' (x1:xs1') || elem x' xs2 = elem x' ((x1:xs1') ++ xs2)?
 
         -- LADO IZQUIERDO
 
-            elem c' (a':as'') || elem c' bs'
-        =                                       (elem.2)
-            c' == a' || elem c' as'' || elem c' bs'
-        =                                       (HI)
-            c' == a' || elem c' (as'' ++ bs')
+            elem x' (x1:xs1') || elem x' xs2
+        =                                               (elem.2)
+            x' == x1 || elem x' xs1' || elem x' xs2
+        =                                               (HI)
+            x' == x1 || elem x' (xs1' ++ xs2)
 
         -- LADO DERECHO
 
-            elem c' ((a':as'') ++ bs')
-        =                                       ((++))
-            elem c' ((++) (a':as'') bs')
-        =                                       ((++))
-            elem c' (a' : ((++) as'' bs'))
-        =                                       ((++))
-            elem c' (a' : (as'' ++ bs'))
+            elem x' ((x1:xs1') ++ xs2)
+        =                                       ((++).2)
+            elem x' (x1 : (xs1' ++ xs2))
         =                                       (elem.2)
-            c' == a' || elem c' (as'' ++ bs')
+            x' == x1 || elem x' (xs1' ++ xs2)
 
             -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
@@ -508,54 +486,54 @@ Demostración:
 ¿Para todo xs. para todo ys. subset xs ys = all (flip elem ys) xs?
 
 Demostración:
-    Sea as y bs listas cualquiera (finitas y bien definidas). Por principio de inducción en la 
-    estructura as es equivalente demostrar que:
+    Sea ws y zs listas cualquiera (finitas y bien definidas). Por principio de inducción
+    en la estructura ws es equivalente demostrar que:
 
-    Caso base (as = []):
-        ¿subset [] bs = all (flip elem bs) []?
+    Caso base (ws = []):
+        ¿subset [] zs = all (flip elem zs) []?
 
-    Caso inductivo (as = (a:as')):
+    Caso inductivo (ws = (w':ws')):
         Hipotesis inductiva:
-            ¡subset as' bs = all (flip elem bs) as'!
+            ¡subset ws' bs = all (flip elem bs) ws'!
 
         Tesis inductiva:
-            ¿subset (a:as') bs = all (flip elem bs) (a:as')?
+            ¿subset (a:ws') bs = all (flip elem bs) (a:ws')?
 
     Demostración caso base:
-        ¿subset [] bs = all (flip elem bs) []?
+        ¿subset [] zs = all (flip elem zs) []?
 
     -- LADO IZQUIERDO
 
-        subset [] bs
+        subset [] zs
     =                           (subset.1)
         True
 
     -- LADO DERECHO
 
-        all (flip elem bs) []
+        all (flip elem zs) []
     =                           (all.1)
         True
 
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
-        ¿subset (a:as') bs = all (flip elem bs) (a:as')?
+        ¿subset (a:ws') bs = all (flip elem bs) (a:ws')?
     
     -- LADO IZQUIERDO
 
-        subset (a:as') bs
+        subset (a:ws') bs
     =                                               (subset.2)
-        elem a bs && subset as' bs
+        elem a bs && subset ws' bs
     =                                               (HI)
-        elem a bs && all (flip elem bs) as'
+        elem a bs && all (flip elem bs) ws'
 
     -- LADO DERECHO
 
-        all (flip elem bs) (a:as')
+        all (flip elem bs) (a:ws')
     =                                               (all.2)
-        (flip elem bs) a && all (flip elem bs) as'
+        (flip elem bs) a && all (flip elem bs) ws'
     =                                               (flip.1)
-        elem a bs && all (flip elem bs) as'
+        elem a bs && all (flip elem bs) ws'
 
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
