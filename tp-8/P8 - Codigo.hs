@@ -134,8 +134,8 @@ Demostración:
 
         length ([] ++ ws)
     =                               ((++))
-        length (append [] ws)
-    =                               (apend.1)
+        length ((++) [] ws)
+    =                               ((++).1)
         length ws
 
     -- LADO DERECHO
@@ -155,8 +155,8 @@ Demostración:
 
         length ((z:zs') ++ ws)
     =                                   ((++))
-        length (append (z:zs') ws)
-    =                                   (append.2)
+        length ((++) (z:zs') ws)
+    =                                   ((++).2)
         length (z : (zs' ++ ws))
     =                                   (length.2)
         1 + length (zs' ++ ws)
@@ -201,8 +201,6 @@ Demostración:
     =                           ((++))
         ((++) [] bs) ++ cs
     =                           ((++).1)
-        (bs) ++ cs
-    =                           (aritmética)
         bs ++ cs
 
     -- LADO DERECHO
@@ -211,34 +209,26 @@ Demostración:
     =                           ((++))
         (++) [] (bs ++ cs)
     =                           ((++).1)
-        (bs ++ cs)
-    =                           (aritmética)
         bs ++ cs
 
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
-        ¿((a:as') ++ bs) ++ cs = (a:as') ++ (bs ++ cs)? -- ¿Tiene sentido pasar toda la demostración al prefijo (++)?
+        ¿((a:as') ++ bs) ++ cs = (a:as') ++ (bs ++ cs)?
 
     -- LADO IZQUIERDO
 
         ((a:as') ++ bs) ++ cs
     =                               ((++))
         ((++) (a:as') bs) ++ cs
-    =                               ((++))
-        (++) ((++) (a:as') bs) cs
     =                               ((++).2)
-        (++) (a : ((++) as' bs)) cs
+        (a : (as' ++ bs)) ++ cs
+    =                               ((++))
+        (++) (a : (as' ++ bs)) cs
     =                               ((++).2)
-        a : ((++) ((++) as' bs) cs)
-    =                               ((++))
-        a : (((++) as' bs) ++ cs)
-    =                               ((++))
         a : ((as' ++ bs) ++ cs)
     =                               (HI)
         a : (as' ++ (bs ++ cs))
-    =                               (aritmética)
-        a : as' ++ (bs ++ cs)
 
     -- LADO DERECHO
 
@@ -246,11 +236,7 @@ Demostración:
     =                               ((++))
         (++) (a:as') (bs ++ cs)
     =                               ((++).2)
-        a : ((++) as' (bs ++ cs))
-    =                               ((++))
         a : (as' ++ (bs ++ cs))
-    =                               (aritmética)
-        a : as' ++ (bs ++ cs)
 
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
