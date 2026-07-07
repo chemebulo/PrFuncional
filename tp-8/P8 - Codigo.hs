@@ -492,12 +492,12 @@ Demostración:
     Caso base (ws = []):
         ¿subset [] zs = all (flip elem zs) []?
 
-    Caso inductivo (ws = (w':ws')):
+    Caso inductivo (ws = (w:ws')):
         Hipotesis inductiva:
-            ¡subset ws' bs = all (flip elem bs) ws'!
+            ¡subset ws' zs = all (flip elem zs) ws'!
 
         Tesis inductiva:
-            ¿subset (a:ws') bs = all (flip elem bs) (a:ws')?
+            ¿subset (w:ws') zs = all (flip elem zs) (w:ws')?
 
     Demostración caso base:
         ¿subset [] zs = all (flip elem zs) []?
@@ -517,23 +517,23 @@ Demostración:
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
-        ¿subset (a:ws') bs = all (flip elem bs) (a:ws')?
+        ¿subset (w:ws') zs = all (flip elem zs) (w:ws')?
     
     -- LADO IZQUIERDO
 
-        subset (a:ws') bs
+        subset (w:ws') zs
     =                                               (subset.2)
-        elem a bs && subset ws' bs
+        elem w zs && subset ws' zs
     =                                               (HI)
-        elem a bs && all (flip elem bs) ws'
+        elem w zs && all (flip elem zs) ws'
 
     -- LADO DERECHO
 
-        all (flip elem bs) (a:ws')
+        all (flip elem zs) (w:ws')
     =                                               (all.2)
-        (flip elem bs) a && all (flip elem bs) ws'
+        (flip elem zs) w && all (flip elem zs) ws'
     =                                               (flip.1)
-        elem a bs && all (flip elem bs) ws'
+        elem w zs && all (flip elem zs) ws'
 
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
@@ -544,23 +544,23 @@ all null = null . concat
 
 Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
-    ¿Para todo xs. all null xs = null . concat xs?
+    ¿Para todo xss. all null xss = (null . concat) xss?
 
-    Sea as una lista cualquiera (finita y bien definida). Por principio de inducción en la estructura
-    as es equivalente demostrar que:
+    Sea wss una lista cualquiera (finita y bien definida). Por principio de inducción
+    en la estructura wss es equivalente demostrar que:
 
-    Caso base (as = []):
-        ¿all null [] = null . concat []?
+    Caso base (wss = []):
+        ¿all null [] = (null . concat) []?
 
-    Caso inductivo (as = (a:as')):
+    Caso inductivo (wss = (ws:wss')):
         Hipotesis inductiva:
-            ¡all null as' = null . concat as'!
+            ¡all null wss' = (null . concat) wss'!
         
         Tesis inductiva:
-            ¿all null (a:as') = null . concat (a:as')?
+            ¿all null (ws:wss') = (null . concat) (ws:wss')?
 
     Demostración caso base:
-        ¿all null [] = null . concat []?
+        ¿all null [] = (null . concat) []?
 
     -- LADO IZQUIERDO
 
@@ -570,7 +570,7 @@ Demostración:
 
     -- LADO DERECHO
 
-        null . concat []
+        (null . concat) []
     =                       (.)
         null (concat [])
     =                       (concat.1)
@@ -581,31 +581,31 @@ Demostración:
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
-        ¿all null (a:as') = null . concat (a:as')?
+        ¿all null (ws:wss') = (null . concat) (ws:wss')? REVISANDO
         
     -- LADO IZQUIERDO
 
-        all null (a:as')
+        all null (ws:wss')
     =                                   (all.2)
-        null a && all null as'
+        null ws && all null wss'
     =                                   (HI)
-        null a && null . concat as'
+        null ws && (null . concat) wss'
     =                                   (.)
-        null a && null (concat as')
-    =                                   (Lema NullA)
-        null (a ++ concat as')
+        null ws && null (concat wss')
+    =                                   (Lema NullConcat)
+        null (ws ++ concat wss')
 
     -- LADO DERECHO
 
-        null . concat (a:as')
+        (null . concat) (ws:wss')
     =                                   (.)
-        null (concat (a:as'))
+        null (concat (ws:wss'))
     =                                   (concat.2)
-        null (a ++ concat as')
+        null (ws ++ concat wss')
 
         -- Ambos lados llegan a lo imsmo, el caso es válido y la propiedad también.
 
-    Lema NullA: para todo xs. para todo ys. null xs && null ys = null (xs ++ ys)
+    Lema NullConcat: ¿para todo xs. para todo ys. null xs && null ys = null (xs ++ ys)?
 
     Demostración:
         Sea ws y zs dos listas cualquiera (finitas y bien definidas). Por principio de inducción 
@@ -629,17 +629,13 @@ Demostración:
             null [] && null zs
         =                           (null.1)
             True && null zs
-        =                           (&&)
+        =                           ((&&).1)
             null zs
 
         -- LADO DERECHO
 
             null ([] ++ zs)
-        =                           ((++))
-            null ((++) [] zs)
         =                           ((++).1)
-            null (zs)
-        =                           (aritmética)
             null zs
 
             -- Ambos lados llegan a lo mismo, el caso es válido.
@@ -652,17 +648,13 @@ Demostración:
             null (w:ws') && null zs
         =                                   (null.2)
             False && null zs
-        =                                   (&&)
+        =                                   ((&&).2)
             False
 
         -- LADO DERECHO
 
             null ((w:ws') ++ zs)
-        =                                   ((++))
-            null ((++) (w:ws') zs)
         =                                   ((++).2)
-            null (w : ((++) ws' zs))
-        =                                   ((++))
             null (w : (ws' ++ zs))
         =                                   (null.2)
             False
