@@ -247,20 +247,20 @@ count (const True) = length
 
 Demostración:
     Por principio de extensionalidad, es equivalente demostrar que 
-    ¿Para todo xs. count (const True) xs = length xs?
+    ¿Para todo ws. count (const True) ws = length ws?
 
-    Sea as una lista cualquiera (finita y bien definida). Por principio de inducción en la estructura as
+    Sea xs una lista cualquiera (finita y bien definida). Por principio de inducción en la estructura xs
     es equivalente demostrar:
 
-    Caso base (as = [])
+    Caso base (xs = [])
         ¿count (const True) [] = length []? 
 
-    Caso inductivo (as = (a:as'))
+    Caso inductivo (xs = (x:xs'))
         Hipotesis inductiva:
-            ¡count (const True) as' = length as'!
+            ¡count (const True) xs' = length xs'!
 
         Tesis inductiva:
-            ¿count (const True) (a:as') = length (a:as')?
+            ¿count (const True) (x:xs') = length (x:xs')?
 
     Demostración caso base:
         ¿count (const True) [] = length []? 
@@ -280,27 +280,27 @@ Demostración:
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
-        ¿count (const True) (a:as') = length (a:as')?
+        ¿count (const True) (x:xs') = length (x:xs')?
 
     -- LADO IZQUIERDO
 
-        count (const True) (a:as')
+        count (const True) (x:xs')
     =                                                               (count.2)
-        unoSi (const True) a + count (const True) as'
+        unoSi (const True) x + count (const True) xs'
     =                                                               (unoSi.1)
-        if (const True) a then 1 else 0 + count (const True) as'
+        if (const True) x then 1 else 0 + count (const True) xs'
     =                                                               (const.1)
-        if True then 1 else 0 + count (const True) as'
+        if True then 1 else 0 + count (const True) xs'
     =                                                               (if.True)
-        1 + count (const True) as'
+        1 + count (const True) xs'
     =                                                               (HI)
-        1 + length as'
+        1 + length xs'
 
     -- LADO DERECHO
 
-        length (a:as')
+        length (x:xs')
     =                                                               (length.2)
-        1 + length as'
+        1 + length xs'
 
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
