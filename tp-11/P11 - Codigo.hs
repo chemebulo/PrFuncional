@@ -184,59 +184,71 @@ primerasNCapas = flip (pizzaProcesada (\i p' n' -> if n' == 0 then Prepizza else
 
 -- 6.A
 
+Para todo f. length . capasQueCumplen f = cantidadDe f
 
 
 
 -- 6.B
 
+Para todo f. para todo p1. para todo p2.
+cantidadCapasQueCumplen f (conCapasDe p1 p2) = cantidadCapasQueCumplen f p1 + cantidadCapasQueCumplen f p2
 
 
 
 -- 6.C
 
+Para todo f. para todo p1. para todo p2.
+conCapasTransformadas f (conCapasDe p1 p2) = conCapasDe (conCapasTransformadas f p1) (conCapasTransformadas f p2)
 
 
 
 -- 6.D
 
+Para todo f. cantidadCapasQueCumplen f . soloLasCapasQue f = cantidadCapasQueCumplen f
 
 
 
 > Ejercicio 7:
 
-
 -- 7.A
 
+map :: (a -> b) -> [a] -> [b]
 
 
 
 -- 7.B
 
+filter :: (a -> Bool) -> [a] -> [a]
 
 
 
 -- 7.C
 
+foldr :: (a -> b -> b) -> b -> [a] -> b
 
 
 
 -- 7.D
 
+recr :: b -> (a -> [a] -> b -> b) -> [a] -> b
 
 
 
 -- 7.E
 
+foldr1 :: (a -> a -> a) -> [a] -> a
 
 
 
 -- 7.F
 
+zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
 
 
 
 -- 7.G
 
+scanr :: (a -> b -> b) -> b -> [a] -> [b]
 
 
 
@@ -301,73 +313,88 @@ primerasNCapas = flip (pizzaProcesada (\i p' n' -> if n' == 0 then Prepizza else
 
 -- 9.A
 
+sum :: [Int] -> Int
 
 
 
 -- 9.B
 
+length :: a -> Int
 
 
 
 -- 9.C
 
+map :: (a -> b) -> [a] -> [b]
 
 
 
 -- 9.D
 
+filter :: (a -> Bool) -> [a] -> [a]
 
 
 
 -- 9.E
 
+find :: (a -> Bool) -> [a] -> Maybe a
 
 
 
 -- 9.F
 
+any :: (a -> Bool) -> [a] -> Bool
 
 
 
 -- 9.G
 
+all :: (a -> Bool) -> [a] -> Bool
 
 
 
 -- 9.H
 
+countBy :: (a -> Bool) -> [a] -> Int
 
 
 
 -- 9.I
 
+partition :: (a -> Bool) -> [a] -> ([a], [a])
 
 
 
 -- 9.J
 
+zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
 
 
 
 -- 9.K
 
+scanr :: (a -> b -> b) -> b -> [a] -> [b]
 
 
 
 -- 9.L
 
+takeWhile :: (a -> Bool) -> [a] -> [a]
 
 
 
 -- 9.M
 
+take :: Int -> [a] -> [a]
 
 
 
 -- 9.N
 
+drop :: Int -> [a] -> [a]
 
 
 
 -- 9.O
 
+elemAt :: Int -> [a] -> a
