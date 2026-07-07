@@ -311,64 +311,65 @@ elem = any . (==)
 
 Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
-    ¿Para todo x. para todo xs. elem x xs = any . (==) x xs?
+    ¿Para todo z. para todo ws. elem z ws = (any . (==)) z ws?
 
-    Sea as una lista cualquiera (finita y bien definida) y b un elemento del mismo tipo de la lista. Por principio de inducción 
-    en la estructura as es equivalente demostrar que:
+    Sea ws una lista cualquiera (finita y bien definida) y z un elemento del mismo tipo.
+    Por principio de inducción en la estructura ws es equivalente demostrar que:
 
-    Caso base (as = []):
-        ¿elem b [] = any . (==) b []?
+    Caso base (ws = []):
+        ¿elem z [] = (any . (==)) z []?
 
-    Caso inductivo (as = (a:as')):
+    Caso inductivo (ws = (w:ws')):
         Hipotesis inductiva:
-            ¡elem b as' = any . (==) b as'!
+            ¡elem z ws' = (any . (==)) z ws'!
 
         Tesis inductiva:
-            ¿elem b (a:as') = any . (==) b (a:as')?
+            ¿elem z (w:ws') = (any . (==)) z (w:ws')?
 
     Demostración caso base:
-        ¿elem b [] = any . (==) b []?
+        ¿elem z [] = (any . (==)) z []?
 
     -- LADO IZQUIERDO
 
-        elem b []
+        elem z []
     =                       (elem.1)
         False
 
     -- LADO DERECHO
 
-        any . (==) b []
+        (any . (==)) z []
     =                       (.)
-        any ((==) b) []
+        any ((==) z) []
     =                       (any.1)
         False
 
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
-        ¿elem b (a:as') = any . (==) b (a:as')?
+        ¿elem z (w:ws') = (any . (==)) z (w:ws')?
 
     -- LADO IZQUIERDO
 
-        elem b (a:as')
+        elem z (w:ws')
     =                                   (elem.2)
-        b == a || elem b as'
+        z == w || elem z ws'
     =                                   (HI)
-        b == a || any . (==) b as'
-    =                                   ((==))
-        (==) b a || any . (==) b as'
+        z == w || (any . (==)) z ws'
     =                                   (.)
-        (==) b a || any ((==) b) as'
+        z == w || any ((==) z) ws'
 
     -- LADO DERECHO
 
-        any . (==) b (a:as')
+        (any . (==)) z (w:ws')
     =                                   (.)
-        any ((==) b) (a:as')
+        any ((==) z) (w:ws')
     =                                   (any.2)
-        (==) b a || any ((==) b) as'
+        ((==) z) w || any ((==) z) ws'
+    =                                   ((==))
+        z == w || any ((==) z) ws'
 
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
 
 -- 2.E
 
@@ -378,8 +379,8 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
     ¿Para todo x. para todo xs. any (elem x) xs = elem x . concat xs?
 
-    Sea as una lista cualquiera (finita y bien definida) y b un elemento. Por principio de inducción
-    en la estructura as es equivalente demostrar que:
+    Sea ws una lista cualquiera (finita y bien definida) y z un elemento del mismo tipo.
+    Por principio de inducción en la estructura as es equivalente demostrar que:
 
     Caso base (as = []):
         ¿any (elem b) [] = elem b . concat []?
