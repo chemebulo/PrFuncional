@@ -111,7 +111,7 @@ merge x y (xs, ys) = (x:xs, y:ys)
 
 -- 2.A
 
-¿Para todo xs. para todo ys. length (xs ++ ys) = length xs + length ys?
+¿para todo xs. para todo ys. length (xs ++ ys) = length xs + length ys?
 
 Demostración:
     Sean zs y ws listas cualquiera (finitas y totalmente definidas). Por principio de inducción en la estructura
@@ -172,7 +172,7 @@ Demostración:
 
 -- 2.B
 
-¿Para todo xs. para todo ys. para todo zs. (xs ++ ys) ++ zs = xs ++ (ys ++ zs)?
+¿para todo xs. para todo ys. para todo zs. (xs ++ ys) ++ zs = xs ++ (ys ++ zs)?
 
 Demostración:
     Sea as, bs y cs listas cualquiera (finitas y bien definidas). Por principio de inducción
@@ -233,7 +233,7 @@ count (const True) = length
 
 Demostración:
     Por principio de extensionalidad, es equivalente demostrar que 
-    ¿Para todo ws. count (const True) ws = length ws?
+    ¿para todo ws. count (const True) ws = length ws?
 
     Sea xs una lista cualquiera (finita y bien definida). Por principio de inducción
     en la estructura xs es equivalente demostrar:
@@ -297,7 +297,7 @@ elem = any . (==)
 
 Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
-    ¿Para todo z'. para todo zs. elem z' zs = (any . (==)) z' zs?
+    ¿para todo z'. para todo zs. elem z' zs = (any . (==)) z' zs?
 
     Sea xs una lista cualquiera (finita y bien definida) y x' un elemento del mismo tipo.
     Por principio de inducción en la estructura ws es equivalente demostrar que:
@@ -359,11 +359,11 @@ Demostración:
 
 -- 2.E
 
-¿Para todo xs'. any (elem xs') = elem xs' . concat?
+¿para todo xs'. any (elem xs') = elem xs' . concat?
 
 Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
-    ¿Para todo xs'. para todo xss. any (elem xs') xss = (elem xs' . concat) xss?
+    ¿para todo xs'. para todo xss. any (elem xs') xss = (elem xs' . concat) xss?
 
     Sea wss una lista cualquiera (finita y bien definida) y ws' un elemento del mismo tipo.
     Por principio de inducción en la estructura wss es equivalente demostrar que:
@@ -483,7 +483,7 @@ Demostración:
 
 -- 2.F
 
-¿Para todo xs. para todo ys. subset xs ys = all (flip elem ys) xs?
+¿para todo xs. para todo ys. subset xs ys = all (flip elem ys) xs?
 
 Demostración:
     Sea ws y zs listas cualquiera (finitas y bien definidas). Por principio de inducción
@@ -544,7 +544,7 @@ all null = null . concat
 
 Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
-    ¿Para todo xss. all null xss = (null . concat) xss?
+    ¿para todo xss. all null xss = (null . concat) xss?
 
     Sea wss una lista cualquiera (finita y bien definida). Por principio de inducción
     en la estructura wss es equivalente demostrar que:
@@ -668,7 +668,7 @@ length = length . reverse
 
 Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
-    ¿Para todo xs. length xs = (length . reverse) xs?
+    ¿para todo xs. length xs = (length . reverse) xs?
 
     Sea ws una lista cualquiera (finita y bien definida). Por principio de inducción
     en la estructura ws es equivalente demostrar que:
@@ -741,7 +741,7 @@ Demostración:
 
 -- 2.I
 
-¿Para todo xs. para todo ys. reverse (xs ++ ys) = reverse ys ++ reverse xs?
+¿para todo xs. para todo ys. reverse (xs ++ ys) = reverse ys ++ reverse xs?
 
 Demostración:
     Sea ws y zs listas cualquiera (finitas y bien definidas). Por principio de inducción 
@@ -848,7 +848,7 @@ Demostración:
 
 -- 2.J
 
-¿Para todo xs. para todo ys. all p (xs ++ ys) = all p (reverse xs) && all p (reverse ys)?
+¿para todo xs. para todo ys. all p (xs ++ ys) = all p (reverse xs) && all p (reverse ys)?
 
 Demostración:
     Sea ws y zs listas cualquiera (finitas y bien definidas). Por principio de inducción
@@ -1031,7 +1031,7 @@ Demostración:
 
 -- 2.K
 
-¿Para todo xs. para todo ys. unzip (zip xs ys) = (xs, ys)?  
+¿para todo xs. para todo ys. unzip (zip xs ys) = (xs, ys)?  
 
     Esta propiedad no se cumple para todo xs y para todo ys. Para demostrarlo, propongo el siguiente ejemplo:
         xs = [1, 2, 3]
@@ -1101,7 +1101,7 @@ int2N n = S (int2N (n-1))
 
 -- 1.B.I
 
-¿Para todo n'. para todo n''. evalN (addN n' n'') = evalN n' + evalN n''?
+¿para todo n'. para todo n''. evalN (addN n' n'') = evalN n' + evalN n''?
 
 Demostración:
     Sea n1 y n2 dos elementos cualquiera de tipo N. Por principio de inducción
@@ -1160,7 +1160,7 @@ Demostración:
 
 -- 1.B.II
 
-¿Para todo n'. para todo n''. evalN (prodN n' n'') = evalN n' * evalN n''?
+¿para todo n'. para todo n''. evalN (prodN n' n'') = evalN n' * evalN n''?
 
 Demostración:
     Sea n1 y n2 dos elementos cualquiera de tipo N. Por principio de inducción
@@ -1285,7 +1285,7 @@ int2N . evalN = id
 
 Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
-    ¿Para todo n. (int2N . evalN) n = id n?
+    ¿para todo n. (int2N . evalN) n = id n?
 
     Sea n1 un elemento cualquiera de tipo N. Por principio de inducción
     en la estructura n1 es equivalente demostrar que:
@@ -1357,7 +1357,7 @@ evalN . int2N = id
 
 Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
-    ¿Para todo m. (evalN . int2N) m = id m?
+    ¿para todo m. (evalN . int2N) m = id m?
 
     Sea n un número cualquiera. Por principio de inducción
     en la estructura n es equivalente demostrar que:
@@ -1468,7 +1468,7 @@ evalNU . succNU = (+1) . evalNU
 
 Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
-    ¿Para todo n1. (evalNU . succNU) n1 = ((+1) . evalNU) n1?
+    ¿para todo n1. (evalNU . succNU) n1 = ((+1) . evalNU) n1?
 
     Sea nu un elemento cualquiera de tipo NU. Por principio de inducción
     en la estructura nu es equivalente demostrar que:
@@ -1542,7 +1542,7 @@ Demostración:
 
 -- 2.B.II
 
-¿Para todo nu1. para todo nu2. evalNU (addNU nu1 nu2) = evalNU nu1 + evalNU nu2?
+¿para todo nu1. para todo nu2. evalNU (addNU nu1 nu2) = evalNU nu1 + evalNU nu2?
 
 Demostración:
     Sean n1 y n2 dos elementos cualquiera de tipo NU. Por principio de inducción sobre la
@@ -1605,7 +1605,7 @@ nu2n . n2nu = id
 
 Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
-    ¿Para todo n2. (nu2n . n2nu) n2 = id n2?
+    ¿para todo n2. (nu2n . n2nu) n2 = id n2?
 
     Sea n1 un elemento cualquiera de tipo N. Por principio de inducción
     en la estructura n es equivalente demostrar que:
@@ -1675,7 +1675,7 @@ n2nu . nu2n = id
 
 Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
-    ¿Para todo n2. (n2nu . nu2n) n2 = id n2?
+    ¿para todo n2. (n2nu . nu2n) n2 = id n2?
 
     Sea n1 un elemento cualquiera de tipo NU. Por principio de inducción
     en la estructura n1 es equivalente demostrar que:
@@ -1823,27 +1823,27 @@ evalNB . normalizarNB = evalNB
 
 Demostración:
     Por principio de extensionalidad es equivalente demostrar que:
-    ¿Para todo n. ¿evalNB . normalizarNB n = evalNB n?
+    ¿para todo nb. (evalNB . normalizarNB) nb = evalNB nb?
 
     Sea nbs un elemento cualquiera de tipo NBin (el cual está normalizado). Por principio de inducción 
     en la estructura nbs es equivalente demostrar que:
 
     Caso base (nbs = []):
-        ¿evalNB . normalizarNB [] = evalNB []?
+        ¿(evalNB . normalizarNB) [] = evalNB []?
 
     Caso inductivo (nbs = (nb:nbs')):
         Hipotesis inductiva:
-            ¡evalNB . normalizarNB nbs' = evalNB nbs'!
+            ¡(evalNB . normalizarNB) nbs' = evalNB nbs'!
 
         Tesis inductiva:
-            ¿evalNB . normalizarNB (nb:nbs') = evalNB (nb:nbs')?
+            ¿(evalNB . normalizarNB) (nb:nbs') = evalNB (nb:nbs')?
 
     Demostración caso base:
-        ¿evalNB . normalizarNB [] = evalNB []?
+        ¿(evalNB . normalizarNB) [] = evalNB []?
 
     -- LADO IZQUIERDO
 
-        evalNB . normalizarNB []
+        (evalNB . normalizarNB) []
     =                                   (.)
         evalNB (normalizarNB [])
     =                                   (normalizarNB.1)
@@ -1856,31 +1856,31 @@ Demostración:
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
-        ¿evalNB . normalizarNB (nb:nbs') = evalNB (nb:nbs')?
+        ¿(evalNB . normalizarNB) (nb:nbs') = evalNB (nb:nbs')?
 
     -- LADO IZQUIERDO
 
-        evalNB . normalizarNB (nb:nbs')
-    =                                                   (.)
+        (evalNB . normalizarNB) (nb:nbs')
+    =                                                       (.)
         evalNB (normalizarNB (nb:nbs'))
-    =                                                   (normalizarNB.2)
+    =                                                       (normalizarNB.2)
         evalNB (normalizarDB nb (normalizarNB nbs'))
-    =                                                   (Lema EvalNorm)
+    =                                                       (Lema EvalNorm)
         dbAsInt nb + (2 * evalNB (normalizarNB nbs'))
-    =                                                   (.)
-        dbAsInt nb + (2 * evalNB . normalizarNB nbs')
-    =                                                   (HI)
+    =                                                       (.)
+        dbAsInt nb + (2 * (evalNB . normalizarNB) nbs')
+    =                                                       (HI)
         dbAsInt nb + (2 * evalNB nbs')
 
     -- LADO DERECHO
 
         evalNB (nb:nbs')
-    =                                                   (evalNB.2)
+    =                                                       (evalNB.2)
         dbAsInt nb + (2 * evalNB nbs')
 
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
-    Lema EvalNorm: ¿evalNB (normalizarDB xb nys) = dbAsInt xb + (2 * evalNB nys)?
+    Lema EvalNorm: ¿para todo db'. para todo nbs'. evalNB (normalizarDB db' nbs') = dbAsInt db' + (2 * evalNB nbs')?
 
     Demostración:
         Sea db un elemento cualquiera de tipo DigBin, y nbs un elemento cualquiera de tipo NBin (el cual está normalizado).
@@ -1899,7 +1899,7 @@ Demostración:
         Demostración caso base:
             ¿evalNB (normalizarDB db []) = dbAsInt db + (2 * evalNB [])?
 
-            Caso db = O: ¿evalNB (normalizarDB O []) = dbAsInt O + (2 * evalNB [])?
+            Caso 1 (db = O):
 
             -- LADO IZQUIERDO
 
@@ -1923,7 +1923,7 @@ Demostración:
 
                 -- Ambos lados llegan a lo mismo, el caso es válido.
 
-            Caso db = I: ¿evalNB (normalizarDB I []) = dbAsInt I + (2 * evalNB [])?
+            Caso 2 (db = I):
 
             -- LADO IZQUIERDO
 
@@ -1963,27 +1963,27 @@ evalNB . succNB = (+1) . evalNB
 
 Demostración:
     Por principio de extensionalidad es equivalente demostrar que
-    ¿Para todo n. evalNB . succNB n = (+1) . evalNB n?
+    ¿para todo n. (evalNB . succNB) n = ((+1) . evalNB) n?
 
     Sea nbs un elemento cualquiera de tipo NBin (el cual está normalizado). Por principio de inducción
     en la estructura nbs es equivalente demostrar que:
 
     Caso base (nbs = []):
-        ¿evalNB . succNB [] = (+1) . evalNB []?
+        ¿(evalNB . succNB) [] = ((+1) . evalNB) []?
 
     Caso inductivo (nbs = (nb:nbs')):
         Hipotesis inductiva:
-            ¡evalNB . succNB nbs' = (+1) . evalNB nbs'!
+            ¡(evalNB . succNB) nbs' = ((+1) . evalNB) nbs'!
 
         Tesis inductiva:
-            ¿evalNB . succNB (nb:nbs') = (+1) . evalNB (nb:nbs')?
+            ¿(evalNB . succNB) (nb:nbs') = ((+1) . evalNB) (nb:nbs')?
 
     Demostración caso base:
-        ¿evalNB . succNB [] = (+1) . evalNB []?
+        ¿(evalNB . succNB) [] = ((+1) . evalNB) []?
 
     -- LADO IZQUIERDO
 
-        evalNB . succNB []
+        (evalNB . succNB) []
     =                               (.)
         evalNB (succNB [])
     =                               (succNB.1)
@@ -1992,39 +1992,33 @@ Demostración:
         evalNB (I:[])
     =                               (evalNB.2)
         dbAsInt I + (2 * evalNB [])
-    =                               (dbAsInt.1)
-        1 + (2 * evalNB [])
     =                               (evalNB.1)
+        dbAsInt I + (2 * 0)
+    =                               (dbAsInt.1)
         1 + (2 * 0)
-    =                               (aritmética)
-        1 + 0
     =                               (aritmética)
         1
 
     -- LADO DERECHO
 
-        (+1) . evalNB []
+        ((+1) . evalNB) []
     =                               (.)
         (+1) (evalNB [])
     =                               (evalNB.1)
-        (+1) (0)
-    =                               (+)
-        1 + 0
-    =                               (aritmética)
+        (+1) 0
+    =                               ((+))
         1
 
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
-        ¿evalNB . succNB (nb:nbs') = (+1) . evalNB (nb:nbs')?
+        ¿(evalNB . succNB) (nb:nbs') = ((+1) . evalNB) (nb:nbs')?
 
-        Sea nb' un elemento cualquiera de tipo DigBit, se verá que: evalNB . succNB (nb':nbs') = (+1) . evalNB (nb':nbs')
-
-        Caso nb' = O:
+        Caso 1 (nb = O):
 
         -- LADO IZQUIERDO
 
-            evalNB . succNB (O:nbs')
+            (evalNB . succNB) (O:nbs')
         =                                           (.)
             evalNB (succNB (O:nbs'))
         =                                           (succNB.2)
@@ -2036,10 +2030,10 @@ Demostración:
 
         -- LADO DERECHO
 
-            (+1) . evalNB (O:nbs')
+            ((+1) . evalNB) (O:nbs')
         =                                           (.)
             (+1) (evalNB (O:nbs'))
-        =                                           (+)
+        =                                           ((+))
             1 + (evalNB (O:nbs'))
         =                                           (evalNB.2)
             1 + (dbAsInt O + (2 * evalNB nbs'))
@@ -2050,50 +2044,42 @@ Demostración:
 
             -- Ambos lados llegan a lo mismo, el caso es válido.
 
-        Caso nb' = I:
+        Caso 2 (nb = I):
 
         -- LADO IZQUIERDO
 
-            evalNB . succNB (I:nbs')
-        =                                           (.)
+            (evalNB . succNB) (I:nbs')
+        =                                               (.)
             evalNB (succNB (I:nbs'))
-        =                                           (succNB.3)
+        =                                               (succNB.3)
             evalNB (O : succNB nbs')
-        =                                           (evalNB.2)
+        =                                               (evalNB.2)
             dbAsInt O + (2 * evalNB (succNB nbs'))
-        =                                           (.)
-            dbAsInt O + (2 * evalNB . succNB nbs')
-        =                                           (HI)
-            dbAsInt O + (2 * ((+1) . evalNB nbs'))
-        =                                           (.)
-            dbAsInt O + (2 * ((+1) (evalNB nbs')))
-        =                                           (+)
-            dbAsInt O + (2 * (1 + (evalNB nbs')))
-        =                                           (dbAsInt.2)
-            O + (2 * (1 + (evalNB nbs')))
-        =                                           (aritmética)
-            2 * (1 + (evalNB nbs'))
-        =                                           (aritmética)
-            (2 * 1) + (2 * (evalNB nbs'))
-        =                                           (aritmética)
-            2 + (2 * (evalNB nbs'))
-        =                                           (aritmética)
+        =                                               (dbAsInt.2)
+            0 + (2 * evalNB (succNB nbs'))
+        =                                               (.)
+            0 + (2 * (evalNB . succNB) nbs')
+        =                                               (HI)
+            0 + (2 * ((+1) . evalNB) nbs')
+        =                                               (.)
+            0 + (2 * ((+1) (evalNB nbs')))
+        =                                               ((+))
+            0 + (2 * (1 + (evalNB nbs')))
+        =                                               (aritmética)
             2 + (2 * evalNB nbs')
 
         -- LADO DERECHO
 
-            (+1) . evalNB (I:nbs')
-        =                                           (.)
+            ((+1) . evalNB) (I:nbs')
+        =                                               (.)
             (+1) (evalNB (I:nbs'))
-        =                                           (+)
+        =                                               ((+))
             1 + (evalNB (I:nbs'))
-        =                                           (evalNB.2)
+        =                                               (evalNB.2)
             1 + (dbAsInt I + (2 * evalNB nbs'))
-        =                                           (dbAsInt.1)
+        =                                               (dbAsInt.1)
             1 + (1 + (2 * evalNB nbs'))
-        =                                           (aritmética)
-            1 + 1 + (2 * evalNB nbs')
-        =                                           (aritmética)
+        =                                               (aritmética)
             2 + (2 * evalNB nbs')
 
             -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
@@ -2101,179 +2087,36 @@ Demostración:
 
 -- 3.B.III:
 
-¿Para todo n1. para todo n2. evalNB (addNB n1 n2) = evalNB n1 + evalNB n2?
-
-Demostración:
-    Sea nbs, mbs dos elementos cualquiera de tipo NBin (los cuales estan normalizados). Por principio de
-    inducción en la estructura nbs es equivalente demostrar que:
-
-    Caso base (nbs = []):
-        ¿evalNB (addNB [] mbs) = evalNB [] + evalNB mbs?
-
-    Caso inductivo (nbs = (nb:nbs')):
-        Hipotesis inductiva:
-            ¡evalNB (addNB nbs' mbs) = evalNB nbs' + evalNB mbs!
-
-        Tesis inductiva:
-            ¿evalNB (addNB (nb:nbs') mbs) = evalNB (nb:nbs') + evalNB mbs?
-
-    Demostración caso base:
-        ¿evalNB (addNB [] mbs) = evalNB [] + evalNB mbs?
-
-    -- LADO IZQUIERDO
-        
-        evalNB (addNB [] mbs)
-    =                                                   (addNB.1)
-        evalNB (addNBConCarry [] mbs O)
-    =                                                   (Lema AddNil)
-        evalNB mbs
-
-    -- LADO DERECHO
-
-        evalNB [] + evalNB mbs
-    =                                   (evalNB.1)
-        0 + evalNB mbs
-    =                                   (aritmética)
-        evalNB mbs
-
-        -- Ambos lados llegan a lo mismo, el caso es válido.
-
-    Demostración caso inductivo:
-        ¿evalNB (addNB (nb:nbs') mbs) = evalNB (nb:nbs') + evalNB mbs?
-
-    Caso mbs = []:
-
-    -- LADO IZQUIERDO
-
-        evalNB (addNB (nb:nbs') [])
-    =                                                                                               (addNB.1)
-        evalNB (addNBConCarry (nb:nbs') [] O)
-    =                                                                                               (addNBConCarry.4)
-        evalNB (fst (addDBConCarry nb O O)  : addNBConCarry nbs' [] (snd (addDBConCarry nb O O)))
-    =                                                                                               (Lema AddOO)
-        evalNB (fst (nb, O) : addNBConCarry nbs' [] (snd (nb, O)))
-    =                                                                                               (fst.1)
-        evalNB (nb : addNBConCarry nbs' [] (snd (nb, O)))
-    =                                                                                               (snd.1)
-        evalNB (nb : addNBConCarry nbs' [] O)
-    =                                                                                               (evalNB.2)
-        dbAsInt nb + 2 * evalNB (addNBConCarry nbs' [] O)
-    =                                                                                               (addNB, pero inversa)
-        dbAsInt nb + 2 * evalNB (addNB nbs' [])
-    =                                                                                               (HI, siendo mbs = [])
-        dbAsInt nb + 2 * (evalNB nbs' + evalNB [])
-    =                                                                                               (evalNB.1)
-        dbAsInt nb + 2 * (evalNB nbs' + 0)
-    =                                                                                               (aritmética)
-        dbAsInt nb + 2 * (evalNB nbs')
-
-        -- Ambos lados llegan a lo mismo, el caso es válido.
-
-    -- LADO DERECHO
-
-        evalNB (nb:nbs') + evalNB []
-    =                                                   (evalNB.1)
-        evalNB (nb:nbs') + 0 
-    =                                                   (aritmética)
-        evalNB (nb:nbs') 
-    =                                                   (evalNB.2)
-        dbAsInt nb + 2 * (evalNB nbs')
-
-        -- Ambos lados llegan a lo mismo, el caso es válido.
-
-    Caso mbs = (mb:mbs'):
-
-    -- LADO IZQUIERDO:
-
-        evalNB (addNB (nb:nbs') (mb:mbs'))
-    =                                                                       (addNB.1)
-        evalNB (addNBConCarry (nb:nbs') (mb:mbs') O)
-    =                                                                       (Lema AddCarryO)
-        dbAsInt nb + dbAsInt mb + 2 * evalNB (addNBConCarry nbs' mbs' O)
-    =                                                                       (addNB, pero inversa)
-        dbAsInt nb + dbAsInt mb + 2 * evalNB (addNB nbs' mbs')
-    =                                                                       (HI)
-        dbAsInt nb + dbAsInt mb + 2 * (evalNB nbs' + evalNB mbs')
-    =                                                                       (aritmética)
-        dbAsInt nb + dbAsInt mb + 2 * (evalNB nbs') + 2 * (evalNB mbs')
-
-    -- LADO DERECHO:
-
-        evalNB (nb:nbs') + evalNB (mb:mbs')
-    =                                                                       (evalNB.2)
-        dbAsInt nb + 2 * (evalNB nbs') + evalNB (mb:mbs')
-    =                                                                       (evalNB.2)
-        dbAsInt nb + 2 * (evalNB nbs') + dbAsInt mb + 2 * (evalNB mbs')
-    =                                                                       (aritmética)
-        dbAsInt nb + dbAsInt mb + 2 * (evalNB nbs') + 2 * (evalNB mbs')
-
-        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
-
-    Lema AddOO: ¿addDBConCarry nb O O = (nb , O)?
-
-    Demostración:
-        Sea nb un elemento cualquiera de tipo DigBin.
-
-        Caso nb = I:
-
-        -- LADO IZQUIERDO
-
-            addDBConCarry I O O
-        =                               (addNBConCarry.5)
-            (I, O)
-
-        -- LADO DERECHO
-
-            (I , O)
-
-            -- Ambos lados llegan a lo mismo, el caso es válido.
-
-        Caso nb = O:
-
-        -- LADO IZQUIERDO
-
-            addDBConCarry O O O
-        =                               (addNBConCarry.5)
-            (O, O)
-
-        -- LADO DERECHO
-
-            (O , O)
-
-            -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
-
-    Lema AddCarryO: ¿evalNB (addNBConCarry (nb:nbs) (mb:mbs) O) = dbAsInt nb + dbAsInt mb + 2 * evalNB (addNBConCarry nbs mbs O)?
-
-        Demostración: TERMINAR 
+¿para todo n1. para todo n2. evalNB (addNB n1 n2) = evalNB n1 + evalNB n2?
 
 
 -- 3.B.IV:
 
-nb2n . n2nb = id
+nb2n . n2nb = id 
 
 Demostración:
     Por principio de extensionalidad es equivalente demostrar que
-    ¿Para todo n1. nb2n . n2nb n1 = id n1?
+    ¿para todo n'. (nb2n . n2nb) n' = id n'?
 
-    Sea n un elemento cualquiera de tipo N. Por principio de inducción en la 
+    Sea n1 un elemento cualquiera de tipo N. Por principio de inducción en la 
     estructura n es equivalente demostrar que:
 
-    Caso base (n = Z):
-        ¿nb2n . n2nb Z = id Z?
+    Caso base (n1 = Z):
+        ¿(nb2n . n2nb) Z = id Z?
 
-    Caso inductivo (n = (S n')):
+    Caso inductivo (n1 = (S n)):
         Hipotesis inductiva:
-            ¡nb2n . n2nb n' = id n'!
+            ¡(nb2n . n2nb) n = id n!
 
         Tesis inductiva:
-            ¿nb2n . n2nb (S n') = id (S n')?
+            ¿(nb2n . n2nb) (S n) = id (S n)?
 
     Demostración caso base:
-        ¿nb2n . n2nb Z = id Z?
+        ¿(nb2n . n2nb) Z = id Z?
 
     -- LADO IZQUIERDO
 
-        nb2n . n2nb Z
+        (nb2n . n2nb) Z
     =                           (.)
         nb2n (n2nb Z)
     =                           (n2nb.1)
@@ -2290,39 +2133,37 @@ Demostración:
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
-        ¿nb2n . n2nb (S n') = id (S n')?
+        ¿(nb2n . n2nb) (S n) = id (S n)?
 
     -- LADO IZQUIERDO
 
-        nb2n . n2nb (S n')
+        (nb2n . n2nb) (S n)
     =                               (.)
-        nb2n (n2nb (S n'))
+        nb2n (n2nb (S n))
     =                               (n2nb.2)
-        nb2n (succNB (n2nb n'))
+        nb2n (succNB (n2nb n))
     =                               (Lema SuccNB2N)
-        S (nb2n (n2nb n'))
+        S (nb2n (n2nb n))
     =                               (.)
-        S (nb2n . n2nb n')
+        S ((nb2n . n2nb) n)
     =                               (HI)
-        S (id n')
+        S (id n)
     =                               (id.1)
-        S (n')
-    =                               (aritmética)
-        (S n')
+        S n
 
     -- LADO DERECHO
 
-        id (S n')
+        id (S n)
     =                               (id.1)
-        (S n')
+        S n
 
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
-    Lema SuccNB2N: ¿nb2n (succNB n) = S (nb2n n)?
+    Lema SuccNB2N: ¿para todo n. nb2n (succNB n) = S (nb2n n)?
 
     Demostración:
-        Sea nbs un elemento cualquiera de tipo NBin. Por principio de inducción en la
-        estructura nbs es equivalente demostrar que:
+        Sea nbs un elemento cualquiera de tipo NBin. Por principio de inducción
+        en la estructura nbs es equivalente demostrar que:
 
         Caso base (nbs = []):
             ¿nb2n (succNB []) = S (nb2n [])?
@@ -2362,10 +2203,7 @@ Demostración:
         Demostración caso inductivo:
             ¿nb2n (succNB (nb:nbs')) = S (nb2n (nb:nbs'))?
 
-            Sea nb' un elemento cualquiera de tipo DigBit, se verá que: 
-            nb2n (succNB (nb':nbs')) = S (nb2n (nb':nbs'))
-
-            Caso nb' = O:
+            Caso 1 (nb = O):
 
             -- LADO IZQUIERDO
 
@@ -2383,9 +2221,9 @@ Demostración:
             =                                   (nb2n.2)
                 S (dobleN (nb2n nbs'))
 
-                -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+                -- Ambos lados llegan a lo mismo, el caso es válido.
 
-            Caso nb' = I:
+            Caso 2 (nb = I):
 
             -- LADO IZQUIERDO
 
@@ -2416,27 +2254,27 @@ normalizarNB . normalizarNB = normalizarNB
 
 Demostración:
     Por principio de extensionalidad es equivalente demostrar que
-    ¿Para todo n. normalizarNB . normalizarNB = normalizarNB?
+    ¿para todo n1. (normalizarNB . normalizarNB) n1 = normalizarNB n1?
 
     Sea nbs un elemento cualquiera de tipo Nbin (el cual está normalizado). Por principio de inducción
     en la estructura nbs es equivalente demostrar que:
 
     Caso base (nbs = []):
-        ¿normalizarNB . normalizarNB [] = normalizarNB []?
+        ¿(normalizarNB . normalizarNB) [] = normalizarNB []?
 
     Caso inductivo (nbs = (nb:nbs')):
         Hipotesis inductiva:
-            ¡normalizarNB . normalizarNB nbs' = normalizarNB nbs'!
+            ¡(normalizarNB . normalizarNB) nbs' = normalizarNB nbs'!
 
         Tesis inductiva:
-            ¿normalizarNB . normalizarNB (nb:nbs') = normalizarNB (nb:nbs')?
+            ¿(normalizarNB . normalizarNB) (nb:nbs') = normalizarNB (nb:nbs')?
 
     Demostración caso base:
-        ¿normalizarNB . normalizarNB [] = normalizarNB []?
+        ¿(normalizarNB . normalizarNB) [] = normalizarNB []?
 
     -- LADO IZQUIERDO
 
-        normalizarNB . normalizarNB []
+        (normalizarNB . normalizarNB) []
     =                                       (.)
         normalizarNB (normalizarNB [])
     =                                       (normalizarNB.1)
@@ -2453,11 +2291,11 @@ Demostración:
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
-        ¿normalizarNB . normalizarNB (nb:nbs') = normalizarNB (nb:nbs')?
+        ¿(normalizarNB . normalizarNB) (nb:nbs') = normalizarNB (nb:nbs')?
 
     -- LADO IZQUIERDO
 
-        normalizarNB . normalizarNB (nb:nbs')
+        (normalizarNB . normalizarNB) (nb:nbs')
     =                                                       (.)
         normalizarNB (normalizarNB (nb:nbs'))
     =                                                       (normalizarNB.2)
@@ -2465,7 +2303,7 @@ Demostración:
     =                                                       (Lema NormDB)
         normalizarDB nb (normalizarNB (normalizarNB nbs'))
     =                                                       (.)
-        normalizarDB nb (normalizarNB . normalizarNB nbs')
+        normalizarDB nb ((normalizarNB . normalizarNB) nbs')
     =                                                       (HI)
         normalizarDB nb (normalizarNB nbs')
 
@@ -2632,7 +2470,7 @@ evalNDec . succNDec = (+1) . evalNDec
 
 -- 4.B.II:
 
-¿Para todo n1. para todo n2. evalNDec (addNDec n1 n2) = evalNDec n1 + evalNDec n2?
+¿para todo n1. para todo n2. evalNDec (addNDec n1 n2) = evalNDec n1 + evalNDec n2?
 
 
 -- 4.B.III:
