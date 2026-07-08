@@ -1468,58 +1468,50 @@ evalNU . succNU = (+1) . evalNU
 
 Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
-    ¿Para todo n1. evalNU . succNU n1 = ((+1) . evalNU) n1?
+    ¿Para todo n1. (evalNU . succNU) n1 = ((+1) . evalNU) n1?
 
-    Sea nu1 un elemento cualquiera de tipo NU. Por principio de inducción en la estructura n
-    es equivalente demostrar que:
+    Sea nu un elemento cualquiera de tipo NU. Por principio de inducción
+    en la estructura nu es equivalente demostrar que:
 
-    Caso base (nu1 = []):
-        ¿evalNU . succNU [] = ((+1) . evalNU) []?
+    Caso base (nu = []):
+        ¿(evalNU . succNU) [] = ((+1) . evalNU) []?
 
-    Caso inductivo (nu1 = (u:us)):
+    Caso inductivo (nu = (u:us)):
         Hipotesis inductiva:
-            ¡evalNU . succNU us = ((+1) . evalNU) us!
+            ¡(evalNU . succNU) us = ((+1) . evalNU) us!
 
         Tesis inductiva:
-            ¿evalNU . succNU (u:us) = ((+1) . evalNU) (u:us)?
+            ¿(evalNU . succNU) (u:us) = ((+1) . evalNU) (u:us)?
 
     Demostración caso base:
-        ¿evalNU . succNU [] = ((+1) . evalNU) []?
+        ¿(evalNU . succNU) [] = ((+1) . evalNU) []?
 
     -- LADO IZQUIERDO
 
-        evalNU . succNU []
+        (evalNU . succNU) []
     =                               (.)
         evalNU (succNU [])
     =                               (succNU.1)
         evalNU [()]
     =                               (evalNU.1)
         1 + evalNU []
-    =                               (evalNU.0)
-        1 + 0
-    =                               (aritmética)
-        1
 
     -- LADO DERECHO
 
         ((+1) . evalNU) []
     =                               (.)
         (+1) (evalNU [])
-    =                               (evalNU.1)
-        (+1) 0
-    =                               (+)
-        1 + 0
-    =                               (aritmética)
-        1
+    =                               ((+))
+        1 + evalNU []
 
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
-            ¿evalNU . succNU (u:us) = ((+1) . evalNU) (u:us)?
+            ¿(evalNU . succNU) (u:us) = ((+1) . evalNU) (u:us)?
 
     -- LADO IZQUIERDO
 
-        evalNU . succNU (u:us)
+        (evalNU . succNU) (u:us)
     =                                   (.)
         evalNU (succNU (u:us))
     =                                   (succNU.2)          
@@ -1527,14 +1519,12 @@ Demostración:
     =                                   (evalNU.2)
         1 + evalNU (succNU us)
     =                                   (.)
-        1 + evalNU . succNU us
+        1 + (evalNU . succNU) us
     =                                   (HI)
-        1 + (((+1) . evalNU) us)
+        1 + ((+1) . evalNU) us
     =                                   (.)
-        1 + ((+1) (evalNU us))
-    =                                   (+)
-        1 + (1 + (evalNU us))
-    =                                   (aritmética)
+        1 + (+1) (evalNU us)
+    =                                   ((+))
         1 + 1 + (evalNU us)
 
     -- LADO DERECHO
@@ -1544,9 +1534,7 @@ Demostración:
         (+1) (evalNU (u:us))
     =                                   (evalNU.2)
         (+1) (1 + evalNU us)
-    =                                   (+)
-        1 + (1 + evalNU us)
-    =                                   (aritmética)
+    =                                   ((+))
         1 + 1 + evalNU us
 
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
@@ -1554,59 +1542,59 @@ Demostración:
 
 -- 2.B.II
 
-¿Para todo n1. para todo n2. evalNU (addNU n1 n2) = evalNU n1 + evalNU n2?
+¿Para todo nu1. para todo nu2. evalNU (addNU nu1 nu2) = evalNU nu1 + evalNU nu2?
 
 Demostración:
-    Sean n, m dos elementos cualquiera de tipo NU. Por principio de inducción sobre la
+    Sean n1 y n2 dos elementos cualquiera de tipo NU. Por principio de inducción sobre la
     estructura n es equivalente demostrar que:
 
-    Caso base (n = []):
-        ¿evalNU (addNU [] m) = evalNU [] + evalNU m?
+    Caso base (n1 = []):
+        ¿evalNU (addNU [] n2) = evalNU [] + evalNU n2?
 
-    Caso inductivo (n = (u:us)):
+    Caso inductivo (n1 = (u:us)):
         Hipotesis inductiva:
-            ¡evalNU (addNU us m) = evalNU us + evalNU m!
+            ¡evalNU (addNU us n2) = evalNU us + evalNU n2!
 
         Tesis inductiva:
-            ¿evalNU (addNU (u:us) m) = evalNU (u:us) + evalNU m?
+            ¿evalNU (addNU (u:us) n2) = evalNU (u:us) + evalNU n2?
 
     Demostración caso base:
-        ¿evalNU (addNU [] m) = evalNU [] + evalNU m?
+        ¿evalNU (addNU [] n2) = evalNU [] + evalNU n2?
 
     -- LADO IZQUIERDO
 
-        evalNU (addNU [] m)
+        evalNU (addNU [] n2)
     =                               (addNU.1)
-        evalNU m
+        evalNU n2
 
     -- LADO DERECHO
 
-        evalNU [] + evalNU m
+        evalNU [] + evalNU n2
     =                               (evalNU.1)
-        0 + evalNU m
+        0 + evalNU n2
     =                               (aritmética)
-        evalNU m
+        evalNU n2
 
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
-        ¿evalNU (addNU (u:us) m) = evalNU (u:us) + evalNU m?
+        ¿evalNU (addNU (u:us) n2) = evalNU (u:us) + evalNU n2?
 
     -- LADO IZQUIERDO
 
-        evalNU (addNU (u:us) m)
+        evalNU (addNU (u:us) n2)
     =                               (addNU.2)
-        evalNU (u : addNU us m)
+        evalNU (u : addNU us n2)
     =                               (evalNU.2)
-        1 + evalNU (addNU us m)
+        1 + evalNU (addNU us n2)
     =                               (HI)
-        1 + evalNU us + evalNU m
+        1 + evalNU us + evalNU n2
 
     -- LADO DERECHO
 
-        evalNU (u:us) + evalNU m
+        evalNU (u:us) + evalNU n2
     =                               (evalNU.2)
-        1 + evalNU us + evalNU m
+        1 + evalNU us + evalNU n2
 
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
@@ -1617,27 +1605,27 @@ nu2n . n2nu = id
 
 Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
-    ¿Para todo n1. nu2n . n2nu n1 = id n1?
+    ¿Para todo n2. (nu2n . n2nu) n2 = id n2?
 
-    Sea n un elemento cualquiera de tipo N. Por principio de inducción en la estructura n
-    es equivalente demostrar que:
+    Sea n1 un elemento cualquiera de tipo N. Por principio de inducción
+    en la estructura n es equivalente demostrar que:
 
-    Caso base (n = Z):
-        ¿nu2n . n2nu Z = id Z?
+    Caso base (n1 = Z):
+        ¿(nu2n . n2nu) Z = id Z?
 
-    Caso inductivo (n = (S n')):
+    Caso inductivo (n1 = (S n)):
         Hipotesis inductiva:
-            ¡nu2n . n2nu n' = id n'!
+            ¡(nu2n . n2nu) n = id n!
 
         Tesis inductiva:
-            ¿nu2n . n2nu (S n') = id (S n')?
+            ¿(nu2n . n2nu) (S n) = id (S n)?
 
     Demostración caso base:
-        ¿nu2n . n2nu Z = id Z?
+        ¿(nu2n . n2nu) Z = id Z?
 
     -- LADO IZQUIERDO
 
-        nu2n . n2nu Z
+        (nu2n . n2nu) Z
     =                       (.)
         nu2n (n2nu Z)
     =                       (n2nu.1)
@@ -1654,29 +1642,29 @@ Demostración:
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
-        ¿nu2n . n2nu (S n') = id (S n')?
+        ¿(nu2n . n2nu) (S n) = id (S n)?
 
     -- LADO IZQUIERDO
 
-        nu2n . n2nu (S n')
+        (nu2n . n2nu) (S n)
     =                               (.)
-        nu2n (n2nu (S n'))
+        nu2n (n2nu (S n))
     =                               (n2nu.2)
-        nu2n (() : n2nu n')
+        nu2n (() : n2nu n)
     =                               (nu2n.2)
-        S (nu2n (n2nu n'))
+        S (nu2n (n2nu n))
+    =                               (.)
+        S ((nu2n . n2nu) n)
     =                               (HI)
-        S (id n')
+        S (id n)
     =                               (id.1)
-        S n'
-    =                               (aritmética)
-        (S n')
+        S n
 
     -- LADO DERECHO
 
-        id (S n')
+        id (S n)
     =                               (id.1)
-        (S n')
+        S n
 
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
@@ -1687,27 +1675,27 @@ n2nu . nu2n = id
 
 Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
-    ¿Para todo n1. n2nu . nu2n n1 = id n1?
+    ¿Para todo n2. (n2nu . nu2n) n2 = id n2?
 
-    Sea n un elemento cualquiera de tipo NU. Por principio de inducción en la estructura n
-    es equivalente demostrar que:
+    Sea n1 un elemento cualquiera de tipo NU. Por principio de inducción
+    en la estructura n1 es equivalente demostrar que:
 
-    Caso base (n = []):
-        ¿n2nu . nu2n [] = id []?
+    Caso base (n1 = []):
+        ¿(n2nu . nu2n) [] = id []?
 
-    Caso inductivo (n = (u:us)):
+    Caso inductivo (n1 = (u:us)):
         Hipotesis inductiva:
-            ¡n2nu . nu2n us = id us!
+            ¡(n2nu . nu2n) us = id us!
 
         Tesis inductiva:
-            ¿n2nu . nu2n (u:us) = id (u:us)?
+            ¿(n2nu . nu2n) (u:us) = id (u:us)?
 
     Demostración caso base:
-        ¿n2nu . nu2n [] = id []?
+        ¿(n2nu . nu2n) [] = id []?
 
     -- LADO IZQUIERDO
 
-        n2nu . nu2n []
+        (n2nu . nu2n) []
     =                           (.)
         n2nu (nu2n [])
     =                           (nu2n.1)
@@ -1724,11 +1712,11 @@ Demostración:
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
-        ¿n2nu . nu2n (u:us) = id (u:us)?
+        ¿(n2nu . nu2n) (u:us) = id (u:us)?
 
     -- LADO IZQUIERDO
 
-        n2nu . nu2n (u:us)
+        (n2nu . nu2n) (u:us)
     =                           (.)
         n2nu (nu2n (u:us))
     =                           (nu2n.2)
@@ -1736,13 +1724,13 @@ Demostración:
     =                           (n2nu.2)
         () : n2nu (nu2n us)
     =                           (.)
-        () : n2nu . nu2n us
+        () : (n2nu . nu2n) us
     =                           (HI)
-        () : id us
+        () : (id us)
     =                           (id.1)
         () : us
     =                           (aritmética)
-        (():us)                 -- Es lo mismo que escribir (u:us), porque está garantizado por la definición del tipo NU.
+        (():us)                 
 
     -- LADO DERECHO
 
