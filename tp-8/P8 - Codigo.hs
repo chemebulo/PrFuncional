@@ -1110,82 +1110,78 @@ Demostración:
     Caso base (n1 = Z):
         ¿evalN (addN Z n2) = evalN Z + evalN n2?
 
-    Caso inductivo (n1 = (S n')):
+    Caso inductivo (n1 = (S n)):
         Hipotesis inductiva:
-            ¡evalN (addN n' m) = evalN n' + evalN m!
+            ¡evalN (addN n n2) = evalN n + evalN n2!
 
         Tesis inductiva:
-            ¿evalN (addN (S n') m) = evalN (S n') + evalN m?
+            ¿evalN (addN (S n) n2) = evalN (S n) + evalN n2?
 
     Demostración caso base:
-        ¿evalN (addN Z m) = evalN Z + evalN m?
+        ¿evalN (addN Z n2) = evalN Z + evalN n2?
 
     -- LADO IZQUIERDO
 
-        evalN (addN Z m)
+        evalN (addN Z n2)
     =                           (addN.1)
-        evalN m
+        evalN n2
 
     -- LADO DERECHO
 
-        evalN Z + evalN m
+        evalN Z + evalN n2
     =                           (evalN.1)
-        0 + evalN m
+        0 + evalN n2
     =                           (aritmética)
-        evalN m
+        evalN n2
 
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
-        ¿evalN (addN (S n') m) = evalN (S n') + evalN m?
+        ¿evalN (addN (S n) n2) = evalN (S n) + evalN n2?
 
     -- LADO IZQUIERDO
 
-        evalN (addN (S n') m)
+        evalN (addN (S n) n2)
     =                               (addN.2)
-        evalN (S (addN n' m))
+        evalN (S (addN n n2))
     =                               (evalN.2)
-        1 +  evalN (addN n' m)
+        1 +  evalN (addN n n2)
     =                               (HI)
-        1 + (evalN n' + evalN m)
-    =                               (aritmética)
-        1 + evalN n' + evalN m
+        1 + evalN n + evalN n2
 
     -- LADO DERECHO
 
-        evalN (S n') + evalN m
+        evalN (S n) + evalN n2
     =                               (evalN.2)
-        (1 + evalN n') + evalN m
-    =                               (aritmética)
-        1 + evalN n' + evalN m
+        1 + evalN n + evalN n2
 
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 1.B.II
 
-¿Para todo n1. para todo n2. evalN (prodN n1 n2) = evalN n1 * evalN n2?
+¿Para todo n'. para todo n''. evalN (prodN n' n'') = evalN n' * evalN n''?
 
 Demostración:
-    Sea n y m dos elementos cualquiera de tipo N. Por principio de inducción en la estructura n
-    es equivalente demostrar que:
+    Sea n1 y n2 dos elementos cualquiera de tipo N. Por principio de inducción
+    en la estructura n1 es equivalente demostrar que:
 
     Caso base (n = Z):
-        ¿evalN (prodN Z m) = evalN Z * evalN m?
+        ¿evalN (prodN Z n2) = evalN Z * evalN n2?
 
-    Caso inductivo (n = (S n')):
+    Caso inductivo (n = (S n)):
         Hipotesis inductiva:
-            ¡evalN (prodN n' m) = evalN n' * evalN m!
+            ¡evalN (prodN n n2) = evalN n * evalN n2!
 
         Tesis inductiva:
-            ¿evalN (prodN (S n') m) = evalN (S n') * evalN m?
+            ¿evalN (prodN (S n) n2) = evalN (S n) * evalN n2?
 
     Demostración caso base:
-        ¿evalN (prodN Z m) = evalN Z * evalN m?
+        ¿evalN (prodN Z n2) = evalN Z * evalN n2?
 
     -- LADO IZQUIERDO
 
-        evalN (prodN Z m)
+        evalN (prodN Z n2)
     =                           (prodN.1)
         evalN Z
     =                           (evalN.1)
@@ -1193,92 +1189,92 @@ Demostración:
 
     -- LADO DERECHO
 
-        evalN Z * evalN m
+        evalN Z * evalN n2
     =                           (evalN.1)
-        0 * evalN m
+        0 * evalN n2
     =                           (aritmética)
         0
 
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
-        ¿evalN (prodN (S n') m) = evalN (S n') * evalN m?
+        ¿evalN (prodN (S n) n2) = evalN (S n) * evalN n2?
 
     -- LADO IZQUIERDO
 
-        evalN (prodN (S n') m)
-    =                                   (prodN.2)
-        evalN (addN m (prodN n' m))
-    =                                   (Lema EvalN)
-        evalN m + evalN (prodN n' m)
-    =                                   (HI)
-        evalN m + (evalN n' * evalN m)
+        evalN (prodN (S n) n2)
+    =                                           (prodN.2)
+        evalN (addN n2 (prodN n n2))
+    =                                           (Lema EvalAddN)
+        evalN n2 + evalN (prodN n n2)
+    =                                           (HI)
+        evalN n2 + (evalN n * evalN n2)
 
     -- LADO DERECHO
 
-        evalN (S n') * evalN m
+        evalN (S n) * evalN n2
     =                                           (evalN.2)
-        (1 + evalN n') * evalN m
+        (1 + evalN n) * evalN n2
     =                                           (aritmética)
-        (evalN m * 1) + (evalN n' * evalN m)
+        (evalN n2 * 1) + (evalN n * evalN n2)
     =                                           (aritmética)
-        evalN m + (evalN n' * evalN m)
+        evalN n2 + (evalN n * evalN n2)
 
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
-    Lema EvalN: ¿evalN (addN x (prodN y x)) = evalN x + evalN (prodN y x)?
+    Lema EvalAddN: ¿para todo n'. para todo n''. evalN (addN n' (prodN n'' n')) = evalN n' + evalN (prodN n'' n')?
 
     Demostración:
-        Sea a y b dos elementos cualquiera de tipo N. Por principio de inducción en la estructura a
-        es equivalente demostrar que:
+        Sea n1 y n2 dos elementos cualquiera de tipo N. Por principio de inducción
+        en la estructura n1 es equivalente demostrar que:
 
-        Caso base (a = Z):
-            ¿evalN (addN Z (prodN b Z)) = evalN Z + evalN (prodN b Z)?
+        Caso base (n1 = Z):
+            ¿evalN (addN Z (prodN n2 Z)) = evalN Z + evalN (prodN n2 Z)?
 
-        Caso inductivo (a = (S a')):
+        Caso inductivo (n1 = (S n)):
             Hipotesis inductiva:
-                ¡evalN (addN a' (prodN b a')) = evalN a' + evalN (prodN b a')!
+                ¡evalN (addN n (prodN n2 n)) = evalN n + evalN (prodN n2 n)!
 
             Tesis inductiva:
-                ¿evalN (addN (S a') (prodN b (S a'))) = evalN (S a') + evalN (prodN b (S a'))?
+                ¿evalN (addN (S n) (prodN n2 (S n))) = evalN (S n) + evalN (prodN n2 (S n))?
 
         Demostración caso base:
-            ¿evalN (addN Z (prodN b Z)) = evalN Z + evalN (prodN b Z)?
+            ¿evalN (addN Z (prodN n2 Z)) = evalN Z + evalN (prodN n2 Z)?
 
         -- LADO IZQUIERDO
 
-            evalN (addN Z (prodN b Z))
+            evalN (addN Z (prodN n2 Z))
         =                                       (addN.1)
-            evalN (prodN b Z)
+            evalN (prodN n2 Z)
 
         -- LADO DERECHO
 
-            evalN Z + evalN (prodN b Z)
+            evalN Z + evalN (prodN n2 Z)
         =                                       (evalN.1)
-            0 + evalN (prodN b Z)
+            0 + evalN (prodN n2 Z)
         =                                       (aritmética)
-            evalN (prodN b Z)
+            evalN (prodN n2 Z)
 
             -- Ambos lados llegan a lo mismo, el caso es válido.
 
         Demostración caso inductivo:
-            ¿evalN (addN (S a') (prodN b (S a'))) = evalN (S a') + evalN (prodN b (S a'))?
+            ¿evalN (addN (S n) (prodN n2 (S n))) = evalN (S n) + evalN (prodN n2 (S n))?
 
         -- LADO IZQUIERDO
 
-            evalN (addN (S a') (prodN b (S a')))
+            evalN (addN (S n) (prodN n2 (S n)))
         =                                                   (add.2)
-            evalN (S (addN a' (prodN b (S a'))))
+            evalN (S (addN n (prodN n2 (S n))))
         =                                                   (evalN.2)
-            1 + evalN (addN a' (prodN b (S a')))
-        =                                                   (Propiedad demostrada anteriormente en el 1.B.I)
-            1 + evalN a' + evalN (prodN b (S a'))
+            1 + evalN (addN n (prodN n2 (S n)))
+        =                                                   (S2.1.B.I)
+            1 + evalN n + evalN (prodN n2 (S n))
 
         -- LADO DERECHO
 
-            evalN (S a') + evalN (prodN b (S a'))
+            evalN (S n) + evalN (prodN n2 (S n))
         =                                                   (evalN.2)
-            1 + evalN a' + evalN (prodN b (S a'))
+            1 + evalN n + evalN (prodN n2 (S n))
 
             -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
@@ -1289,27 +1285,27 @@ int2N . evalN = id
 
 Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
-    ¿Para todo n. int2N . evalN n = id n?
+    ¿Para todo n. (int2N . evalN) n = id n?
 
-    Sea m un elemento cualquiera de tipo N. Por principio de inducción en la estructura m
-    es equivalente demostrar que:
+    Sea n1 un elemento cualquiera de tipo N. Por principio de inducción
+    en la estructura n1 es equivalente demostrar que:
 
-    Caso base (m = Z):
-        ¿int2N . evalN Z = id Z?
+    Caso base (n1 = Z):
+        ¿(int2N . evalN) Z = id Z?
 
-    Caso inductivo (m = (S m')):
+    Caso inductivo (n1 = (S n)):
         Hipotesis inductiva:
-            ¡int2N . evalN m' = id m'!
+            ¡(int2N . evalN) n = id n!
 
         Tesis inductiva:
-            ¿int2N . evalN (S m') = id (S m')?
+            ¿(int2N . evalN) (S n) = id (S n)?
 
     Demostración caso base:
-        ¿int2N . evalN Z = id Z?
+        ¿(int2N . evalN) Z = id Z?
 
     -- LADO IZQUIERDO
 
-        int2N . evalN Z
+        (int2N . evalN) Z
     =                           (.)
         int2N (evalN Z)
     =                           (evalN.1)
@@ -1326,33 +1322,31 @@ Demostración:
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo.
-            ¿int2N . evalN (S m') = id (S m')?
+            ¿(int2N . evalN) (S n) = id (S n)?
 
     -- LADO IZQUIERDO
 
-        int2N . evalN (S m')
-    =                               (.)
-        int2N (evalN (S m'))
-    =                               (int2N.2)
-        S (int2N ((evalN (S m'))-1))
-    =                               (evalN.2)
-        S (int2N ((1 + evalN m')-1))
-    =                               (aritmética)
-        S (int2N (evalN m'))
-    =                               (.)
-        S (int2N . evalN m')
-    =                               (HI)
-        S (id m')
-    =                               (id.1)
-        S (m')
-    =                               (aritmética)
-        (S m')
+        (int2N . evalN) (S n)
+    =                                   (.)
+        int2N (evalN (S n))
+    =                                   (int2N.2)
+        S (int2N ((evalN (S n)) - 1))
+    =                                   (evalN.2)
+        S (int2N ((1 + evalN n) - 1))
+    =                                   (aritmética)
+        S (int2N (evalN n))
+    =                                   (.)
+        S ((int2N . evalN) n)
+    =                                   (HI)
+        S (id n)
+    =                                   (id.1)
+        S n
 
     -- LADO DERECHO
 
-        id (S m')
-    =                               (id.1)
-        (S m')
+        id (S n)
+    =                                   (id.1)
+        S n
 
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
@@ -1363,27 +1357,27 @@ evalN . int2N = id
 
 Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
-    ¿Para todo x. evalN . int2N x = id x?
+    ¿Para todo m. (evalN . int2N) m = id m?
 
-    Sea n un número cualquiera. Por principio de inducción en la estructura n
-    es equivalente demostrar que:
+    Sea n un número cualquiera. Por principio de inducción
+    en la estructura n es equivalente demostrar que:
 
     Caso base (n = 0):
-        ¿evalN . int2N 0 = id 0?
+        ¿(evalN . int2N) 0 = id 0?
 
-    Caso inductivo (n = (n-1)+1):
+    Caso inductivo (n = (n'-1)+1):
         Hipotesis inductiva:
-            ¡evalN . int2N (n-1) = id (n-1)!
+            ¡(evalN . int2N) (n'-1) = id (n'-1)!
 
         Tesis inductiva:
-            ¿evalN . int2N n = id n? -- En realidad es ¿evalN . int2N (n-1)+1 = id (n-1)+1? Pero se simplifica.
+            ¿(evalN . int2N) n = id n?
 
     Demostración caso base:
-        ¿evalN . int2N 0 = id 0?
+        ¿(evalN . int2N) 0 = id 0?
 
     -- LADO IZQUIERDO
 
-        evalN . int2N 0
+        (evalN . int2N) 0
     =                           (.)
         evalN (int2N 0)
     =                           (int2N.1)
@@ -1400,25 +1394,25 @@ Demostración:
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
-        ¿evalN . int2N n = id n?
+        ¿(evalN . int2N) n = id n?
 
     -- LADO IZQUIERDO
 
-        evalN . int2N n
-    =                               (.)
+        (evalN . int2N) n
+    =                                   (.)
         evalN (int2N n)
-    =                               (int2N.2)
-        evalN (S (int2N (n-1)))
-    =                               (evalN.2)
-        1 + evalN (int2N (n-1))
-    =                               (.)
-        1 + evalN . int2N (n-1)
-    =                               (HI)
-        1 + (id (n-1))
-    =                               (id.1)
-        1 + (n-1)
-    =                               (aritmética)
-        1
+    =                                   (int2N.2)
+        evalN (S (int2N (n - 1)))
+    =                                   (evalN.2)
+        1 + evalN (int2N (n - 1))
+    =                                   (.)
+        1 + (evalN . int2N) (n - 1)
+    =                                   (HI)
+        1 + (id (n - 1))
+    =                                   (id.1)
+        1 + n - 1
+    =                                   (aritmética)
+        n
 
     -- LADO DERECHO
 
@@ -1431,7 +1425,7 @@ Demostración:
 
 > Ejercicio 2:
 
-type NU = [()]                  -- Interpretación alternativa: type NU = [Unit], donde data Unit = Unit
+type NU = [()]
 
 -- 2.A.I
 
@@ -1474,23 +1468,23 @@ evalNU . succNU = (+1) . evalNU
 
 Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
-    ¿Para todo n1. evalNU . succNU n1 = (+1) . evalNU n1?
+    ¿Para todo n1. evalNU . succNU n1 = ((+1) . evalNU) n1?
 
-    Sea n un elemento cualquiera de tipo NU. Por principio de inducción en la estructura n
+    Sea nu1 un elemento cualquiera de tipo NU. Por principio de inducción en la estructura n
     es equivalente demostrar que:
 
-    Caso base (n = []):
-        ¿evalNU . succNU [] = (+1) . evalNU []?
+    Caso base (nu1 = []):
+        ¿evalNU . succNU [] = ((+1) . evalNU) []?
 
-    Caso inductivo (n = (u:us)):
+    Caso inductivo (nu1 = (u:us)):
         Hipotesis inductiva:
-            ¡evalNU . succNU us = (+1) . evalNU us!
+            ¡evalNU . succNU us = ((+1) . evalNU) us!
 
         Tesis inductiva:
-            ¿evalNU . succNU (u:us) = (+1) . evalNU (u:us)?
+            ¿evalNU . succNU (u:us) = ((+1) . evalNU) (u:us)?
 
     Demostración caso base:
-        ¿evalNU . succNU [] = (+1) . evalNU []?
+        ¿evalNU . succNU [] = ((+1) . evalNU) []?
 
     -- LADO IZQUIERDO
 
@@ -1508,7 +1502,7 @@ Demostración:
 
     -- LADO DERECHO
 
-        (+1) . evalNU []
+        ((+1) . evalNU) []
     =                               (.)
         (+1) (evalNU [])
     =                               (evalNU.1)
@@ -1521,7 +1515,7 @@ Demostración:
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
-            ¿evalNU . succNU (u:us) = (+1) . evalNU (u:us)?
+            ¿evalNU . succNU (u:us) = ((+1) . evalNU) (u:us)?
 
     -- LADO IZQUIERDO
 
@@ -1535,7 +1529,7 @@ Demostración:
     =                                   (.)
         1 + evalNU . succNU us
     =                                   (HI)
-        1 + ((+1) . evalNU us)
+        1 + (((+1) . evalNU) us)
     =                                   (.)
         1 + ((+1) (evalNU us))
     =                                   (+)
@@ -1545,7 +1539,7 @@ Demostración:
 
     -- LADO DERECHO
 
-        (+1) . evalNU (u:us)
+        ((+1) . evalNU) (u:us)
     =                                   (.)
         (+1) (evalNU (u:us))
     =                                   (evalNU.2)
