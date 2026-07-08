@@ -2666,7 +2666,7 @@ Demostración:
 
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
-    Lema EvalSimpSuma: para todo e1. para todo e2. evalExpA (simplificarSuma e1 e2) = evalExpA e1 + evalExpA e2
+    Lema EvalSimpSuma: ¿para todo e1. para todo e2. evalExpA (simplificarSuma e1 e2) = evalExpA e1 + evalExpA e2?
 
     Demostración:
         Sea e' y e'' elementos cualquiera de tipo ExpA. Se verá que:
@@ -2724,7 +2724,7 @@ Demostración:
 
             -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
-    Lema EvalSimpProd: para todo e1. para todo e2. evalExpA (simplificarProd e1 e2) = evalExpA e1 * evalExpA e2
+    Lema EvalSimpProd: ¿para todo e1. para todo e2. evalExpA (simplificarProd e1 e2) = evalExpA e1 * evalExpA e2?
 
     Demostración:
         Sea e' y e'' elementos cualquiera de tipo ExpA. Se verá que:
@@ -2824,8 +2824,8 @@ Demostración:
 
 
 -- 1.B.II
-
-cantidadDeSumaCero . simplificarExpA = const 0
+        
+cantidadDeSumaCero . simplificarExpA = const 0     REVISAR!!!
 
 Demostración:
     Por principio de extensionalidad, es equivalente demostrar que:
@@ -3014,7 +3014,6 @@ Demostración:
                 -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
     Lema SimplProd: para todo e1. para todo e2. cantidadDeSumaCero (simplificarProd e1 e2) = cantidadDeSumaCero e1 * cantidadDeSumaCero e2
-        REVISAR!!!
 
         Demostración:
             Sea e' y e'' elementos cualquiera de tipo ExpA. Se verá que:
