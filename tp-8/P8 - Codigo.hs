@@ -2279,14 +2279,10 @@ Demostración:
         normalizarNB (normalizarNB [])
     =                                       (normalizarNB.1)
         normalizarNB []
-    =                                       (normalizarNB.1)
-        []
 
     -- LADO DERECHO
 
         normalizarNB []
-    =                                       (normalizarNB.1)
-        []
 
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
@@ -2296,26 +2292,26 @@ Demostración:
     -- LADO IZQUIERDO
 
         (normalizarNB . normalizarNB) (nb:nbs')
-    =                                                       (.)
+    =                                                           (.)
         normalizarNB (normalizarNB (nb:nbs'))
-    =                                                       (normalizarNB.2)
+    =                                                           (normalizarNB.2)
         normalizarNB (normalizarDB nb (normalizarNB nbs'))
-    =                                                       (Lema NormDB)
+    =                                                           (Lema NormDB)
         normalizarDB nb (normalizarNB (normalizarNB nbs'))
-    =                                                       (.)
+    =                                                           (.)
         normalizarDB nb ((normalizarNB . normalizarNB) nbs')
-    =                                                       (HI)
+    =                                                           (HI)
         normalizarDB nb (normalizarNB nbs')
 
     -- LADO DERECHO
 
         normalizarNB (nb:nbs')
-    =                                                       (normalizarNB.2)
+    =                                               (normalizarNB.2)
         normalizarDB nb (normalizarNB nbs')
 
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
-    Lema NormDB: ¿normalizarNB (normalizarDB d ns) = normalizarDB d (normalizarNB ns)?
+    Lema NormDB: ¿para todo db'. para todo n1. normalizarNB (normalizarDB db' n1) = normalizarDB db' (normalizarNB n1)?
 
     Demostración:
         Sea db un elemento cualquiera de tipo DigBit, nbs un elemento cualquiera de tipo NBin (el cual está normalizado).
@@ -2334,7 +2330,7 @@ Demostración:
         Demostración caso base:
             ¿normalizarNB (normalizarDB db []) = normalizarDB db (normalizarNB [])?
 
-            Caso db = O:
+            Caso 1 (db = O):
 
             -- LADO IZQUIERDO
 
@@ -2354,7 +2350,7 @@ Demostración:
 
                 -- Ambos lados llegan a lo mismo, el caso es válido.
 
-            Caso db = I:
+            Caso 2 (db = I):
 
             -- LADO IZQUIERDO
 
