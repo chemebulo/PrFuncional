@@ -2825,7 +2825,7 @@ Demostración:
 
 -- 1.B.II
         
-cantidadDeSumaCero . simplificarExpA = const 0     REVISAR!!!
+cantidadDeSumaCero . simplificarExpA = const 0
 
 Demostración:
     Por principio de extensionalidad, es equivalente demostrar que:
@@ -2932,9 +2932,9 @@ Demostración:
         (cantidadDeSumaCero . simplificarExpA) e' + cantidadDeSumaCero (simplificarExpA e'')
     =                                                                                           (.)
         (cantidadDeSumaCero . simplificarExpA) e' + (cantidadDeSumaCero . simplificarExpA) e''
-    =                                                                                           (HI 2.1)
+    =                                                                                           (HI 1.1)
         const 0 e' + (cantidadDeSumaCero . simplificarExpA) e''
-    =                                                                                           (HI 2.2)
+    =                                                                                           (HI 1.2)
         const 0 e' + const 0 e''
     =                                                                                           (const.1)
         0 + const 0 e''
@@ -2942,7 +2942,7 @@ Demostración:
         0 + 0
     =                                                                                           (aritmética)
         0
-        
+
     -- LADO DERECHO
 
         const 0 (Prod e' e'')
@@ -2951,7 +2951,7 @@ Demostración:
 
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
-    Lema SimplSuma: para todo e1. para todo e2. cantidadDeSumaCero (simplificarSuma e1 e2) = cantidadDeSumaCero e1 + cantidadDeSumaCero e2
+    Lema SimplSuma: ¿para todo e1. para todo e2. cantidadDeSumaCero (simplificarSuma e1 e2) = cantidadDeSumaCero e1 + cantidadDeSumaCero e2?
 
         Demostración:
             Sea e' y e'' elementos cualquiera de tipo ExpA. Se verá que:
@@ -3013,7 +3013,7 @@ Demostración:
 
                 -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
-    Lema SimplProd: para todo e1. para todo e2. cantidadDeSumaCero (simplificarProd e1 e2) = cantidadDeSumaCero e1 * cantidadDeSumaCero e2
+    Lema SimplProd: ¿para todo e1. para todo e2. cantidadDeSumaCero (simplificarProd e1 e2) = cantidadDeSumaCero e1 * cantidadDeSumaCero e2
 
         Demostración:
             Sea e' y e'' elementos cualquiera de tipo ExpA. Se verá que:
@@ -3031,7 +3031,7 @@ Demostración:
 
             -- LADO DERECHO
 
-                cantidadDeSumaCero e' * cantidadDeSumaCero (Cte 0)
+                cantidadDeSumaCero e' + cantidadDeSumaCero (Cte 0)
             =                                                           (cantidadDeSumaCero.1)
                 cantidadDeSumaCero e' * 0
             =                                                           (aritmética)
@@ -3051,7 +3051,7 @@ Demostración:
 
             -- LADO DERECHO
 
-                cantidadDeSumaCero (Cte 0) * cantidadDeSumaCero e''
+                cantidadDeSumaCero (Cte 0) + cantidadDeSumaCero e''
             =                                                           (cantidadDeSumaCero.1)
                 0 * cantidadDeSumaCero e''
             =                                                           (aritmética)
