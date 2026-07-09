@@ -2828,45 +2828,43 @@ Demostración:
 cantidadDeSumaCero . simplificarExpA = const 0
 
 Demostración:
-    Por principio de extensionalidad, es equivalente demostrar que:
-    ¿para todo e1. (cantidadDeSumaCero . simplificarExpA) e1 = const 0 e1?
+    Por principio de extensionalidad, definición de const y definición de (.), es equivalente demostrar que:
+    ¿para todo e1. cantidadDeSumaCero (simplificarExpA e1) = 0?
 
     Sea e un elemento cualquiera de tipo ExpA. Por principio de inducción sobre
     la estructura e es equivalente demostrar que:
 
     Caso base (e = Cte n):
-        ¿(cantidadDeSumaCero . simplificarExpA) (Cte n) = const 0 (Cte n)?
+        ¿cantidadDeSumaCero (simplificarExpA (Cte n)) = 0?
 
 
     Caso inductivo 1 (e = Suma e' e''):
         Hipotesis inductiva 1.1:
-            ¡(cantidadDeSumaCero . simplificarExpA) e' = const 0 e'!
+            ¡cantidadDeSumaCero (simplificarExpA e') = 0!
 
         Hipotesis inductiva 1.2:
-            ¡(cantidadDeSumaCero . simplificarExpA) e'' = const 0 e''!
+            ¡cantidadDeSumaCero (simplificarExpA e'') = 0!
 
         Tesis inductiva 1:
-            ¿(cantidadDeSumaCero . simplificarExpA) (Suma e' e'') = const 0 (Suma e' e'')?
+            ¿cantidadDeSumaCero (simplificarExpA (Suma e' e'')) = 0?
 
 
     Caso inductivo 2 (e = Prod e' e''):
         Hipotesis inductiva 2.1:
-            ¡(cantidadDeSumaCero . simplificarExpA) e' = const 0 e'!
+            ¡cantidadDeSumaCero (simplificarExpA e') = 0!
 
         Hipotesis inductiva 2.2:
-            ¡(cantidadDeSumaCero . simplificarExpA) e'' = const 0 e''!
+            ¡cantidadDeSumaCero (simplificarExpA e'') = 0!
 
         Tesis inductiva 2:
-            ¿(cantidadDeSumaCero . simplificarExpA) (Prod e' e'') = const 0 (Prod e' e'')?
+            ¿cantidadDeSumaCero (simplificarExpA (Prod e' e'')) = 0?
 
 
     Demostración caso base:
-        ¿(cantidadDeSumaCero . simplificarExpA) (Cte n) = const 0 (Cte n)?
+        ¿cantidadDeSumaCero (simplificarExpA (Cte n)) = 0?
 
     -- LADO IZQUIERDO
 
-        (cantidadDeSumaCero . simplificarExpA) (Cte n)
-    =                                                       (.)
         cantidadDeSumaCero (simplificarExpA (Cte n))
     =                                                       (simplificarExpA.1)
         cantidadDeSumaCero (Cte n)
@@ -2875,87 +2873,50 @@ Demostración:
 
     -- LADO DERECHO
 
-        const 0 (Cte n)
-    =                                                       (const.1)
         0
 
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo 1:
-        ¿(cantidadDeSumaCero . simplificarExpA) (Suma e' e'') = const 0 (Suma e' e'')?
+        ¿cantidadDeSumaCero (simplificarExpA (Suma e' e'')) = 0?
 
     -- LADO IZQUIERDO
 
-        (cantidadDeSumaCero . simplificarExpA) (Suma e' e'')
-    =                                                                                           (.)
         cantidadDeSumaCero (simplificarExpA (Suma e' e''))
     =                                                                                           (simplificarExpA.2)
         cantidadDeSumaCero (simplificarSuma (simplificarExpA e') (simplificarExpA e''))
-    =                                                                                           (Lema SimplSuma)
-        cantidadDeSumaCero (simplificarExpA e') + cantidadDeSumaCero (simplificarExpA e'')
-    =                                                                                           (.)
-        (cantidadDeSumaCero . simplificarExpA) e' + cantidadDeSumaCero (simplificarExpA e'')
-    =                                                                                           (.)
-        (cantidadDeSumaCero . simplificarExpA) e' + (cantidadDeSumaCero . simplificarExpA) e''
-    =                                                                                           (HI 1.1)
-        const 0 e' + (cantidadDeSumaCero . simplificarExpA) e''
-    =                                                                                           (HI 1.2)
-        const 0 e' + const 0 e''
-    =                                                                                           (const.1)
-        0 + const 0 e''
-    =                                                                                           (const.1)
-        0 + 0
-    =                                                                                           (aritmética)
+    =                                                                                           (Lema SimplSuma, garantizado por HI 1.1 y HI 1.2)
         0
 
     -- LADO DERECHO
 
-        const 0 (Suma e' e'')
-    =                                   (const.1)
         0
 
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo 2:
-        ¿(cantidadDeSumaCero . simplificarExpA) (Prod e' e'') = const 0 (Prod e' e'')?
+        ¿cantidadDeSumaCero (simplificarExpA (Prod e' e'')) = 0?
 
     -- LADO IZQUIERDO
 
-        (cantidadDeSumaCero . simplificarExpA) (Prod e' e'')
-    =                                                                                           (.)
         cantidadDeSumaCero (simplificarExpA (Prod e' e''))
     =                                                                                           (simplificarExpA.3)
         cantidadDeSumaCero (simplificarProd (simplificarExpA e') (simplificarExpA e''))
-    =                                                                                           (Lema SimplProd)
-        cantidadDeSumaCero (simplificarExpA e') + cantidadDeSumaCero (simplificarExpA e'')
-    =                                                                                           (.)
-        (cantidadDeSumaCero . simplificarExpA) e' + cantidadDeSumaCero (simplificarExpA e'')
-    =                                                                                           (.)
-        (cantidadDeSumaCero . simplificarExpA) e' + (cantidadDeSumaCero . simplificarExpA) e''
-    =                                                                                           (HI 1.1)
-        const 0 e' + (cantidadDeSumaCero . simplificarExpA) e''
-    =                                                                                           (HI 1.2)
-        const 0 e' + const 0 e''
-    =                                                                                           (const.1)
-        0 + const 0 e''
-    =                                                                                           (const.1)
-        0 + 0
-    =                                                                                           (aritmética)
+    =                                                                                           (Lema SimplSuma, garantizado por HI 2.1 y HI 2.2)
         0
 
     -- LADO DERECHO
 
-        const 0 (Prod e' e'')
-    =                                   (const.1)
         0
 
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
-    Lema SimplSuma: ¿para todo e1. para todo e2. cantidadDeSumaCero (simplificarSuma e1 e2) = cantidadDeSumaCero e1 + cantidadDeSumaCero e2?
+    Lema SimplSuma: Si cantidadDeSumaCero e' = 0 y cantidadDeSumaCero e'' = 0, entonces:
+        ¿para todo e1. para todo e2. cantidadDeSumaCero (simplificarSuma e1 e2) = 0?
 
         Demostración:
             Sea e' y e'' elementos cualquiera de tipo ExpA. Se verá que:
-            cantidadDeSumaCero (simplificarSuma e' e'') = cantidadDeSumaCero e' + cantidadDeSumaCero e''
+            cantidadDeSumaCero (simplificarSuma e' e'') = 0
 
         Caso 1 (e'' = (Cte 0)):
 
@@ -2964,14 +2925,12 @@ Demostración:
                 cantidadDeSumaCero (simplificarSuma e' (Cte 0))
             =                                                           (simplificarSuma.1)
                 cantidadDeSumaCero e'
+            =                                                           (Hipotesis del Lema)
+                0
 
             -- LADO DERECHO
 
-                cantidadDeSumaCero e' + cantidadDeSumaCero (Cte 0)        
-            =                                                           (cantidadDeSumaCero.1)
-                cantidadDeSumaCero e' + 0        
-            =                                                           (aritmética)
-                cantidadDeSumaCero e'  
+                0 
 
                 -- Ambos lados llegan a lo mismo, el caso es válido.
 
@@ -2982,14 +2941,12 @@ Demostración:
                 cantidadDeSumaCero (simplificarSuma (Cte 0) e'')
             =                                                           (simplificarSuma.1)
                 cantidadDeSumaCero e''
+            =                                                           (Hipotesis del Lema)
+                0
 
             -- LADO DERECHO
 
-                cantidadDeSumaCero (Cte 0) + cantidadDeSumaCero e''        
-            =                                                           (cantidadDeSumaCero.1)
-                0 + cantidadDeSumaCero e''        
-            =                                                           (aritmética)
-                cantidadDeSumaCero e''
+                0
 
                 -- Ambos lados llegan a lo mismo, el caso es válido.
 
@@ -3004,20 +2961,23 @@ Demostración:
                 unoSiSumaCero e' e'' + cantidadDeSumaCero e' + cantidadDeSumaCero e''
             =                                                                           (unoSiSumaCero.3)
                 0 + cantidadDeSumaCero e' + cantidadDeSumaCero e''
+            =                                                                           (Hipotesis del Lema)
+                0 + 0 + 0
             =                                                                           (aritmética)
-                cantidadDeSumaCero e' + cantidadDeSumaCero e''
+                0
 
             -- LADO DERECHO
 
-                cantidadDeSumaCero e' + cantidadDeSumaCero e''        
+                0       
 
                 -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
-    Lema SimplProd: ¿para todo e1. para todo e2. cantidadDeSumaCero (simplificarProd e1 e2) = cantidadDeSumaCero e1 * cantidadDeSumaCero e2
+    Lema SimplProd: Si cantidadDeSumaCero e' = 0 y cantidadDeSumaCero e'' = 0, entonces:
+        ¿para todo e1. para todo e2. cantidadDeSumaCero (simplificarProd e1 e2) = 0?
 
         Demostración:
             Sea e' y e'' elementos cualquiera de tipo ExpA. Se verá que:
-            cantidadDeSumaCero (simplificarProd e' e'') = cantidadDeSumaCero e' * cantidadDeSumaCero e''
+            cantidadDeSumaCero (simplificarProd e' e'') = 0
 
         Caso 1 (e'' = (Cte 0)):
 
@@ -3031,10 +2991,6 @@ Demostración:
 
             -- LADO DERECHO
 
-                cantidadDeSumaCero e' + cantidadDeSumaCero (Cte 0)
-            =                                                           (cantidadDeSumaCero.1)
-                cantidadDeSumaCero e' * 0
-            =                                                           (aritmética)
                 0
 
                 -- Ambos lados llegan a lo mismo, el caso es válido.
@@ -3051,10 +3007,6 @@ Demostración:
 
             -- LADO DERECHO
 
-                cantidadDeSumaCero (Cte 0) + cantidadDeSumaCero e''
-            =                                                           (cantidadDeSumaCero.1)
-                0 * cantidadDeSumaCero e''
-            =                                                           (aritmética)
                 0
 
                 -- Ambos lados llegan a lo mismo, el caso es válido.
@@ -3066,27 +3018,50 @@ Demostración:
                 cantidadDeSumaCero (simplificarProd e' (Cte 1))
             =                                                           (simplificarProd.3)
                 cantidadDeSumaCero e'
+            =                                                           (Hipotesis del Lema)
+                0
 
             -- LADO DERECHO
 
-                cantidadDeSumaCero e' * cantidadDeSumaCero (Cte 1)
-            =                                                           (cantidadDeSumaCero.1)
-                cantidadDeSumaCero e' * 0
-            =                                                           (aritmética)
                 0
 
                 -- Ambos lados llegan a lo mismo, el caso es válido.
 
         Caso 4 (e' = (Cte 1)):
 
-        
+            -- LADO IZQUIERDO
 
+                cantidadDeSumaCero (simplificarProd (Cte 1) e'')
+            =                                                           (simplificarProd.4)
+                cantidadDeSumaCero e''
+            =                                                           (Hipotesis del Lema)
+                0
 
+            -- LADO DERECHO
+
+                0
+
+                -- Ambos lados llegan a lo mismo, el caso es válido.
 
         Caso 5 (e' /= (Cte 0), e' /= (Cte 1), e'' /= (Cte 0), e'' /= (Cte 1)):
-
         
+            -- LADO IZQUIERDO
 
+                cantidadDeSumaCero (simplificarProd e' e'')
+            =                                                           (simplificarProd.5)
+                cantidadDeSumaCero (Prod e' e'')
+            =                                                           (cantidadDeSumaCero.3)
+                cantidadDeSumaCero e' + cantidadDeSumaCero e''
+            =                                                           (Hipotesis del Lema)
+                0 + 0
+            =                                                           (aritmética)
+                0
+
+            -- LADO DERECHO
+
+                0
+
+                -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 > Ejercicio 2:
@@ -3160,3 +3135,72 @@ addNBConCarry (nb:nbs) []       c = let (s', c') = addDBConCarry nb O c
                                         in s' : addNBConCarry nbs [] c'
 addNBConCarry (nb:nbs) (mb:mbs) c = let (s', c') = addDBConCarry nb mb c
                                         in s' : addNBConCarry nbs mbs c'
+
+
+
+
+
+
+-- LEMAS ALTERNATIVOS EN DEMOSTRACIONES:
+
+Lema SimplSuma: ¿para todo e1. para todo e2. cantidadDeSumaCero (simplificarSuma e1 e2) = cantidadDeSumaCero e1 + cantidadDeSumaCero e2?
+
+    Demostración:
+        Sea e' y e'' elementos cualquiera de tipo ExpA. Se verá que:
+        cantidadDeSumaCero (simplificarSuma e' e'') = cantidadDeSumaCero e' + cantidadDeSumaCero e''
+
+    Caso 1 (e'' = (Cte 0)):
+
+        -- LADO IZQUIERDO
+
+            cantidadDeSumaCero (simplificarSuma e' (Cte 0))
+        =                                                           (simplificarSuma.1)
+            cantidadDeSumaCero e'
+
+        -- LADO DERECHO
+
+            cantidadDeSumaCero e' + cantidadDeSumaCero (Cte 0)        
+        =                                                           (cantidadDeSumaCero.1)
+            cantidadDeSumaCero e' + 0        
+        =                                                           (aritmética)
+            cantidadDeSumaCero e'  
+
+            -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Caso 2 (e' = (Cte 0)):
+
+        -- LADO IZQUIERDO
+
+            cantidadDeSumaCero (simplificarSuma (Cte 0) e'')
+        =                                                           (simplificarSuma.1)
+            cantidadDeSumaCero e''
+
+        -- LADO DERECHO
+
+            cantidadDeSumaCero (Cte 0) + cantidadDeSumaCero e''        
+        =                                                           (cantidadDeSumaCero.1)
+            0 + cantidadDeSumaCero e''        
+        =                                                           (aritmética)
+            cantidadDeSumaCero e''
+
+            -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Caso 3 (e' /= (Cte 0), e'' /= (Cte 0)):
+
+        -- LADO IZQUIERDO
+
+            cantidadDeSumaCero (simplificarSuma e' e'')
+        =                                                                           (simplificarSuma.1)
+            cantidadDeSumaCero (Suma e' e'')
+        =                                                                           (cantidadDeSumaCero.2)
+            unoSiSumaCero e' e'' + cantidadDeSumaCero e' + cantidadDeSumaCero e''
+        =                                                                           (unoSiSumaCero.3)
+            0 + cantidadDeSumaCero e' + cantidadDeSumaCero e''
+        =                                                                           (aritmética)
+            cantidadDeSumaCero e' + cantidadDeSumaCero e''
+
+        -- LADO DERECHO
+
+            cantidadDeSumaCero e' + cantidadDeSumaCero e''        
+
+            -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.

@@ -184,8 +184,13 @@ primerasNCapas = flip (pizzaProcesada (\i p' n' -> if n' == 0 then Prepizza else
 
 -- 6.A
 
-Para todo f. length . capasQueCumplen f = cantidadDe f
+Para todo f. length . capasQueCumplen f = cantidadCapasQueCumplen f
 
+    Demostración:
+        Por principio de extensionalidad, es equivalente desmostrar que:
+        ¿para todo f. para todo p'. (length . capasQueCumplen f) p' = cantidadCapasQueCumplen f p'
+
+        Sea p 
 
 
 -- 6.B
