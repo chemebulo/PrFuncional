@@ -2090,6 +2090,8 @@ Demostración:
 ¿para todo n1. para todo n2. evalNB (addNB n1 n2) = evalNB n1 + evalNB n2?
 
 
+
+
 -- 3.B.IV:
 
 nb2n . n2nb = id 
@@ -2256,7 +2258,7 @@ Demostración:
     Por principio de extensionalidad es equivalente demostrar que
     ¿para todo n1. (normalizarNB . normalizarNB) n1 = normalizarNB n1?
 
-    Sea nbs un elemento cualquiera de tipo Nbin (el cual está normalizado). Por principio de inducción
+    Sea nbs un elemento cualquiera de tipo NBin (el cual está normalizado). Por principio de inducción
     en la estructura nbs es equivalente demostrar que:
 
     Caso base (nbs = []):
@@ -2429,7 +2431,82 @@ n2nb . nb2n = id
 n2nb . nb2n = normalizarNB
 
 Demostración:
+    Por principio de extensionalidad y definición de (.), equivalente demostrar que
+    ¿para todo todo nbs'. n2nb (nb2n nbs') = normalizarNB nbs'?
 
+    Sea nbs un elemento cualquiera de tipo NBin (el cual está normalizado). Por principio de inducción
+    sobre la estructura nbs es equivalente demostrar que:
+
+    Caso base (nbs = []):
+        ¿n2nb (nb2n []) = normalizarNB []?
+
+    Caso inductivo (nbs = (nb:nbs')):
+        Hipotesis inductiva:
+            ¡n2nb (nb2n nbs') = normalizarNB nbs'!
+
+        Tesis inductiva:
+            ¿n2nb (nb2n (nb:nbs')) = normalizarNB (nb:nbs')?
+
+    Demostración caso base:
+        ¿n2nb (nb2n []) = normalizarNB []?
+
+    -- LADO IZQUIERDO
+
+        n2nb (nb2n [])
+    =                               (nb2n.1)
+        n2nb Z
+    =                               (n2nb.1)
+        []
+
+    -- LADO DERECHO
+
+        normalizarNB []
+    =                               (normalizarNB.1)
+        []
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo:
+        ¿n2nb (nb2n (nb:nbs')) = normalizarNB (nb:nbs')?
+
+    -- LADO IZQUIERDO
+
+        n2nb (nb2n (nb:nbs'))
+    =                                           (Lema Nb2nNorm)
+        normalizarDB nb (n2nb (nb2n nbs'))
+
+    -- LADO DERECHO
+
+        normalizarNB (nb:nbs')
+    =                                           (normalizarNB.2)
+        normalizarDB nb (normalizarNB nbs')
+    =                                           (HI)
+        normalizarDB nb (n2nb (nb2n nbs'))
+
+        -- Ambos lados llegan a lo mismo, el caso es válido yla propiedad también.
+
+    Lema Nb2nNorm: ¿para todo nb1. para todo nbs1. n2nb (nb2n (nb1:nbs1)) = normalizarDB nb1 (nb2n (nb2n nbs1))?
+
+    Demostración:
+        Siendo nb' un elemento de tipo DigBit, nbs un elemento de tipo NBin. Por principio de inducción
+        sobre la estructura nbs es equivalente demostrar que:
+
+        Caso base (nbs = []):
+            ¿n2nb (nb2n (nb1:[]))?
+
+        Caso inductivo (nbs = (nb:nbs')):
+            Hipotesis inductiva:
+                ¡!
+
+            Tesis inductiva:
+                ¿?
+
+        Demostración caso base:
+
+
+
+
+        Demostración caso inductivo:
 
 
 
