@@ -1033,7 +1033,7 @@ Demostración:
 
 ¿para todo xs. para todo ys. unzip (zip xs ys) = (xs, ys)?  
 
-    Esta propiedad no se cumple para todo xs y para todo ys. Para demostrarlo, propongo el siguiente ejemplo:
+    Esta propiedad no se cumple para todo xs y para todo ys. Para demostrarlo, propongo el siguiente contraejemplo:
         xs = [1, 2, 3]
         ys = [4, 5]
 
@@ -2388,8 +2388,40 @@ Demostración:
 
 n2nb . nb2n = id
 
-Demostración:
+    Por principio de extensionalidad y definición de (.) es equivalente demostrar que:
+    ¿para todo nbs. n2nb (nb2n nbs) = id nbs?
+        
+    Esta propiedad no se cumple para todo nbs. Para demostrarlo, propongo el siguiente contraejemplo:
+        nbs = [IO]
 
+    -- LADO IZQUIERDO
+
+        n2nb (nb2n [IO])
+    =                                           (nb2n.3)
+        n2nb (S (dobleN (nb2n [O])))
+    =                                           (nb2n.2)
+        n2nb (S (dobleN (dobleN (nb2n []))))
+    =                                           (nb2n.1)
+        n2nb (S (dobleN (dobleN Z)))
+    =                                           (dobleN.1)
+        n2nb (S (dobleN Z))
+    =                                           (dobleN.1)
+        n2nb (S Z)
+    =                                           (n2nb.2)
+        succNB (n2nb Z)
+    =                                           (n2nb.1)
+        succNB []
+    =                                           (succNB.1)
+        [I]
+
+    -- LADO DERECHO
+
+        id [IO]
+    =                           (id.1)
+        [IO]
+
+    Con este contraejemplo, queda evidenciado que ambos lados llegan a conclusiones distintas, y por ende,
+    es inválida la propiedad. No vale para todo nbs.
 
 
 -- 3.C.II:
@@ -2397,6 +2429,7 @@ Demostración:
 n2nb . nb2n = normalizarNB
 
 Demostración:
+
 
 
 
@@ -2912,7 +2945,7 @@ Demostración:
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
     Lema SimplSuma: Si cantidadDeSumaCero e' = 0 y cantidadDeSumaCero e'' = 0, entonces:
-        ¿para todo e1. para todo e2. cantidadDeSumaCero (simplificarSuma e1 e2) = 0?
+        para todo e1. para todo e2. cantidadDeSumaCero (simplificarSuma e1 e2) = 0
 
         Demostración:
             Sea e' y e'' elementos cualquiera de tipo ExpA. Se verá que:
@@ -2973,7 +3006,7 @@ Demostración:
                 -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
     Lema SimplProd: Si cantidadDeSumaCero e' = 0 y cantidadDeSumaCero e'' = 0, entonces:
-        ¿para todo e1. para todo e2. cantidadDeSumaCero (simplificarProd e1 e2) = 0?
+        para todo e1. para todo e2. cantidadDeSumaCero (simplificarProd e1 e2) = 0
 
         Demostración:
             Sea e' y e'' elementos cualquiera de tipo ExpA. Se verá que:
@@ -3135,10 +3168,6 @@ addNBConCarry (nb:nbs) []       c = let (s', c') = addDBConCarry nb O c
                                         in s' : addNBConCarry nbs [] c'
 addNBConCarry (nb:nbs) (mb:mbs) c = let (s', c') = addDBConCarry nb mb c
                                         in s' : addNBConCarry nbs mbs c'
-
-
-
-
 
 
 -- LEMAS ALTERNATIVOS EN DEMOSTRACIONES:
