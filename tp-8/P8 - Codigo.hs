@@ -1784,8 +1784,7 @@ addNB :: NBin -> NBin -> NBin
 addNB nb1 nb2 = addNBConCarry nb1 nb2 O
 
 addNBConCarry :: NBin -> NBin -> DigBin -> NBin
-addNBConCarry []       []       O = []
-addNBConCarry []       []       I = [I]
+addNBConCarry []       []       c = carryToNBin c 
 addNBConCarry []       (mb:mbs) c = fst (addDBConCarry O  mb c) : addNBConCarry []  mbs (snd (addDBConCarry O  mb c))
 addNBConCarry (nb:nbs) []       c = fst (addDBConCarry nb O  c) : addNBConCarry nbs []  (snd (addDBConCarry nb O  c))
 addNBConCarry (nb:nbs) (mb:mbs) c = fst (addDBConCarry nb mb c) : addNBConCarry nbs mbs (snd (addDBConCarry nb mb c))
@@ -1796,6 +1795,10 @@ addDBConCarry I I I = (I, I)
 addDBConCarry O O c = (c, O)
 addDBConCarry _ _ I = (O, I)
 addDBConCarry _ _ O = (I, O)
+
+carryToNBin :: DigBin -> NBin
+carryToNBin O = []
+carryToNBin I = [I]
 
 
 -- 3.A.V:
@@ -2087,9 +2090,159 @@ Demostración:
 
 -- 3.B.III:
 
-¿para todo n1. para todo n2. evalNB (addNB n1 n2) = evalNB n1 + evalNB n2? TERMINAR
+¿para todo n1. para todo n2. evalNB (addNB n1 n2) = evalNB n1 + evalNB n2?
 
+Demostración:
+    Sea nb1 y nb2 elementos cualquiera de tipo NBin (los cuales estan normalizados). Se verá que:
+    evalNB (addNB nb1 nb2) = evalNB nb1 + evalNB nb2
 
+    -- LADO IZQUIERDO
+
+        evalNB (addNB nb1 nb2)
+    =                                       (addNB.1)
+        evalNB (addNBConCarry nb1 nb2 O)
+    =                                       (Lema EvalAddNB)
+        evalNB nb1 + evalNB nb2
+
+    -- LADO DERECHO
+
+        evalNB nb1 + evalNB nb2
+
+        -- Ambos lados llegan a lo mismo, la propiedad es válida.
+
+    Lema EvalAddNB: ¿para todo n1. para todo n2. evalNB (addNBConCarry n1 n2 O) = evalNB n1 + evalNB n2?
+
+    Demostración:
+        Sea nb1 y nb2 elementos cualquiera de tipo NBin (los cuales están normalizados). Por principio de inducción
+        sobre la estructura nb1 es equivalente demostrar que:
+
+        Caso base (nb1 = []):
+            ¿evalNB (addNBConCarry [] nb2 O) = evalNB [] + evalNB nb2?
+
+        Caso inductivo (nb1 = (nb:nbs')):
+            Hipotesis inductiva:
+                ¡evalNB (addNBConCarry nbs' nb2 O) = evalNB nbs' + evalNB nb2!
+
+            Tesis inductiva:
+                ¿evalNB (addNBConCarry (nb:nbs') nb2 O) = evalNB (nb:nbs') + evalNB nb2?
+
+        Demostración caso base:
+            ¿evalNB (addNBConCarry [] nb2 O) = evalNB [] + evalNB nb2?
+
+        -- LADO IZQUIERDO
+
+            evalNB (addNBConCarry [] nb2 O)
+        =                                           (Lema AddNB2)
+            evalNB nb2
+
+        -- LADO DERECHO
+
+            evalNB [] + evalNB nb2
+        =                                           (evalNB.1)
+            0 + evalNB nb2
+        =                                           (aritmética)
+            evalNB nb2
+
+            -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Demostración caso inductivo:
+            ¿evalNB (addNBConCarry (nb:nbs') nb2 O) = evalNB (nb:nbs') + evalNB nb2?
+
+        -- LADO IZQUIERDO
+
+            evalNB (addNBConCarry (nb:nbs') nb2 O)
+
+            TERMINAR
+
+        -- LADO DERECHO
+
+            evalNB (nb:nbs') + evalNB nb2
+        =                                                       (evalNB.2)
+            dbAsInt nb + (2 * evalNB nbs') + evalNB nb2
+
+            -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
+        Lema AddNB2: ¿para todo n2. addNBConCarry [] n2 O = n2?
+
+        Demostración:
+            Sea nb2 un elemento cualquiera de tipo NBin (el cual está normalizado). Por principio de inducción
+            sobre la estructura nb2 es equivalente demostrar que:
+
+            Caso base (nb2 = []):
+                ¿addNBConCarry [] [] O = []?
+
+            Caso inductivo (nb2 = (nb:nbs')):
+                Hipotesis inductiva:
+                    ¡addNBConCarry [] nbs' O = nbs'!
+
+                Tesis inductiva:
+                    ¿addNBConCarry [] (nb:nbs') O = (nb:nbs')?
+
+            Demostración caso base:
+                ¿addNBConCarry [] [] O = []?
+
+            -- LADO IZQUIERDO
+
+                addNBConCarry [] [] O
+            =                                       (addNBConCarry.1)
+                carryToNBin O
+            =                                       (carryToNBin.1)
+                []
+
+            -- LADO DERECHO
+
+                []
+
+                -- Ambos lados llegan a lo mismo, el caso es válido.
+
+            Demostración caso inductivo:
+                ¿addNBConCarry [] (nb:nbs') O = (nb:nbs')?
+
+            Caso 1 (nb = I):
+
+            -- LADO IZQUIERDO
+
+                addNBConCarry [] (I:nbs') O
+            =                                                                                   (addNBConCarry.2)
+                fst (addDBConCarry O I O) : addNBConCarry [] nbs' (snd (addDBConCarry O I O))
+            =                                                                                   (addDBConCarry.5)
+                fst (I, O) : addNBConCarry [] nbs' (snd (addDBConCarry O I O))
+            =                                                                                   (addDBConCarry.5)
+                fst (I, O) : addNBConCarry [] nbs' (snd (I, O))
+            =                                                                                   (fst.1)
+                I : addNBConCarry [] nbs' (snd (I, O))
+            =                                                                                   (snd.1)
+                I : addNBConCarry [] nbs' O
+            =                                                                                   (HI)
+                (I:nbs')
+
+            -- LADO DERECHO
+
+                (I:nbs')
+
+                -- Ambos lados llegan a lo mismo, el caso es válido.
+
+            Caso 2 (nb = O):
+
+            -- LADO IZQUIERDO
+
+                addNBConCarry [] (O:nbs') O
+            =                                                                                   (addNBConCarry.2)
+                fst (addDBConCarry O O O) : addNBConCarry [] nbs' (snd (addDBConCarry O O O))
+            =                                                                                   (addDBConCarry.3)
+                fst (O, O) : addNBConCarry [] nbs' (snd (O, O))
+            =                                                                                   (fst.1)
+                O : addNBConCarry [] nbs' (snd (O, O))
+            =                                                                                   (snd.1)
+                O : addNBConCarry [] nbs' O
+            =                                                                                   (HI)
+                (O:nbs')
+
+            -- LADO DERECHO
+
+                (O:nbs')
+
+                -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 3.B.IV:
@@ -3435,6 +3588,13 @@ addNBConCarry (nb:nbs) []       c = let (s', c') = addDBConCarry nb O c
                                         in s' : addNBConCarry nbs [] c'
 addNBConCarry (nb:nbs) (mb:mbs) c = let (s', c') = addDBConCarry nb mb c
                                         in s' : addNBConCarry nbs mbs c'
+
+addNBConCarry :: NBin -> NBin -> DigBin -> NBin
+addNBConCarry []       []       O = []
+addNBConCarry []       []       I = [I]
+addNBConCarry []       (mb:mbs) c = fst (addDBConCarry O mb c)  : addNBConCarry [] mbs (snd (addDBConCarry O mb c))
+addNBConCarry (nb:nbs) []       c = fst (addDBConCarry nb O c)  : addNBConCarry nbs [] (snd (addDBConCarry nb O c))
+addNBConCarry (nb:nbs) (mb:mbs) c = fst (addDBConCarry nb mb c) : addNBConCarry nbs mbs (snd (addDBConCarry nb mb c))
 
 
 -- LEMAS ALTERNATIVOS EN DEMOSTRACIONES:
