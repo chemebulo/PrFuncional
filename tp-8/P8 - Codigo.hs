@@ -2087,7 +2087,7 @@ Demostración:
 
 -- 3.B.III:
 
-¿para todo n1. para todo n2. evalNB (addNB n1 n2) = evalNB n1 + evalNB n2?
+¿para todo n1. para todo n2. evalNB (addNB n1 n2) = evalNB n1 + evalNB n2? TERMINAR
 
 
 
@@ -2469,45 +2469,237 @@ Demostración:
     Demostración caso inductivo:
         ¿n2nb (nb2n (nb:nbs')) = normalizarNB (nb:nbs')?
 
-    -- LADO IZQUIERDO
+        Caso 1 (nb = O):
 
-        n2nb (nb2n (nb:nbs'))
-    =                                           (Lema Nb2nNorm)
-        normalizarDB nb (n2nb (nb2n nbs'))
+        -- LADO IZQUIERDO
 
-    -- LADO DERECHO
+            n2nb (nb2n (O:nbs'))
+        =                                           (nb2n.2)
+            n2nb (dobleN (nb2n nbs'))
+        =                                           (Lema Nb2nNorm)
+            normalizarDB O (n2nb (nb2n nbs'))
+        =                                           (HI)
+            normalizarDB O (normalizarNB nbs')
 
-        normalizarNB (nb:nbs')
-    =                                           (normalizarNB.2)
-        normalizarDB nb (normalizarNB nbs')
-    =                                           (HI)
-        normalizarDB nb (n2nb (nb2n nbs'))
+        -- LADO DERECHO
 
-        -- Ambos lados llegan a lo mismo, el caso es válido yla propiedad también.
+            normalizarNB (O:nbs')
+        =                                           (normalizarNB.2)
+            normalizarDB O (normalizarNB nbs')
 
-    Lema Nb2nNorm: ¿para todo nb1. para todo nbs1. n2nb (nb2n (nb1:nbs1)) = normalizarDB nb1 (nb2n (nb2n nbs1))?
+            -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Caso 2 (nb = I):
+
+        -- LADO IZQUIERDO
+
+            n2nb (nb2n (I:nbs'))
+        =                                                   (nb2n.3)
+            n2nb (S (dobleN (nb2n nbs')))
+        =                                                   (n2nb.2)
+            succNB (n2nb (dobleN (nb2n nbs')))
+        =                                                   (Lema Nb2nNorm)
+            succNB (normalizarDB O (n2nb (nb2n nbs')))
+        =                                                   (HI)
+            succNB (normalizarDB O (normalizarNB nbs'))
+        =                                                   (Lema SuccNorm)
+            I : (normalizarNB nbs')
+
+        -- LADO DERECHO
+
+            normalizarNB (I:nbs')
+        =                                           (normalizarNB.2)
+            normalizarDB I (normalizarNB nbs')
+        =                                           (normalizarDB.2)
+            I : (normalizarNB nbs')
+
+            -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
+    Lema Nb2nNorm: ¿para todo n1. n2nb (dobleN n1) = normalizarDB O (n2nb n1)?
 
     Demostración:
-        Siendo nb' un elemento de tipo DigBit, nbs un elemento de tipo NBin. Por principio de inducción
-        sobre la estructura nbs es equivalente demostrar que:
+        Siendo n un elemento de tipo N. Por principio de inducción
+        sobre la estructura n es equivalente demostrar que:
 
-        Caso base (nbs = []):
-            ¿n2nb (nb2n (nb1:[]))?
+        Caso base (n = Z):
+            ¿n2nb (dobleN Z) = normalizarDB O (n2nb Z)?
+
+        Caso inductivo (n = (S n')):
+            Hipotesis inductiva:
+                ¡n2nb (dobleN n') = normalizarDB O (n2nb n')!
+
+            Tesis inductiva:
+                ¿n2nb (dobleN (S n')) = normalizarDB O (n2nb (S n'))?
+
+        Demostración caso base:
+            ¿n2nb (dobleN Z) = normalizarDB O (n2nb Z)?
+
+        -- LADO IZQUIERDO
+        
+            n2nb (dobleN Z)
+        =                               (dobleN.1)
+            n2nb Z
+        =                               (n2nb.1)
+            []
+
+        -- LADO DERECHO
+
+            normalizarDB O (n2nb Z)
+        =                               (n2nb.1)
+            normalizarDB O []
+        =                               (normalizarDB.2)
+            []
+
+            -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Demostración caso inductivo:
+            ¿n2nb (dobleN (S n')) = normalizarDB O (n2nb (S n'))?
+
+        -- LADO IZQUIERDO
+
+            n2nb (dobleN (S n'))
+        =                                                   (dobleN.2)
+            n2nb (S (S (dobleN n')))
+        =                                                   (n2nb.2)
+            succNB (n2nb (S (dobleN n')))
+        =                                                   (n2nb.2)
+            succNB (succNB (n2nb (dobleN n')))
+        =                                                   (HI)
+            succNB (succNB (normalizarDB O (n2nb n')))
+
+        -- LADO DERECHO
+            
+            normalizarDB O (n2nb (S n'))
+        =                                                   (n2nb.2)
+            normalizarDB O (succNB (n2nb n'))
+
+        Dado que es necesario evaluar por casos (n2nb n') que tiene tipo NBin, se lo llamará nbs:
+
+        Caso 1 (nbs = []):
+
+        -- LADO IZQUIERDO
+
+            succNB (succNB (normalizarDB O []))  
+        =                                                           (normalizarDB.1)
+            succNB (succNB [])  
+        =                                                           (succNB.1)
+            succNB [I]  
+        =                                                           (:)
+            succNB (I:[])  
+        =                                                           (succNB.3)
+            (O : succNB [])
+        =                                                           (succNB.1)
+            (O:[I])
+
+        -- LADO DERECHO
+
+            normalizarDB O (succNB [])
+        =                                                           (succNB.1)
+            normalizarDB O [I]
+        =                                                           (normalizarDB.2)
+            (O:[I])
+
+            -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Caso 2 (nbs = (O:nbs')):
+
+        -- LADO IZQUIERDO
+
+            succNB (succNB (normalizarDB O (O:nbs')))  
+        =                                                           (normalizarDB.2)
+            succNB (succNB (O:(O:nbs')))  
+        =                                                           (succNB.2)
+            succNB (I : (O:nbs'))  
+        =                                                           (succNB.3)
+            O : succNB (O:nbs')  
+        =                                                           (succNB.2)
+            O:(I:nbs')  
+
+        -- LADO DERECHO
+
+            normalizarDB O (succNB (O:nbs'))
+        =                                                           (succNB.2)
+            normalizarDB O (I:nbs')
+        =                                                           (normalizarDB.2)
+            O:(I:nbs')
+
+            -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Caso 2 (nbs = (I:nbs')):
+
+        -- LADO IZQUIERDO
+
+            succNB (succNB (normalizarDB O (I:nbs')))  
+        =                                                           (normalizarDB.2)
+            succNB (succNB (O:(I:nbs')))  
+        =                                                           (succNB.2)
+            succNB (I:(I:nbs'))  
+        =                                                           (succNB.3)
+            O : succNB (I:nbs')  
+        =                                                           (succNB.3)
+            O : (O : succNB nbs')  
+
+        -- LADO DERECHO
+
+            normalizarDB O (succNB (I:nbs'))
+        =                                                           (succNB.3)
+            normalizarDB O (O : succNB nbs')
+        =                                                           (normalizarDB.2)
+            O : (O : succNB nbs')
+
+            -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
+    Lema SuccNorm: ¿para todo nbs1. succNB (normalizarDB O nbs1) = (I:nbs1)?
+
+    Demostración:
+        Sea nbs un elemento cualquiera de tipo NBin (el cual está normalizado). Por principio de inducción
+        en la estructura nbs es equivalente demostrar que:
+
+        Caso base (nbs = []):  
+            ¿succNB (normalizarDB O []) = (I:[])?
 
         Caso inductivo (nbs = (nb:nbs')):
             Hipotesis inductiva:
-                ¡!
+                ¡succNB (normalizarDB O nbs') = (I:nbs')!
 
             Tesis inductiva:
-                ¿?
+                ¿succNB (normalizarDB O (nb:nbs')) = (I:(nb:nbs'))?
 
         Demostración caso base:
+            ¿succNB (normalizarDB O []) = (I:[])?
 
+        -- LADO IZQUIERDO
 
+            succNB (normalizarDB O [])
+        =                                       (normalizarDB.1)
+            succNB []
+        =                                       (succNB.1)
+            [I]
 
+        -- LADO DERECHO
+
+            (I:[])
+        =                                       (:)
+            [I]
+
+            -- Ambos lados llegan a lo mismo, el caso es válido.
 
         Demostración caso inductivo:
+            ¿succNB (normalizarDB O (nb:nbs')) = (I:(nb:nbs'))?
 
+        -- LADO IZQUIERDO
+
+            succNB (normalizarDB O (nb:nbs'))
+        =                                           (normalizarDB.2)
+            succNB (O : (nb:nbs'))
+        =                                           (succNB.2)
+            (I : (nb:nbs'))
+
+        -- LADO DERECHO
+
+            (I:(nb:nbs'))
+
+            -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 > Ejercicio 4:
@@ -3021,8 +3213,7 @@ Demostración:
 
         -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
-    Lema SimplSuma: Si cantidadDeSumaCero e' = 0 y cantidadDeSumaCero e'' = 0, entonces:
-        para todo e1. para todo e2. cantidadDeSumaCero (simplificarSuma e1 e2) = 0
+    Lema SimplSuma: Si cantidadDeSumaCero e' = 0 y cantidadDeSumaCero e'' = 0, entonces cantidadDeSumaCero (simplificarSuma e1 e2) = 0
 
         Demostración:
             Sea e' y e'' elementos cualquiera de tipo ExpA. Se verá que:
@@ -3082,8 +3273,7 @@ Demostración:
 
                 -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
-    Lema SimplProd: Si cantidadDeSumaCero e' = 0 y cantidadDeSumaCero e'' = 0, entonces:
-        para todo e1. para todo e2. cantidadDeSumaCero (simplificarProd e1 e2) = 0
+    Lema SimplProd: Si cantidadDeSumaCero e' = 0 y cantidadDeSumaCero e'' = 0, entonces cantidadDeSumaCero (simplificarProd e1 e2) = 0
 
         Demostración:
             Sea e' y e'' elementos cualquiera de tipo ExpA. Se verá que:
