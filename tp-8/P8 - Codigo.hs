@@ -2102,6 +2102,10 @@ Demostración:
     =                                       (addNB.1)
         evalNB (addNBConCarry nb1 nb2 O)
     =                                       (Lema EvalAddNB)
+        evalNB nb1 + evalNB nb2 + dbAsInt O
+    =                                       (dbAsInt.2)
+        evalNB nb1 + evalNB nb2 + O
+    =                                       (aritmética)
         evalNB nb1 + evalNB nb2
 
     -- LADO DERECHO
@@ -2110,137 +2114,301 @@ Demostración:
 
         -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
-    Lema EvalAddNB: ¿para todo n1. para todo n2. evalNB (addNBConCarry n1 n2 O) = evalNB n1 + evalNB n2?
+    Lema EvalAddNB: ¿para todo n1. para todo n2. para todo c1. evalNB (addNBConCarry n1 n2 c1) = evalNB n1 + evalNB n2 + dbAsInt c1?
 
     Demostración:
-        Sea nb1 y nb2 elementos cualquiera de tipo NBin (los cuales están normalizados). Por principio de inducción
-        sobre la estructura nb1 es equivalente demostrar que:
+        Sea nb1 y nb2 elementos cualquiera de tipo NBin (los cuales están normalizados), y c un elemento de tipo DigBit.
+        Por principio de inducción sobre la estructura nb1 es equivalente demostrar que:
 
         Caso base (nb1 = []):
-            ¿evalNB (addNBConCarry [] nb2 O) = evalNB [] + evalNB nb2?
+            ¿evalNB (addNBConCarry [] nb2 c) = evalNB [] + evalNB nb2 + dbAsInt c?
 
         Caso inductivo (nb1 = (nb:nbs')):
             Hipotesis inductiva:
-                ¡evalNB (addNBConCarry nbs' nb2 O) = evalNB nbs' + evalNB nb2!
+                ¡evalNB (addNBConCarry nbs' nb2 c) = evalNB nbs' + evalNB nb2 + dbAsInt c!
 
             Tesis inductiva:
-                ¿evalNB (addNBConCarry (nb:nbs') nb2 O) = evalNB (nb:nbs') + evalNB nb2?
+                ¿evalNB (addNBConCarry (nb:nbs') nb2 c) = evalNB (nb:nbs') + evalNB nb2 + dbAsInt c?
 
         Demostración caso base:
-            ¿evalNB (addNBConCarry [] nb2 O) = evalNB [] + evalNB nb2?
+            ¿evalNB (addNBConCarry [] nb2 c) = evalNB [] + evalNB nb2 + dbAsInt c?
 
         -- LADO IZQUIERDO
 
-            evalNB (addNBConCarry [] nb2 O)
+            evalNB (addNBConCarry [] nb2 c)
         =                                           (Lema AddNB2)
-            evalNB nb2
+            evalNB nb2 + dbAsInt c
 
         -- LADO DERECHO
 
-            evalNB [] + evalNB nb2
+            evalNB [] + evalNB nb2 + dbAsInt c
         =                                           (evalNB.1)
-            0 + evalNB nb2
+            0 + evalNB nb2 + dbAsInt c
         =                                           (aritmética)
-            evalNB nb2
+            evalNB nb2 + dbAsInt c
 
             -- Ambos lados llegan a lo mismo, el caso es válido.
 
         Demostración caso inductivo:
-            ¿evalNB (addNBConCarry (nb:nbs') nb2 O) = evalNB (nb:nbs') + evalNB nb2?
+            ¿evalNB (addNBConCarry (nb:nbs') nb2 c) = evalNB (nb:nbs') + evalNB nb2 + dbAsInt c?
 
         -- LADO IZQUIERDO
 
-            evalNB (addNBConCarry (nb:nbs') nb2 O)
+            evalNB (addNBConCarry (nb:nbs') nb2 c)
 
             TERMINAR
 
+
+
+
+
         -- LADO DERECHO
 
-            evalNB (nb:nbs') + evalNB nb2
-        =                                                       (evalNB.2)
-            dbAsInt nb + (2 * evalNB nbs') + evalNB nb2
+            evalNB (nb:nbs') + evalNB nb2 + dbAsInt c
 
             -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
-        Lema AddNB2: ¿para todo n2. addNBConCarry [] n2 O = n2?
+        Lema AddNB2: ¿para todo nb. evalNB (addNBConCarry [] nb db) = evalNB nb + dbAsInt db?
 
         Demostración:
-            Sea nb2 un elemento cualquiera de tipo NBin (el cual está normalizado). Por principio de inducción
-            sobre la estructura nb2 es equivalente demostrar que:
+            Sea nb1 un elemento cualquiera de tipo NBin (el cual está normalizado), y c de tipo DigBit.
+            Por principio de inducción sobre la estructura nb1 es equivalente demostrar que:
 
-            Caso base (nb2 = []):
-                ¿addNBConCarry [] [] O = []?
+            Caso base (nb1 = []):
+                ¿evalNB (addNBConCarry [] [] c) = evalNB [] + dbAsInt c?
 
-            Caso inductivo (nb2 = (nb:nbs')):
+            Caso inductivo (nb1 = (nb:nbs')):
                 Hipotesis inductiva:
-                    ¡addNBConCarry [] nbs' O = nbs'!
+                    ¡evalNB (addNBConCarry [] nbs' c) = evalNB nbs' + dbAsInt c!
 
                 Tesis inductiva:
-                    ¿addNBConCarry [] (nb:nbs') O = (nb:nbs')?
+                    ¿evalNB (addNBConCarry [] (nb:nbs') c) = evalNB (nb:nbs') + dbAsInt c?
 
             Demostración caso base:
-                ¿addNBConCarry [] [] O = []?
+                ¿evalNB (addNBConCarry [] [] c) = evalNB [] + dbAsInt c?
 
             -- LADO IZQUIERDO
 
-                addNBConCarry [] [] O
+                evalNB (addNBConCarry [] [] c)
             =                                       (addNBConCarry.1)
-                carryToNBin O
-            =                                       (carryToNBin.1)
-                []
+                evalNB (carryToNBin c)
+            =                                       (Lema Carry2NBin)
+                dbAsInt c
 
             -- LADO DERECHO
 
-                []
+                evalNB [] + dbAsInt c
+            =                                       (evalNB.1)
+                0 + dbAsInt c
+            =                                       (aritmética)
+                dbAsInt c
 
                 -- Ambos lados llegan a lo mismo, el caso es válido.
 
             Demostración caso inductivo:
-                ¿addNBConCarry [] (nb:nbs') O = (nb:nbs')?
+                ¿evalNB (addNBConCarry [] (nb:nbs') c) = evalNB (nb:nbs') + dbAsInt c?
 
-            Caso 1 (nb = I):
+            Caso 1 (nb = I, c = O):
 
             -- LADO IZQUIERDO
 
-                addNBConCarry [] (I:nbs') O
+                evalNB (addNBConCarry [] (I:nbs') O)
             =                                                                                   (addNBConCarry.2)
-                fst (addDBConCarry O I O) : addNBConCarry [] nbs' (snd (addDBConCarry O I O))
+                evalNB (fst (addDBConCarry O I O) : addNBConCarry [] nbs' (snd (addDBConCarry O I O)))
             =                                                                                   (addDBConCarry.5)
-                fst (I, O) : addNBConCarry [] nbs' (snd (addDBConCarry O I O))
+                evalNB (fst (I, O) : addNBConCarry [] nbs' (snd (addDBConCarry O I O)))
             =                                                                                   (addDBConCarry.5)
-                fst (I, O) : addNBConCarry [] nbs' (snd (I, O))
+                evalNB (fst (I, O) : addNBConCarry [] nbs' (snd (I, O)))
             =                                                                                   (fst.1)
-                I : addNBConCarry [] nbs' (snd (I, O))
+                evalNB (I : addNBConCarry [] nbs' (snd (I, O)))
             =                                                                                   (snd.1)
-                I : addNBConCarry [] nbs' O
+                evalNB (I : addNBConCarry [] nbs' O)
+            =                                                                                   (evalNB.2)
+                dbAsInt I + (2 * (addNBConCarry [] nbs' O))
             =                                                                                   (HI)
-                (I:nbs')
+                dbAsInt I + (2 * (evalNB nbs' + dbAsInt O))
+            =                                                                                   (aritmética)
+                dbAsInt I + (2 * evalNB nbs') + (2 * dbAsInt O)
+            =                                                                                   (dbAsInt.2)
+                dbAsInt I + (2 * evalNB nbs') + (2 * 0)
+            =                                                                                   (aritmética)
+                dbAsInt I + (2 * evalNB nbs')
 
             -- LADO DERECHO
 
-                (I:nbs')
+                evalNB (I:nbs') + dbAsInt O
+            =                                                                                   (evalNB.2)
+                dbAsInt I + (2 * evalNB nbs') + dbAsInt O
+            =                                                                                   (dbAsInt.2)
+                dbAsInt I + (2 * evalNB nbs') + 0
+            =                                                                                   (aritmética)
+                dbAsInt I + (2 * evalNB nbs')
 
                 -- Ambos lados llegan a lo mismo, el caso es válido.
 
-            Caso 2 (nb = O):
+            Caso 2 (nb = I, c = I):
 
             -- LADO IZQUIERDO
 
-                addNBConCarry [] (O:nbs') O
+                evalNB (addNBConCarry [] (I:nbs') I)
             =                                                                                   (addNBConCarry.2)
-                fst (addDBConCarry O O O) : addNBConCarry [] nbs' (snd (addDBConCarry O O O))
-            =                                                                                   (addDBConCarry.3)
-                fst (O, O) : addNBConCarry [] nbs' (snd (O, O))
+                evalNB (fst (addDBConCarry O I I) : addNBConCarry [] nbs' (snd (addDBConCarry O I I)))
+            =                                                                                   (addDBConCarry.4)
+                evalNB (fst (O, I) : addNBConCarry [] nbs' (snd (addDBConCarry O I I)))
+            =                                                                                   (addDBConCarry.4)
+                evalNB (fst (O, I) : addNBConCarry [] nbs' (snd (O, I)))
             =                                                                                   (fst.1)
-                O : addNBConCarry [] nbs' (snd (O, O))
+                evalNB (O : addNBConCarry [] nbs' (snd (O, I)))
             =                                                                                   (snd.1)
-                O : addNBConCarry [] nbs' O
+                evalNB (O : addNBConCarry [] nbs' I)
+            =                                                                                   (evalNB.2)
+                dbAsInt O + (2 * (addNBConCarry [] nbs' I))
             =                                                                                   (HI)
-                (O:nbs')
+                dbAsInt O + (2 * (evalNB nbs' + dbAsInt I))
+            =                                                                                   (aritmética)
+                dbAsInt O + (2 * evalNB nbs') + (2 * dbAsInt I)
+            =                                                                                   (dbAsInt.1)
+                dbAsInt O + (2 * evalNB nbs') + (2 * 1)
+            =                                                                                   (dbAsInt.2)
+                0 + (2 * evalNB nbs') + (2 * 1)
+            =                                                                                   (aritmética)
+                2 + (2 * evalNB nbs')
 
             -- LADO DERECHO
 
-                (O:nbs')
+                evalNB (I:nbs') + dbAsInt I
+            =                                                                                   (evalNB.2)
+                dbAsInt I + (2 * evalNB nbs') + dbAsInt I
+            =                                                                                   (dbAsInt.1)
+                dbAsInt I + (2 * evalNB nbs') + 1
+            =                                                                                   (dbAsInt.1)
+                1 + (2 * evalNB nbs') + 1
+            =                                                                                   (aritmética)
+                2 + (2 * evalNB nbs')
+
+                -- Ambos lados llegan a lo mismo, el caso es válido.
+
+            Caso 3 (nb = O, c = O):
+
+            -- LADO IZQUIERDO
+
+                evalNB (addNBConCarry [] (O:nbs') O)
+
+                evalNB (fst (addDBConCarry O O O) : addNBConCarry [] nbs' (snd (addDBConCarry O O O)))
+            =                                                                                   (addDBConCarry.4)
+                evalNB (fst (O, O) : addNBConCarry [] nbs' (snd (addDBConCarry O O O)))
+            =                                                                                   (addDBConCarry.4)
+                evalNB (fst (O, O) : addNBConCarry [] nbs' (snd (O, O)))
+            =                                                                                   (fst.1)
+                evalNB (O : addNBConCarry [] nbs' (snd (O, O)))
+            =                                                                                   (snd.1)
+                evalNB (O : addNBConCarry [] nbs' O)
+            =                                                                                   (evalNB.2)
+                dbAsInt O + (2 * (addNBConCarry [] nbs' O))
+            =                                                                                   (HI)
+                dbAsInt O + (2 * (evalNB nbs' + dbAsInt O))
+            =                                                                                   (aritmética)
+                dbAsInt O + (2 * evalNB nbs') + (2 * dbAsInt O)
+            =                                                                                   (dbAsInt.2)
+                dbAsInt O + (2 * evalNB nbs') + (2 * 0)
+            =                                                                                   (dbAsInt.2)
+                0 + (2 * evalNB nbs') + (2 * 0)
+            =                                                                                   (aritmética)
+                (2 * evalNB nbs')
+
+            -- LADO DERECHO
+
+                evalNB (O:nbs') + dbAsInt O
+            =                                                                                   (evalNB.2)
+                dbAsInt O + (2 * evalNB nbs') + dbAsInt O
+            =                                                                                   (dbAsInt.2)
+                dbAsInt O + (2 * evalNB nbs') + 0
+            =                                                                                   (dbAsInt.2)
+                0 + (2 * evalNB nbs') + 0
+            =                                                                                   (aritmética)
+                (2 * evalNB nbs')
+
+                -- Ambos lados llegan a lo mismo, el caso es válido.
+
+            Caso 4 (nb = O, c = I):
+
+            -- LADO IZQUIERDO
+
+                evalNB (addNBConCarry [] (O:nbs') I)
+            =                                                                                   (addNBConCarry.2)
+                evalNB (fst (addDBConCarry O O I) : addNBConCarry [] nbs' (snd (addDBConCarry O O I)))
+            =                                                                                   (addDBConCarry.4)
+                evalNB (fst (I, O) : addNBConCarry [] nbs' (snd (addDBConCarry O O I)))
+            =                                                                                   (addDBConCarry.4)
+                evalNB (fst (I, O) : addNBConCarry [] nbs' (snd (I, O)))
+            =                                                                                   (fst.1)
+                evalNB (I : addNBConCarry [] nbs' (snd (I, O)))
+            =                                                                                   (snd.1)
+                evalNB (I : addNBConCarry [] nbs' O)
+            =                                                                                   (evalNB.2)
+                dbAsInt I + (2 * (addNBConCarry [] nbs' O))
+            =                                                                                   (HI)
+                dbAsInt I + (2 * (evalNB nbs' + dbAsInt O))
+            =                                                                                   (aritmética)
+                dbAsInt I + (2 * evalNB nbs') + (2 * dbAsInt O)
+            =                                                                                   (dbAsInt.2)
+                dbAsInt I + (2 * evalNB nbs') + (2 * O)
+            =                                                                                   (aritmética)
+                dbAsInt I + (2 * evalNB nbs')
+
+            -- LADO DERECHO
+
+                evalNB (O:nbs') + dbAsInt I
+            =                                                                                   (evalNB.2)
+                dbAsInt O + (2 * evalNB nbs') + dbAsInt I
+            =                                                                                   (dbAsInt.2)
+                0 + (2 * evalNB nbs') + dbAsInt I
+            =                                                                                   (aritmética)
+                dbAsInt I + (2 * evalNB nbs')
+
+                -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
+        Lema Carry2NBin: para todo db. evalNB (carryToNBin db) = dbAsInt db
+
+        Demostración:
+            Sea c un elemento cualquiera de tipo DigBin. Se verá que:
+            evalNB (carryToNBin c) = dbAsInt c
+
+            Caso 1 (c = I):
+
+            -- LADO IZQUIERDO
+
+                evalNB (carryToNBin I)
+            =                                   (carryToNBin.2)
+                evalNB [I]
+            =                                   (evalNB.2)
+                dbAsInt I + evalNB []
+            =                                   (evalNB.1)
+                dbAsInt I + 0
+            =                                   (aritmética)
+                dbAsInt I 
+
+            -- LADO DERECHO
+
+                dbAsInt I
+
+                -- Ambos lados llegan a lo mismo, el caso es válido.
+
+            Caso 2 (c = O):
+
+            -- LADO IZQUIERDO
+
+                evalNB (carryToNBin O)
+            =                                   (carryToNBin.1)
+                evalNB []
+            =                                   (evalNB.1)
+                0
+
+            -- LADO DERECHO
+
+                dbAsInt O
+            =                                   (dbAsInt.2)
+                0
 
                 -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
