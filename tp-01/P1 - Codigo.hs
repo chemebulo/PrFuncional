@@ -6,14 +6,14 @@
 
 > Ejercicio 1:
 
-- Expresión 1:  10 - 6
-- Expresión 2:  2 * 2
-- Expresión 3:  doble 2
-- Expresión 4:  doble (doble 1)
-- Expresión 5:  doble 1 + doble 1
-- Expresión 6:  (\n -> (+) 2 2) 99
-- Expresión 7:  (\n -> (4*) 1) 99
-- Expresión 8:  cuadruple 1
+--  10 - 6
+--  2 * 2
+--  doble 2
+--  doble (doble 1)
+--  doble 1 + doble 1
+--  (\n -> (+) 2 2) 99
+--  (\n -> (4*) 1) 99
+--  cuadruple 1
 
 
 > Ejercicio 2:
@@ -31,7 +31,7 @@
 
 > Ejercicio 3:
 
--- 3.A
+-- 3.A:
 
     cuadruple 2
 ->                          (def. cuadruple, x <- 2)
@@ -39,7 +39,7 @@
 ->                          (aritmética)
     8
 
--- 3.B
+-- 3.B:
 
     cuadruple (cuadruple 2)
 ->                          (def. cuadruple, x <- cuadruple 2)
@@ -68,7 +68,7 @@ sumarDos n = n + 2
 
 twice succ = sumarDos
 
--- LADO IZQUIERDO
+-- LADO IZQUIERDO:
 
     (twice succ) 2
 ->                      (def. twice, f <- succ)
@@ -82,7 +82,7 @@ twice succ = sumarDos
 ->                      (aritmética)
     4
 
--- LADO DERECHO
+-- LADO DERECHO:
 
     sumarDos 2
 ->                      (def. sumarDos, n <- 2)
@@ -95,15 +95,64 @@ twice succ = sumarDos
 
 > Ejercicio 6:
 
-- Expresión 1: doble = (\n -> n * 2)
+-- doble = (\n -> n * 2)
 
-- Expresión 2:  
+-- sumarDos = twice succ 
 
-- Expresión 3: 
+-- twice (2*) = cuadruple 
 
 
 > Ejercicio 7:
 
     ((twice twice) doble) 3
 ->                                  (def. twice, f <- twice)
-    ...
+    ...-
+
+
+
+> Ejercicio 8:
+
+-- 8.A: 
+
+triple = (\n -> n * 3)
+
+-- 8.B: 
+
+succ = (\n -> n + 1)
+
+-- 8.C: 
+
+sumarDos = (\n -> n + 2)
+
+-- 8.D: 
+
+twice = (\f -> (\ x -> f (f x)))
+
+-- 8.E: 
+
+twice twice = (\f -> (\x -> f (f (f (f x)))))
+
+
+> Ejercicio 9:
+
+-- 9.A:
+
+f x = let (y, z) = (x, x)
+      in y
+
+-- 9.B: 
+
+f (x, y) = let z = x + y 
+            in g (z, y)
+    where g (a,b) = a - b
+
+-- 9.C:
+
+f p = case p of (x,y)
+        -> x
+
+
+-- 9.D:
+
+f = \ p -> let (x, y) = p 
+           in y
