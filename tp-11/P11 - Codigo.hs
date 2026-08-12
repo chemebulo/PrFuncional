@@ -218,25 +218,29 @@ Para todo f. cantidadCapasQueCumplen f . soloLasCapasQue f = cantidadCapasQueCum
 -- 7.A
 
 map :: (a -> b) -> [a] -> [b]
-
+map f []     = []
+map f (x:xs) = f x : map f xs
 
 
 -- 7.B
 
 filter :: (a -> Bool) -> [a] -> [a]
-
+filter f []     = []
+filter f (x:xs) = if f x then x : filter f xs else filter f xs
 
 
 -- 7.C
 
 foldr :: (a -> b -> b) -> b -> [a] -> b
-
+foldr f z []     = z
+foldr f z (x:xs) = f x (foldr f z xs)
 
 
 -- 7.D
 
 recr :: b -> (a -> [a] -> b -> b) -> [a] -> b
-
+recr z f []     = z
+recr z f (x:xs) = f x xs (recr z f xs)
 
 
 -- 7.E
