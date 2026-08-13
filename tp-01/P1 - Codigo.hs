@@ -105,9 +105,34 @@ twice succ = sumarDos
 > Ejercicio 7:
 
     ((twice twice) doble) 3
-->                                  (def. twice, f <- twice)
-    ...-
-
+->                                                      (def. twice, f <- twice)
+    (g doble) 3
+->                                                      (def. g, x <- doble)
+    twice (twice doble) 3
+->                                                      (def. twice, f <- twice doble)
+    g' 3
+->                                                      (def. g', x <- 3)
+    twice doble (twice doble 3) 
+->                                                      (def. twice, f <- doble)
+    g'' (twice doble 3)
+->                                                      (def. g'', x <- (twice doble 3))
+    doble (doble (twice doble 3))
+->                                                      (def. twice, f <- doble)
+    doble (doble (g''' 3))
+->                                                      (def. g''', f <- doble)
+    doble (doble (doble (doble 3)))
+->                                                      (def. doble, x <- 3)
+    doble (doble (doble (3 + 3)))
+->                                                      (def. doble, x <- (3 + 3))
+    doble (doble ((3 + 3) + (3 + 3)))
+->                                                      (aritmética)
+    doble (doble 12)
+->                                                      (def. doble, x <- 12)
+    doble (12 + 12)
+->                                                      (def. doble, x <- (12 + 12))
+    (12 + 12) + (12 + 12)
+->                                                      (aritmética)
+    48
 
 
 > Ejercicio 8:
@@ -140,19 +165,29 @@ twice twice = (\f -> (\x -> f (f (f (f x)))))
 f x = let (y, z) = (x, x)
       in y
 
+f = id
+
+
 -- 9.B: 
 
 f (x, y) = let z = x + y 
             in g (z, y)
     where g (a,b) = a - b
 
+f = fst
+
+
 -- 9.C:
 
 f p = case p of (x,y)
         -> x
+
+f = fst
 
 
 -- 9.D:
 
 f = \ p -> let (x, y) = p 
            in y
+
+f = fst
