@@ -72,10 +72,10 @@ twice succ = sumarDos
 
     (twice succ) 2
 ->                      (def. twice, f <- succ)
-    g 2
-->                      (def. twice, x <- 2)
+    g 2                     (donde g x = succ (succ x))
+->                      (def. g, x <- 2)
     succ (succ 2)
-->                      (def. succ, x <- succ 2)
+->                      (def. succ, x <- (succ 2))
     (succ 2) + 1
 ->                      (def. succ, x <- 2)
     (2 + 1) + 1
@@ -106,20 +106,20 @@ twice succ = sumarDos
 
     ((twice twice) doble) 3
 ->                                                      (def. twice, f <- twice)
-    (g doble) 3
+    (g doble) 3                                             (donde g x = twice (twice x))
 ->                                                      (def. g, x <- doble)
-    twice (twice doble) 3
+    (twice (twice doble)) 3
 ->                                                      (def. twice, f <- twice doble)
-    g' 3
+    g' 3                                                    (donde g' x = (twice doble) ((twice doble) x))
 ->                                                      (def. g', x <- 3)
-    twice doble (twice doble 3) 
+    (twice doble) ((twice doble) 3) 
 ->                                                      (def. twice, f <- doble)
-    g'' (twice doble 3)
-->                                                      (def. g'', x <- (twice doble 3))
-    doble (doble (twice doble 3))
+    g'' ((twice doble) 3)                                   (donde g'' x = doble (doble x))
+->                                                      (def. g'', x <- ((twice doble) 3))
+    doble (doble ((twice doble) 3))
 ->                                                      (def. twice, f <- doble)
-    doble (doble (g''' 3))
-->                                                      (def. g''', f <- doble)
+    doble (doble (g''' 3))                                  (donde g''' x = doble (doble x))
+->                                                      (def. g''', x <- 3)
     doble (doble (doble (doble 3)))
 ->                                                      (def. doble, x <- 3)
     doble (doble (doble (3 + 3)))
