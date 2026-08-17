@@ -152,14 +152,14 @@ appDist f = g
 
 -- 3.F
 
-flip :: ...
+flip :: (a -> (b -> c)) -> (b -> (a -> c)) -- Es la opción III.
 flip f = h
     where h x = k
         where k y = (f y) x
 
 -- 3.G
 
-subst :: ...
+subst :: (a -> (b -> c)) -> ((a -> b) -> (a -> c)) -- Es la opción VI.
 subst f = h
     where h g = k
         where k x = (f x) (g x)
@@ -188,18 +188,24 @@ True && not False
 
 -- 5.D
 
-
-
+...
+...
 
 -- 5.E
 
-
+...
+...
 
 -- 5.F
 
-
+...
+...
 
 -- 5.G
 
+...
+...
 
+
+> Ejercicio 6:
 
