@@ -277,35 +277,24 @@ True && not False
 
 -- 7.A
 
-appFork (id,id)
-
-
+appFork (id, id) = appDup id
 
 -- 7.B
 
-\f -> appDup (appDist f)
-
-
+(\f -> appDup (appDist f)) = appDup appFork
 
 -- 7.C
 
-appDup id
-
-
+appDup id = appFork (id, id)
 
 -- 7.D
 
-appDup appFork
-
-
+appDup appFork = (\f -> appDup (appDist f))
 
 -- 7.E
 
-flip (appDup const)
-
-
+flip (appDup const) = const (appDup id)
 
 -- 7.F
 
-const (appDup id)
-
+const (appDup id) = flip (appDup const) 
