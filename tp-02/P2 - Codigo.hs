@@ -167,6 +167,41 @@ subst f = h
 
 > Ejercicio 4:
 
+-- 4.A 
+
+1 && 2 == 2 :: No tiene tipo.
+
+-- 4.B
+
+1 + if 3 < 5 then 3 else 5 :: Int
+
+-- 4.C
+
+let par = (True, 4) in (if first par then first par else second par) :: No tiene tipo.
+
+-- 4.D
+
+(doble doble) 5 :: No tiene tipo.
+ 
+-- 4.E
+
+doble (doble 5) :: Int
+
+-- 4.F
+
+twice first :: No tiene tipo.
+
+-- 4.G
+
+(twice doble) doble :: No tiene tipo.
+
+-- 4.H
+
+(twice twice) first :: No tiene tipo.
+
+-- 4.I
+
+apply apply :: (a -> b) -> a -> b
 
 
 > Ejercicio 5:
@@ -188,24 +223,89 @@ True && not False
 
 -- 5.D
 
-...
-...
+(\(n, c) -> (c == 'e') && (5 < n))
+(\(n, c) -> (c == 'f') && (n > 5))
 
 -- 5.E
 
-...
-...
+(\fn -> fn (fn 3))
+(\fn -> doble (fn 2))
 
 -- 5.F
 
-...
-...
+((\b -> True && b), 10 + 5)
+((\b -> not b), 5)
 
 -- 5.G
 
-...
-...
+(\x -> True)
+(\x -> const False x)
 
 
 > Ejercicio 6:
+
+-- 6.A
+
+(\p -> let (f, g) = p in \x -> (f x, g x)) -- Es equivalente a appFork. El comportamiento es el mismo.
+
+-- 6.B
+
+(\f -> (\g -> (\x -> f x (g x)))) -- Es equivalente a subst. El comportamiento es el mismo.
+
+-- 6.C
+
+(\f -> (\x -> (\y -> (f y) x))) -- Es equivalente a flip. El comportamiento es el mismo.
+
+-- 6.D
+
+(\f -> (\px -> let (x, y) = px in (f x, f y))) -- Es equivalente a appDist. El comportamiento es el mismo.
+
+-- 6.E
+
+(\x -> (\y -> x)) -- Es equivalente a const. El comportamiento es el mismo.
+
+-- 6.F
+
+(\pf -> let (f, g) = pf in \px -> let (x, y) = px in (f x, g y)) -- Es equivalente a appPar. El comportamiento es el mismo.
+
+-- 6.G
+
+(\f -> (\x -> f (x, x))) -- Es equivalente a appDup. El comportamiento es el mismo.
+
+
+> Ejercicio 7:
+
+-- 7.A
+
+appFork (id,id)
+
+
+
+-- 7.B
+
+\f -> appDup (appDist f)
+
+
+
+-- 7.C
+
+appDup id
+
+
+
+-- 7.D
+
+appDup appFork
+
+
+
+-- 7.E
+
+flip (appDup const)
+
+
+
+-- 7.F
+
+const (appDup id)
 
