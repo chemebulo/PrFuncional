@@ -246,31 +246,38 @@ True && not False
 
 -- 6.A
 
-(\p -> let (f, g) = p in \x -> (f x, g x)) -- Es equivalente a appFork. El comportamiento es el mismo.
+(\p -> let (f, g) = p in \x -> (f x, g x))
+-- Es equivalente a appFork. El comportamiento es el mismo.
 
 -- 6.B
 
-(\f -> (\g -> (\x -> f x (g x)))) -- Es equivalente a subst. El comportamiento es el mismo.
+(\f -> (\g -> (\x -> f x (g x))))
+-- Es equivalente a subst. El comportamiento es el mismo.
 
 -- 6.C
 
-(\f -> (\x -> (\y -> (f y) x))) -- Es equivalente a flip. El comportamiento es el mismo.
+(\f -> (\x -> (\y -> (f y) x)))
+-- Es equivalente a flip. El comportamiento es el mismo.
 
 -- 6.D
 
-(\f -> (\px -> let (x, y) = px in (f x, f y))) -- Es equivalente a appDist. El comportamiento es el mismo.
+(\f -> (\px -> let (x, y) = px in (f x, f y)))
+-- Es equivalente a appDist. El comportamiento es el mismo.
 
 -- 6.E
 
-(\x -> (\y -> x)) -- Es equivalente a const. El comportamiento es el mismo.
+(\x -> (\y -> x))
+-- Es equivalente a const. El comportamiento es el mismo.
 
 -- 6.F
 
-(\pf -> let (f, g) = pf in \px -> let (x, y) = px in (f x, g y)) -- Es equivalente a appPar. El comportamiento es el mismo.
+(\pf -> let (f, g) = pf in \px -> let (x, y) = px in (f x, g y))
+-- Es equivalente a appPar. El comportamiento es el mismo.
 
 -- 6.G
 
-(\f -> (\x -> f (x, x))) -- Es equivalente a appDup. El comportamiento es el mismo.
+(\f -> (\x -> f (x, x)))
+-- Es equivalente a appDup. El comportamiento es el mismo.
 
 
 > Ejercicio 7:
