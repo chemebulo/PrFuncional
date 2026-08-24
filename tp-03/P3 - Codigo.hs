@@ -111,39 +111,73 @@ compose :: (b -> c) -> (a -> b) -> a -> c
 
 -- 5.A
 
+appDup :: ((a, a) -> b) -> (a -> b)
 appDup f = g 
     where g x = f (x, x) 
 
-appDup = 
+appDup :: ((a, a) -> b) -> (a -> b)
+appDup = \f -> (\x -> f (x, x))
 
 -- 5.B
 
+appFork :: (a -> b, a -> c) -> (a -> (b, c))
 appFork (f, g) = h 
     where h x = (f x, g x) 
 
-appFork = 
+appFork :: (a -> b, a -> c) -> (a -> (b, c))
+appFork = \(f, g) -> (\x -> (f x, g x))
 
 -- 5.C
 
+appPar :: (a -> b, c -> d) -> ((a, c) -> (b, d))
 appPar (f, g) = h 
     where h (x, y) = (f x, g y) 
 
-appPar = 
+appPar :: (a -> b, c -> d) -> ((a, c) -> (b, d))
+appPar = \(f, g) -> (\(x, y) -> (f x, g y))
 
 -- 5.D
 
+appDist :: (a -> b) -> ((a, a) -> (b, b))
 appDist f = g 
     where g (x, y) = (f x, f y) 
 
-appDist = 
+appDist :: (a -> b) -> ((a, a) -> (b, b))
+appDist = \f -> (\(x, y) -> (f x, f y))
 
 -- 5.E
 
+subst :: (a -> b -> c) -> ((a -> b) -> a -> c)
 subst f = h 
     where h g = k 
         where k x = (f x) (g x)
 
-subst = 
+subst :: (a -> b -> c) -> ((a -> b) -> a -> c)
+subst = \f -> (\g -> (\x -> (f x) (g x)))
+
 
 > Ejercicio 6:
 
+-- 6.A
+
+compose (fst snd)
+
+
+-- 6.B
+
+(uncurry curry snd)
+
+
+-- 6.C
+
+(apply id) ((id apply) apply)
+
+
+-- 6.D
+
+compose (compose doble doble)
+
+
+-- 6.E
+
+(compose compose) doble doble
