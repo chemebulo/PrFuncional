@@ -189,47 +189,71 @@ many 0 f x = x
 many n f x = f (many (n-1) f x)
 
 many :: Int -> (a -> a) -> a -> a
-many 0 f x = id x
-many n f x = ...
+many 0 f = id
+many n f = f . (many (n-1) f)
 
 
 > Ejercicio 8:
 
 -- 8.A
 
-(Int -> Int) -> (Int -> Int) 
+(Int -> Int) -> Int -> Int
+-- Castellano: Es una función que toma una función que toma un entero y devuelve un entero, y devuelve una función que toma
+--             un entero y devuelve un entero.
+-- Frances: Es una función que toma una función que toma un entero y devuelve un entero, un entero y devuelve un entero.
 
 -- 8.B
 
-(a -> (b -> c)) -> (a -> b) -> c 
+(a -> b -> c) -> a -> b -> c 
+-- Castellano: Es una función que toma una función y devuelve una función que toma un elemento de tipo a, que devuelve una
+--             función que toma un elemento de tipo b, que devuelve un elemento de tipo c.
+-- Frances: Es una función que toma una función, un elemento de tipo a, un elemento de tipo b, y devuelve un elemento de tipo c.
 
 -- 8.C
 
-(a -> b, c -> d) -> ((a, c) -> (b, d)) 
+(a -> b, c -> d) -> (a, c) -> (b, d)
+-- Castellano: Es una función que toma un par compuesto de funciones, que devuelve una función que toma un par, que devuelve un par.
+-- Frances: Es una función que toma un par compuesto funciones, un par y devuelve un par.
 
 -- 8.D
 
-((a, a) -> b) -> (a -> b) 
+((a, a) -> b) -> a -> b 
+-- Castellano: Es una función que toma una función y devuelve una función que toma un elemento de tipo a y devuelve un elemento de tipo b.
+-- Frances: Es una función que toma una función, un elemento de tipo a, y devuelve un elemento de tipo b.
 
 -- 8.E
 
-(a -> (b -> c)) -> (b -> (a -> c)) 
+(a -> b -> c) -> b -> a -> c 
+-- Castellano: Es una función que toma una función y devuelve una función que toma un elemento de tipo b, que devuelve una función
+--             que toma un elemento de tipo a y devuelve un elemento de tipo c.
+-- Frances: Es una función que toma una función, un elemento de tipo b, un elemento de tipo a, y devuelve un elemento de tipo c.
 
 -- 8.F
 
-(a -> b) -> ((a, a) -> (b, b)) 
+(a -> b) -> (a, a) -> (b, b)
+-- Castellano: Es una función que toma una función y devuelve una función que toma un par, y devuelve un par.
+-- Frances: Es una función que toma una función, un par, y devuelve un par.
 
 -- 8.G
 
-(a -> b, a -> c) -> (a -> (b, c)) 
+(a -> b, a -> c) -> a -> (b, c)
+-- Castellano: Es una función que toma un par compuesto por funciones, y devuelve una función que toma un elemento de tipo a, y
+--             devuelve un par.
+-- Frances: Es una función que toma un par compuesto por funciones, un elemento de tipo a, y devuelve un par.
 
 -- 8.H
 
-(a -> (b -> c)) -> ((a -> b) -> (a -> c)) 
+(a -> b -> c) -> (a -> b) -> a -> c 
+-- Castellano: Es una función que toma una función, que devuelve una función que toma una función, devuelve una función que
+--             toma un elemento de tipo a, y devuelve un elemento de tipo c.
+-- Frances: Es una función que toma dos funciones, un elemento de tipo a, y devuelve un elemento de tipo c.
 
 -- 8.I
 
-a -> (b -> a)
+a -> b -> a
+-- Castellano: Es una función que toma un elemento de tipo a, y devuelve una función que toma un elemento de tipo b y devuelve
+--             un elemento de tipo a.
+-- Frances: Es una función que dado un elemento de tipo a, y un elemento de tipo b, devuelve el elemento de tipo a.
 
 
 > Ejercicio 9:
