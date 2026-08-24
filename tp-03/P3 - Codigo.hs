@@ -258,3 +258,45 @@ a -> b -> a
 
 > Ejercicio 9:
 
+-- 9.A
+
+cuadruple x = doble (doble x)
+cuadruple x = compose doble doble x
+cuadruple x = apply ((twice doble) . (+0)) x
+cuadruple x = flip (+) (doble x) (doble x) 
+
+-- 9.B
+
+timesTwoPlusThree x = suma (doble x) 3
+timesTwoPlusThree x = flip suma (doble x) 3
+timesTwoPlusThree x = suma (suma x x) 3
+timesTwoPlusThree x = (3+) (subst (+) id x)
+
+-- 9.C
+
+fourTimes f x = f (f (f (f x)))
+fourTimes f x = many 4 f x
+fourTimes f x = (twice twice) f x
+fourTimes f x = (twice . twice) f x
+
+
+> Ejercicio 10:
+
+Es una sintaxis especial para aplicación parcial en operadores infijos.
+    La notación infijo es aquella donde el nombre se encuentra entre sus argumentos.
+    La notación prefijo es aquella donde el nombre se encuentra antes de sus argumentos.
+
+Al poner entre paréntesis el operador y uno de sus argumentos devuelve una función
+intermedia que espera el segundo argumento.
+
+- Sección Izquierda
+    (2*)
+    (*) 2
+
+- Sección Derecha
+    (*2)
+    flip (*) 2
+
+- Backticks
+    foldr (+) 0
+    (+) `foldr` 0
