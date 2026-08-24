@@ -160,24 +160,77 @@ subst = \f -> (\g -> (\x -> (f x) (g x)))
 
 -- 6.A
 
-compose (fst snd)
-
+compose (fst snd) :: No tiene tipo.
+(compose fst) snd :: (a, (b, c)) -> b
 
 -- 6.B
 
-(uncurry curry snd)
-
+(uncurry curry snd) :: No tiene tipo.
+uncurry (curry snd) :: (a, b) -> b
 
 -- 6.C
 
-(apply id) ((id apply) apply)
-
+(apply id) ((id apply) apply) :: (a -> b) -> a -> b
 
 -- 6.D
 
-compose (compose doble doble)
-
+compose (compose doble doble) :: (a -> Int) -> a -> Int
 
 -- 6.E
 
-(compose compose) doble doble
+(compose compose) doble doble :: No tiene tipo.
+compose (compose doble doble) :: (a -> Int) -> a -> Int
+
+
+> Ejercicio 7:
+
+many :: Int -> (a -> a) -> a -> a
+many 0 f x = x
+many n f x = f (many (n-1) f x)
+
+many :: Int -> (a -> a) -> a -> a
+many 0 f x = id x
+many n f x = ...
+
+
+> Ejercicio 8:
+
+-- 8.A
+
+(Int -> Int) -> (Int -> Int) 
+
+-- 8.B
+
+(a -> (b -> c)) -> (a -> b) -> c 
+
+-- 8.C
+
+(a -> b, c -> d) -> ((a, c) -> (b, d)) 
+
+-- 8.D
+
+((a, a) -> b) -> (a -> b) 
+
+-- 8.E
+
+(a -> (b -> c)) -> (b -> (a -> c)) 
+
+-- 8.F
+
+(a -> b) -> ((a, a) -> (b, b)) 
+
+-- 8.G
+
+(a -> b, a -> c) -> (a -> (b, c)) 
+
+-- 8.H
+
+(a -> (b -> c)) -> ((a -> b) -> (a -> c)) 
+
+-- 8.I
+
+a -> (b -> a)
+
+
+> Ejercicio 9:
+
