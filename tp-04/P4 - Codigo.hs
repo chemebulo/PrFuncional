@@ -236,3 +236,39 @@ conTilde c = if esVocal c && esMinuscula c
 
     F. Total   - No existe una función que denote un valor de tipo "b" que sea total.
     F. Parcial - (\x -> if x == x then error "Ejemplo" else error "Ejemplo")
+
+-- Explicación detallada de cada inciso según el cuestionario:
+
+    - Inciso A. Total: 
+        El tipo implica que ese valor debe ser instanciable a TODOS los tipos, y por lo tanto el único valor
+        posible es ⊥ (con una expresión que lo defina, como undef).
+        
+        En consecuencia no es posible encontrar dos expresiones con valores diferentes. 
+
+
+    - Inciso A. Parcial:
+        Dado que el valor debe ser diferente de ⊥, es factible preguntarse si la definición 
+        (\x -> if x == 0 then undef else undef) es diferente de ⊥.
+        
+        Para distinguir este valor y ver que no es, se puede utilizar la siguiente función
+        discr = \h -> seq h (length [h]), que utiliza una función para volver estricto el análisis de h (seq,
+        que evalúa su primer argumento a forma normal, y luego devuelve el 2do).
+        
+        El valor de discr undef es ⊥, mientras que el de discr (\x -> if x == 0 then undef else undef)
+        es 1, mostrando que en presencia de seq, hay dos expresiones diferentes.
+        
+        Si en cambio no fuese posible esta característica para hacer estricta a la función, ambos valores
+        serían el mismo, por principio de extensionalidad.
+        
+        Por otra parte, no hay ninguna función total, ya que debe devolver un valor que cumpla con las mismas
+        características que las pedidas en el ítem a y el único valor posible es ⊥.
+
+
+    - Inciso B. Total:
+        Sucede algo similar al anterior, tomando (\x -> undef) como segundo valor: se aplica el mismo
+        razonamiento y la misma función de discriminación.
+
+
+    - Inciso C. Total:
+        Se puede usar (\x -> if True then undef else x) para la función parcial, y (\x -> x) para la función
+        total, siendo los dos únicos valores posibles.
