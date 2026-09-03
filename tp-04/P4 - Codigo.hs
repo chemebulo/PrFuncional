@@ -148,14 +148,31 @@ conTilde c = if esVocal c && esMinuscula c
 
 -- 4.A
 
--- Según la definición dada, tiene ... redexes:
-
-
+-- Según la definición dada, tiene 1 redex:
+    twice doble
+->                              (Def. twice, f <- doble)
+                                    (donde g x = doble (doble x))
+    g
 
 -- 4.B
 
 -- Según la definición dada, tiene ... redexes:
-
+    twice doble 2
+->                              (Def. twice, f <- doble)
+                                    (donde g x = doble (doble x))
+    g 2
+->                              (Def. g, x <- 2)
+    doble (doble 2)
+->                              (Def. doble, x <- doble 2)
+    (doble 2) + (doble 2)
+->                              (Def. doble, x <- 2)
+    (2 + 2) + (doble 2)
+->                              (Def. doble, x <- 2)
+    (2 + 2) + (2 + 2)
+->                              (Aritmética)
+    4 + 4
+->                              (Aritmética)
+    8
 
 
 -- 4.C
