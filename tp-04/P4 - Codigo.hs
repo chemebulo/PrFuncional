@@ -52,12 +52,14 @@ porLaMitad = flip div 2
 -- 1.G
 
 -- La función es parcial, ya que conDieresis denota bottom al recibir 'e' que es bien definido.
+conDieresis :: Char -> Char
 conDieresis 'u' = 'ü'
 
 
 -- 1.H
 
 -- La función es parcial, ya que conDieresisB denota bottom al recibir 'e' que es bien definido.
+conDieresisB :: Char -> Char
 conDieresisB 'u' = 'ü' 
 conDieresisB c   = conDieresisB c 
 
@@ -65,6 +67,7 @@ conDieresisB c   = conDieresisB c
 -- 1.I
 
 -- La función es parcial, ya que conTildePM denota bottom al recibir 'A' que es bien definido.
+conTildePM :: Char -> Char
 conTildePM 'a' = 'á' 
 conTildePM 'e' = 'é' 
 conTildePM 'i' = 'í' 
@@ -75,6 +78,7 @@ conTildePM 'u' = 'ú'
 -- 1.J
 
 -- La función es parcial, ya que conTildeE denota bottom al recibir 'A' que es bien definido.
+conTildeE :: Char -> Char
 conTildeE c = if esVocal c 
                  then conTildePM c 
                  else error "El valor recibido no es vocal"
@@ -83,6 +87,7 @@ conTildeE c = if esVocal c
 -- 1.K
 
 -- La función es total, ya que conTilde no tiene forma de recibir algo bien definido que al aplicarlo denote bottom.
+conTildeE :: Char -> Char
 conTilde c = if esVocal c && esMinuscula c 
                 then conTildePM c 
                 else c
