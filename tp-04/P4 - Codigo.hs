@@ -137,7 +137,7 @@ conTilde c = if esVocal c && esMinuscula c
 
 -- 3.C
 
--- No tiene redexes:
+-- Según la definición dada, no tiene redexes:
     (\f -> \x -> f (f x))
 
 
@@ -156,7 +156,7 @@ conTilde c = if esVocal c && esMinuscula c
 
 -- 4.B
 
--- Según la definición dada, tiene ... redexes:
+-- Según la definición dada, tiene 11 redexes:
     twice doble 2
 ->                              (Def. twice, f <- doble)
                                     (donde g x = doble (doble x))
@@ -177,25 +177,42 @@ conTilde c = if esVocal c && esMinuscula c
 
 -- 4.C
 
--- Según la definición dada, tiene ... redexes:
-
+-- Según la definición dada, no tiene redexes:
+    twice
 
 
 > Ejercicio 5:
 
 -- Definición de twice f x = f (f x)
 
-
 -- 5.A
 
+-- Según la definición dada, no tiene redexes:
+    twice doble
 
 
 -- 5.B
 
+-- Según la definición dada, tiene 10 redexes:
+    twice doble 2
+->                          (Def. twice, f <- doble, x <- 2)
+    doble (doble 2)
+->                              (Def. doble, x <- doble 2)
+    (doble 2) + (doble 2)
+->                              (Def. doble, x <- 2)
+    (2 + 2) + (doble 2)
+->                              (Def. doble, x <- 2)
+    (2 + 2) + (2 + 2)
+->                              (Aritmética)
+    4 + 4
+->                              (Aritmética)
+    8
 
 
 -- 5.C
 
+-- Según la definición dada, no tiene redexes:
+    twice
 
 
 > Ejercicio 6:
