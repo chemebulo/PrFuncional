@@ -219,11 +219,15 @@ conTilde c = if esVocal c && esMinuscula c
 
 -- 6.A
 
-
+    F. Total   - No existe una función que denote un valor de tipo "a" que sea total.
+    F. Parcial - No existe una función que denote un valor de tipo "a" que sea parcial.
 
 -- 6.B
 
-
+    F. Total   - No existe una función que denote un valor de tipo "a" que sea total.
+    F. Parcial - (\n -> if n == 0 then undefined else undefined)
 
 -- 6.C
 
+    F. Total   - No existe una función que denote un valor de tipo "b" que sea total.
+    F. Parcial - (\x -> if x == x then error "Ejemplo" else error "Ejemplo")
