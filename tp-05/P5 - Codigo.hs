@@ -306,7 +306,7 @@ compose uncurry Pote Chocolate (DulceDeLeche, Frutilla) :: Helado
 
 -- 6.G
 
-compose Just ddOfInt 5 :: Maybe ...
+compose Just ddOfInt 5 :: Maybe DigDec
 
 
 -- 6.H
@@ -321,34 +321,40 @@ data Set a = S (a -> Bool)
 -- 7.A
 
 belongs :: Set a -> a -> Bool
+belongs (S p) x = p x 
 
 
 -- 7.B
 
 empty :: Set a
+empty = S (\b -> False)
 
 
 -- 7.C
 
 singleton :: a -> Set a
+singleton y = S (\x -> x == y)
 
 
 -- 7.D
 
 union :: Set a -> Set a -> Set a
+union (S p1) (S p2) = S (\x -> p1 x || p2 x)
 
 
 -- 7.E
 
 intersection :: Set a -> Set a -> Set a
+intersection (S p1) (S p2) = S (\x -> p1 x && p2 x)
 
 
 > Ejercicio 8:
 
 data MayFail a = Raise Exception | Ok a
+    deriving Show
 
-data Exception = DivByZero | NotFound | NullPointer
-               | Other String
+data Exception = DivByZero | NotFound | NullPointer | Other String
+    deriving Show
 
 type ExHandler a = Exception -> a
 
@@ -361,3 +367,5 @@ lookupE :: Nombre -> [Empleado] -> MayFail Int
 -- 8.A
 
 tryCatch :: MayFail a -> (a -> b) -> ExHandler b -> b
+tryCatch (Raise e) f fe = fe e
+tryCatch (Ok x)    f _  = f x
