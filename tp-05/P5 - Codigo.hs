@@ -7,10 +7,12 @@
 > Ejercicio 1:
 
 data Gusto = Chocolate | DulceDeLeche | Frutilla | Sambayon
+	deriving Show
 
 data Helado = Vasito Gusto
             | Cucurucho Gusto Gusto
             | Pote Gusto Gusto Gusto
+	deriving Show
 
 chocoHelate consH = consH Chocolate
 
@@ -82,6 +84,7 @@ chocoHelate (chocoHelate (Pote Frutilla)) :: Helado
 > Ejercicio 2:
 
 data DigBin = O | I
+	deriving Show
 
 -- 2.A
 
@@ -115,6 +118,7 @@ negDB O = I
 
 data DigDec = D0 | D1 | D2 | D3 | D4
             | D5 | D6 | D7 | D8 | D9
+	deriving Show
 
 -- 3.A
 
@@ -180,47 +184,48 @@ prevDD D9 = D8
 
 data Medida = Mm   Float | Cm   Float
             | Inch Float | Foot Float
-
+	deriving Show
 
 -- 4.A
 
 asMm :: Medida -> Medida
-asMm (Mm n)   = 
-asMm (Cm n)   =
-asMm (Inch n) =
-asMm (Foot n) =
+asMm (Mm n)   = Mm n
+asMm (Cm n)   = Mm (n * 10)
+asMm (Inch n) = Mm (n * 25.4)
+asMm (Foot n) = Mm (n * 304.8)
 
 
 -- 4.B
 
 asCm :: Medida -> Medida
-asCm (Mm n)   = 
-asCm (Cm n)   =
-asCm (Inch n) =
-asCm (Foot n) =
+asCm (Mm n)   = Cm (n * 0.1) 
+asCm (Cm n)   = Cm n
+asCm (Inch n) = Cm (n * 2.54)
+asCm (Foot n) = Cm (n * 30.48)
 
 
 -- 4.C
 
 asInch :: Medida -> Medida
-asInch (Mm n)   = 
-asInch (Cm n)   =
-asInch (Inch n) =
-asInch (Foot n) =
+asInch (Mm n)   = Inch (n * 0.039) 
+asInch (Cm n)   = Inch (n * 0.394)
+asInch (Inch n) = Inch n
+asInch (Foot n) = Inch (n * 12)
 
 
 -- 4.D
 
 asFoot :: Medida -> Medida
-asFoot (Mm n)   = 
-asFoot (Cm n)   =
-asFoot (Inch n) =
-asFoot (Foot n) =
+asFoot (Mm n)   = Foot (n * 0.003)
+asFoot (Cm n)   = Foot (n * 0.033) 
+asFoot (Inch n) = Foot (n * 0.083) 
+asFoot (Foot n) = Foot n
 
 
 > Ejercicio 5:
 
 data Shape = Circle Float | Rect Float Float
+	deriving Show
 
 construyeShNormal :: (Float -> Shape) -> Shape
 construyeShNormal c = c 1.0
@@ -228,82 +233,85 @@ construyeShNormal c = c 1.0
 
 -- 5.A
 
-uncurry Rect :: ...
+uncurry Rect :: (Float, Float) -> Shape
 
 
 -- 5.B
 
-construyeShNormal (flip Rect 5.0) :: ...
+construyeShNormal (flip Rect 5.0) :: Shape
 
 
 -- 5.C
 
-compose (uncurry Rect) swap :: ...
+compose (uncurry Rect) swap :: (Float, Float) -> Shape
 
 
 -- 5.D
 
-uncurry Cucurucho :: ...
+uncurry Cucurucho :: (Gusto, Gusto) -> Helado
 
 
 -- 5.E
 
-uncurry Rect swap :: ...
+uncurry Rect swap :: No tiene tipo.
 
 
 -- 5.F
 
-compose uncurry Pote :: ...
+compose uncurry Pote :: Gusto -> (Gusto, Gusto) -> Helado
 
 
 -- 5.G
 
-compose Just :: ...
+
+compose Just :: (a -> b) -> a -> Maybe b
 
 
 -- 5.H
 
-compose uncurry (Pote Chocolate) :: ...
+compose uncurry (Pote Chocolate) :: No tiene tipo.
 
 
 > Ejercicio 6:
 
 -- 6.A
 
-
+uncurry Rect (10.2, 40.5) :: Shape
 
 
 -- 6.B
 
-
+No aplica.
 
 
 -- 6.C
 
-
+compose (uncurry Rect) swap (5.1, 9.8) :: Shape
 
 
 -- 6.D
 
-
+uncurry Cucurucho (Chocolate, Frutilla) :: Helado
 
 
 -- 6.E
 
-
+No aplica.
 
 
 -- 6.F
 
-
+compose uncurry Pote Chocolate (DulceDeLeche, Frutilla) :: Helado
 
 
 -- 6.G
 
-
+compose Just ddOfInt 5 :: Maybe ...
 
 
 -- 6.H
+
+No aplica.
 
 
 > Ejercicio 7:
