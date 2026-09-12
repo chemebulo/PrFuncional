@@ -82,16 +82,16 @@
             (doble 24)
 
 
-> Utilidad del "let", "if-then-else", "case", "where":
+> Utilidad del "let-in", "if-then-else", "case-of", "where":
 
-    -- Let:
+    -- Let-in:
 
-        >
-        >
+        > Es una expresión que introduce variables o funciones locales válidas únicamente dentro del bloque in.
+        > Evita repetir cálculos o expresiones complejas, además de permitir descomponer un problema en partes más chicas.
 
         -- Ejemplo:
 
-            (\n -> if n > 0 then Chocolate else Frutilla) 
+            (\ph -> let (g1, g2) = ph in Cucurucho g1 g2) 
 
     -- If-then-else:
 
@@ -102,20 +102,27 @@
 
             (\n -> if n > 0 then Chocolate else Frutilla) 
 
-    -- Case:
+    -- Case-of:
 
-        >
-        >
+        > Es una expresión usada para realizar pattern matching de forma explícita sobre el valor de cualquier expresión.
+        > Permite bifurcar el código según la forma o estructura del dato.
 
         -- Ejemplo:
 
-            (\n -> if n > 0 then Chocolate else Frutilla) 
+            (\h -> case h of 
+                        (Vasito g) -> g
+                        _          -> error "No es un vasito") 
 
     -- Where:
 
-        >
-        >
+        > Es una cláusula sintáctica usada para darle claridad a las funciones definiendo expresiones auxiliares.
+        > Se adjunta al final de una función o guarda para usar bindings locales.
 
         -- Ejemplo:
 
-            (\n -> if n > 0 then Chocolate else Frutilla) 
+            numeroAHelado :: Int -> Helado
+            numeroAHelado n = if n > 0 
+                                 then heladoV
+                                 else heladoC
+                where heladoV = Vasito Chocolate
+                      heladoC = Cucurucho Chocolate Sambayon
