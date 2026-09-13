@@ -19,23 +19,23 @@
         > Expresiones con partes faltantes:
             Ejemplo:
 
-                (2 + 
+            (2 + 
 
-                let (x, y) = (3, 2) x + y 
+            let (x, y) = (3, 2) x + y 
 
         > Expresiones que no tienen sentido:
             Ejemplo:
 
-                div 1 0
+            div 1 0
 
-                a
+            a
 
         > Expresiones que podrían tener sentido:
             Ejemplo:
 
-                if True then 1 else False
+            if True then 1 else False
 
-                2 + False
+            2 + False
 
     > Polimorfismo paramétrico:
 
