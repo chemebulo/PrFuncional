@@ -9,6 +9,11 @@
 
     -- Funciones nombradas:
 
+        > Requiere una definición compuesta por una o más ecuaciones, donde el nombre denota directamente una función.
+        > Dichas ecuaciones deben estar orientadas:
+            - Lado izquierdo debe ser un nombre aún sin significado seguido de nombres de argumentos.
+            - Lado derecho debe ser una expresión con significado (que puede usar los argumentos).
+
         -- Ejemplo:
 
             sumarDos n = n + 2
@@ -16,6 +21,8 @@
             twice f x = f (f x)
 
     -- Funciones anónimas:
+
+        > Expresión atómica que denota directamente una función. 
 
         -- Ejemplo:
 
@@ -25,6 +32,8 @@
 
     -- Funciones de alto orden:
 
+        > Es una función que toma una función como argumento y/o devuelve una función como resultado.
+
         -- Ejemplo:
 
             twice doble
@@ -33,6 +42,9 @@
 
 
 > Mecanismo de reducción:
+
+    > Es un mecanismo de ejecución, donde en una expresión, el lado izquierdo de la misma puede reemplazarse por el derecho.
+    > Esto se repita hasta que no puede hacerse más.
 
         ((twice twice) doble) 3
     ->                                                      (def. twice, f <- twice)
