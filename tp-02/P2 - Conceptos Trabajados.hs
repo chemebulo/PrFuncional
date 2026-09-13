@@ -5,4 +5,17 @@
 
 --------------------------------------------------------------------------------------------------------
 
-> Texto de prueba:
+> Regla para tipar funciones:
+
+    f :: A -> B
+    e :: A
+    -----------
+    f e :: B
+
+    Ejemplo:
+
+    
+
+
+
+> Polimorfismo paramétrico:
