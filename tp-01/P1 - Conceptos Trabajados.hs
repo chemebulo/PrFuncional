@@ -9,21 +9,27 @@
 
     -- Funciones nombradas:
 
-        sumarDos n = n + 2
+        -- Ejemplo:
 
-        twice f x = f (f x)
+            sumarDos n = n + 2
+
+            twice f x = f (f x)
 
     -- Funciones anónimas:
 
-        (\ n -> n + 1)
+        -- Ejemplo:
 
-        (\ f -> \ x -> f (f x))
+            (\ n -> n + 1)
+
+            (\ f -> \ x -> f (f x))
 
     -- Funciones de alto orden:
 
-        twice doble
+        -- Ejemplo:
 
-        compose (twice doble) cuadruple
+            twice doble
+
+            compose (twice doble) cuadruple
 
 
 > Mecanismo de reducción:
