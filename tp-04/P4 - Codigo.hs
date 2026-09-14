@@ -200,7 +200,7 @@ conTilde c = if esVocal c && esMinuscula c
 
 -- Según la definición dada, tiene 10 redexes:
     twice doble 2
-->                          (Def. twice, f <- doble, x <- 2)
+->                              (Def. twice, f <- doble, x <- 2)
     doble (doble 2)
 ->                              (Def. doble, x <- doble 2)
     (doble 2) + (doble 2)
