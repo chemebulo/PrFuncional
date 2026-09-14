@@ -73,7 +73,7 @@
 
             fourTimes f x = f (f (f (f x)))             |     fourTimes = (\f x -> f (f (f (f x))))
 
-      > Lado izquierdo a derecho:
+      > Lado izquierdo a derecho: 
             Ejemplo:
 
             cuadruple = (\x -> compose doble doble x)   |    cuadruple x = compose doble doble x
