@@ -321,21 +321,21 @@ Demostración:
     Por principio de extensionalidad (dos veces), es equivalente demostrar que:
     ¿Para todo x. para todo y. curry fst x y = const x y?
 
-    Sea x' :: a, y' :: b. Se verá que ¿curry fst x' y' = const x' y'?
+    Sea w :: a, z :: b. Se verá que ¿curry fst w z = const w z?
 
     -- LADO IZQUIERDO:
 
-        curry fst x' y'
-    =                           (curry, f <- fst, x <- x', y <- y')
-        fst (x', y')
-    =                           (fst, (x, y) <- (x', y'))
-        x'
+        curry fst w z
+    =                           (curry, f <- fst, x <- w, y <- z)
+        fst (w, z)
+    =                           (fst, (x, y) <- (w, z))
+        w
 
     -- LADO DERECHO:
 
-        const x' y'
-    =                           (const, x <- x', y <- y')
-        x'
+        const w z
+    =                           (const, x <- w, y <- z)
+        w
 
     -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
@@ -344,7 +344,30 @@ Demostración:
 
 ¿uncurry (flip const) = snd?
 
-(x, y)
+Demostración:
+    Por principio de extensionalidad, es equivalente demostrar que:
+    ¿Para todo p. uncurry (flip const) p = snd p?
+
+    Sea (w, z) :: (a, b). Se verá que ¿uncurry (flip const) (w, z) = snd (w, z)?
+
+    -- LADO IZQUIERDO:
+
+        uncurry (flip const) (w, z)
+    =                                       (¿uncurry, f <- flip const, (x, y) <- (w, z))
+        flip const w z
+    =                                       (flip, f <- const, x <- w, y <- z)
+        const z w
+    =                                       (const, x <- z, y <- w)
+        z
+
+    -- LADO DERECHO:
+
+        snd (w, z)
+    =                                       (snd, (x, y) <- (w, z))
+        z
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
+
 
 > Ejercicio 5:
 
@@ -352,10 +375,33 @@ Demostración:
 
 ¿para todo f. curry (uncurry f) = f?
 
+Demostración:
+    Por principio de extensionalidad (dos veces), es equivalente demostrar que:
+    ¿Para todo f. para todo x. para todo y. curry (uncurry f) x y = f x y
+
+    Sea g :: ((a, b) -> c), w :: a, z :: b. Se verá que ¿curry (uncurry g) w z = g w z?
+
+    -- LADO IZQUIERDO:
+
+        curry (uncurry g) w z
+    =                                   (curry, f <- uncurry g, x <- w, y <- z)
+        uncurry g (w, z)
+    =                                   (uncurry, f <- g, x <- w, y <- z)
+        g w z
+
+    -- LADO DERECHO:
+
+        g w z
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
+
 
 -- 5.B
 
-¿para todo f. curry (uncurry f) = f?
+¿para todo f'. uncurry (curry f') = f'?
+
+Demostración:
+    Por principio de extensionalidad, es equivalente demostrar que:
 
 
 > Ejercicio 6:
