@@ -353,7 +353,7 @@ Demostración:
     -- LADO IZQUIERDO:
 
         uncurry (flip const) (w, z)
-    =                                       (¿uncurry, f <- flip const, (x, y) <- (w, z))
+    =                                       (uncurry, f <- flip const, (x, y) <- (w, z))
         flip const w z
     =                                       (flip, f <- const, x <- w, y <- z)
         const z w
@@ -635,7 +635,7 @@ Demostración:
             (doble . doble)
         =                                   (compose)
             compose doble doble
-        =                                   (Ejercicio 1.b)
+        =                                   (Ejercicio 1.B)
             cuadruple
 
     -- Mediante otras propiedades, queda demostrado entonces que la propiedad es válida.
