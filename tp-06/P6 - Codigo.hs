@@ -14,7 +14,7 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
     ¿para todo m. doble m = (\x -> 2 * x) m?
     
-    Sea n un número cualquiera. Se verá que: doble n = (\x -> 2 * x) n
+    Sea n un número cualquiera. Se verá que ¿doble n = (\x -> 2 * x) n?
 
     -- LADO IZQUIERDO:
 
@@ -25,9 +25,9 @@ Demostración:
     -- LADO DERECHO:
 
         (\x -> 2 * x) n
-    =                       (Regla Beta, x <- n)
+    =                       (regla beta, x <- n)
         2 * n
-    =                       (Aritmética)
+    =                       (aritmética)
         2 + 2
 
     -- Ambos lados llegan a lo mismo, la propiedad es válida.
@@ -41,24 +41,24 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que
     ¿para todo m. compose doble doble m = cuadruple m?
 
-    Sea n un número cualquiera. Se verá que: compose doble doble n = cuadruple n
+    Sea n un número cualquiera. Se verá que ¿compose doble doble n = cuadruple n?
 
     -- LADO IZQUIERDO:
 
         compose doble doble n
-    =                               (compose)
+    =                               (compose, f <- doble, g <- doble, x <- n)
         doble (doble n)
-    =                               (doble)
+    =                               (doble, x <- doble n)
         (doble n) + (doble n)
-    =                               (doble)
+    =                               (doble, x <- n)
         (n + n) + (doble n) 
-    =                               (doble)
+    =                               (doble, x <- n)
         (n + n) + (n + n) 
 
     -- LADO DERECHO:
 
         cuadruple n
-    =                               (cuadruple)
+    =                               (cuadruple, x <- n)
         4 * n
     =                               (aritmética)
         (n + n) + (n + n) 
@@ -73,9 +73,9 @@ Demostración:
 ¿para todo x. para todo y. x && y = not ((not x) || (not y))?
 
 Demostración:
-    Sea b1 y b2 dos booleanos cualquiera. Se verá que: b1 && b2 = not ((not b1) || (not b2)) 
+    Sea b1 y b2 dos booleanos cualquiera. Se verá que ¿b1 && b2 = not ((not b1) || (not b2))?
 
-    Caso 1 (b1 = True):
+    Caso b1 = True:
 
     -- LADO IZQUIERDO:
 
@@ -95,7 +95,7 @@ Demostración:
 
     -- Ambos lados llegan a lo mismo, el caso es válido.
 
-    Caso 2 (b1 = False):
+    Caso b1 = False:
 
     -- LADO IZQUIERDO:
 
@@ -115,7 +115,7 @@ Demostración:
 
     -- Ambos lados llegan a lo mismo, el caso es válido.
 
-    Caso 3 (b1 = ⊥):
+    Caso b1 = ⊥:
 
     -- LADO IZQUIERDO:
 
@@ -138,9 +138,9 @@ Demostración:
     Lema IdBool: ¿para todo x. not (not x) = x?
 
     Demostración:
-        Sea b un booleano cualquiera. Se verá que: not (not b) = b 
+        Sea b un booleano cualquiera. Se verá que ¿not (not b) = b?
 
-        Caso 1 (b = True):
+        Caso b = True:
 
         -- LADO IZQUIERDO:
 
@@ -156,7 +156,7 @@ Demostración:
 
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
-        Caso 2 (b = False):
+        Caso b = False:
 
         -- LADO IZQUIERDO:
 
@@ -172,7 +172,7 @@ Demostración:
 
         -- Ambos lados llegan a lo mismo, el caso es válido.
 
-        Caso 3 (b = ⊥):
+        Caso b = ⊥:
 
         -- LADO IZQUIERDO:
 
@@ -194,9 +194,9 @@ Demostración:
 ¿para todo x. para todo y. not (x || y) = not x && not y?
 
 Demostración:
-    Sea b1 y b2 dos booleanos cualquiera. Se verá que: not (b1 || b2) = not b1 && not b2
+    Sea b1 y b2 dos booleanos cualquiera. Se verá que ¿not (b1 || b2) = not b1 && not b2?
 
-    Caso 1 (b1 = True):
+    Caso b1 = True:
 
     -- LADO IZQUIERDO:
 
@@ -216,7 +216,7 @@ Demostración:
 
     -- Ambos lados llegan a lo mismo, el caso es válido.
 
-    Caso 2 (b1 = False):
+    Caso b1 = False:
 
     -- LADO IZQUIERDO:
 
@@ -234,7 +234,7 @@ Demostración:
 
     -- Ambos lados llegan a lo mismo, el caso es válido.
 
-    Caso 3 (b1 = ⊥):
+    Caso b1 = ⊥:
 
     -- LADO IZQUIERDO:
 
@@ -270,18 +270,45 @@ Demostración:
     -- LADO IZQUIERDO:
 
         curry suma' n m
-
-
+    =                               (curry, f <- suma', x <- n, y <- m)
+        suma' (n, m)
+    =                               (suma', (x, y) <- (n, m))
+        n + m
 
     -- LADO DERECHO:
 
         suma n m
-    =                               ()
+    =                               (suma, x <- n, y <- m)
+        n + m
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
 
 -- 3.B
 
 ¿uncurry suma = suma'?
+
+Demostración:
+    Por principio de extensionalidad, es equivalente demostrar que:
+    ¿Para todo p. uncurry suma p = suma' p?
+
+    Sea (n, m) :: (Int, Int). Se verá que ¿uncurry suma (n, m) = suma' (n, m)?
+
+    -- LADO IZQUIERDO:
+
+        uncurry suma (n, m)
+    =                           (uncurry, f <- suma, p <- p)
+        suma n m          
+    =                           (suma, x <- n, y <- m)
+        n + m
+
+    -- LADO DERECHO:
+
+        suma' (n, m)
+    =                           (suma', (x, y) <- (n, m))
+        n + m
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
 
 > Ejercicio 4:
@@ -290,11 +317,34 @@ Demostración:
 
 ¿curry fst = const?
 
+Demostración:
+    Por principio de extensionalidad (dos veces), es equivalente demostrar que:
+    ¿Para todo x. para todo y. curry fst x y = const x y?
+
+    Sea x' :: a, y' :: b. Se verá que ¿curry fst x' y' = const x' y'?
+
+    -- LADO IZQUIERDO:
+
+        curry fst x' y'
+    =                           (curry, f <- fst, x <- x', y <- y')
+        fst (x', y')
+    =                           (fst, (x, y) <- (x', y'))
+        x'
+
+    -- LADO DERECHO:
+
+        const x' y'
+    =                           (const, x <- x', y <- y')
+        x'
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
+
 
 -- 4.B
 
 ¿uncurry (flip const) = snd?
 
+(x, y)
 
 > Ejercicio 5:
 
