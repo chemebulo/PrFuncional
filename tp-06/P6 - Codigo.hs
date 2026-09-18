@@ -633,7 +633,7 @@ Demostración:
     Demostración:
 
             (doble . doble)
-        =                                   (compose)
+        =                                   (Ejercicio 7.B.I)
             compose doble doble
         =                                   (Ejercicio 1.B)
             cuadruple
