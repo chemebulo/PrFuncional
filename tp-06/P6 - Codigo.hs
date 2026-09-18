@@ -19,13 +19,13 @@ Demostración:
     -- LADO IZQUIERDO:
 
         doble n
-    =                       (doble)
+    =                       (doble, x <- n)
         n + n
 
     -- LADO DERECHO:
 
         (\x -> 2 * x) n
-    =                       (Regla Beta)
+    =                       (Regla Beta, x <- n)
         2 * n
     =                       (Aritmética)
         2 + 2
@@ -260,6 +260,23 @@ Demostración:
 -- 3.A
 
 ¿curry suma' = suma?
+
+Demostración:
+    Por principio de extensionalidad (dos veces), es equivalente demostrar que:
+    ¿Para todo x. para todo y. curry suma' x y = suma x y?
+
+    Sea n y m dos números. Se verá que ¿curry suma' n m = suma n m?
+
+    -- LADO IZQUIERDO:
+
+        curry suma' n m
+
+
+
+    -- LADO DERECHO:
+
+        suma n m
+    =                               ()
 
 
 -- 3.B
