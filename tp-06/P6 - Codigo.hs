@@ -265,7 +265,7 @@ Demostración:
     Por principio de extensionalidad (dos veces), es equivalente demostrar que:
     ¿Para todo x. para todo y. curry suma' x y = suma x y?
 
-    Sea n y m dos números. Se verá que ¿curry suma' n m = suma n m?
+    Sea n y m dos números cualquiera. Se verá que ¿curry suma' n m = suma n m?
 
     -- LADO IZQUIERDO:
 
@@ -292,7 +292,7 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que:
     ¿Para todo p. uncurry suma p = suma' p?
 
-    Sea (n, m) :: (Int, Int). Se verá que ¿uncurry suma (n, m) = suma' (n, m)?
+    Sea (n, m) un par cualquiera de tipo (Int, Int). Se verá que ¿uncurry suma (n, m) = suma' (n, m)?
 
     -- LADO IZQUIERDO:
 
@@ -379,7 +379,7 @@ Demostración:
     Por principio de extensionalidad (dos veces), es equivalente demostrar que:
     ¿Para todo f. para todo x. para todo y. curry (uncurry f) x y = f x y
 
-    Sea g :: ((a, b) -> c), w :: a, z :: b. Se verá que ¿curry (uncurry g) w z = g w z?
+    Sea g una función cualquiera, w :: a, z :: b. Se verá que ¿curry (uncurry g) w z = g w z?
 
     -- LADO IZQUIERDO:
 
@@ -404,7 +404,7 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que:
     ¿Para todo f. Para todo p. uncurry (curry f) p = f p?
 
-    Sea (w, z) :: (a, b), g :: ((a, b) -> c). Se verá que ¿uncurry (curry g) (w, z) = g (w, z)?
+    Sea (w, z) :: (a, b), g una función cualquiera. Se verá que ¿uncurry (curry g) (w, z) = g (w, z)?
 
     -- LADO IZQUIERDO:
 
@@ -429,7 +429,7 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que:
     ¿Para todo f. para todo p. appAssoc (uncurry (uncurry f)) p = uncurry (compose uncurry f) p?
 
-    Sea g :: (a -> b -> c -> d), (x, (y, z)) :: (a, (b, c)).
+    Sea g una función cualquiera, (x, (y, z)) :: (a, (b, c)).
     Se verá que ¿appAssoc (uncurry (uncurry g)) (x, (y, z)) = uncurry (compose uncurry g) (x, (y, z))? 
 
     -- LADO IZQUIERDO:
@@ -475,7 +475,7 @@ Demostración:
 
     -- 7.A.IV.
 
-    many 0 f = id
+    many 0 f = id . id
     many n f = f . (many (n-1) f)
 
 
@@ -484,22 +484,144 @@ Demostración:
     -- 7.B.I.
 
     ¿para todo f. para todo g.  f . g = compose f g?
+    
+    Demostración:
+        Por principio de extensionalidad, es equivalente demostrar que:
+        ¿Para todo f. para todo g. para todo x. (f . g) x = compose f g x?
+
+        Por definición de (.), es equivalente demostrar que:
+        ¿Para todo f. para todo g. para todo x. f (g x) = compose f g x?
+
+        Sea h, k dos funciones cualquiera, y :: c. Se verá que ¿h (k y) = compose h k y?
+
+        -- LADO IZQUIERDO:
+
+            h (k y)
+
+        -- LADO DERECHO:
+
+            compose h k y
+        =                           (compose, f <- h, g <- k, x <- y)
+            h (k y)
+
+        -- Ambos lados llegan a lo mismo, la propiedad es válida.
+
 
     -- 7.B.II.
 
     ¿swap . swap = id?
 
+    Demostración:
+        Por principio de extensionalidad, es equivalente demostrar que:
+        ¿Para todo p. (swap . swap) p = id p?
+
+        Por definición de (.), es equivalente demostrar que:
+        ¿Para todo p. swap (swap p) = id p?
+
+        Sea (x, y) :: (a, b). Se verá que ¿swap (swap (x, y)) = id (x, y)?
+
+        -- LADO IZQUIERDO:
+
+            swap (swap (x, y))
+        =                               (swap, (x, y) <- (x, y))
+            swap (y, x)
+        =                               (swap, (x, y) <- (y, x))
+            (x, y)
+
+        -- LADO DERECHO:
+
+            id (x, y)
+        =                               (id, (x, y) <- (x, y))
+            (x, y)
+
+        -- Ambos lados llegan a lo mismo, la propiedad es válida.
+
+
     -- 7.B.III.
 
     ¿para todo f. para todo g. para todo h. f . (g . h) = (f . g) . h?
+
+    Demostración:
+        Por principio de extensionalidad, es equivalente demostrar que:
+        ¿Para todo f. para todo g. para todo h. para todo x. (f . (g . h)) x = ((f . g) . h) x?
+
+        Sea t, s, k tres funciones cualquiera; y :: c. Se verá que ¿(t . (s . k)) y = ((t . s) . k) y?
+
+        -- LADO IZQUIERDO:
+
+            (t . (s . k)) y
+        =                               ((.), f <- t, g <- (s. k), x <- y)
+            t ((s . k) y)
+        =                               ((.), f <- s, g <- k, x <- y)
+            t (s (k y))
+
+        -- LADO DERECHO:
+
+            ((t . s) . k) y
+        =                               ((.), f <- (t . s), g <- k, x <- y)
+            (t . s) (k y)
+        =                               ((.), f <- t, g <- s, x <- (k y))
+            t (s (k y))
+
+        -- Ambos lados llegan a lo mismo, la propiedad es válida.
+
 
     -- 7.B.IV.
 
     ¿curry . uncurry = id?
 
+    Demostración:
+        Por principio de extensionalidad (tres veces), es equivalente demostrar que:
+        ¿Para todo f. para todo x. para todo y. (curry . uncurry) f x y = id f x y?
+
+        Por definición de (.), es equivalente demostrar que:
+        ¿Para todo f. para todo x. para todo y. curry (uncurry f) x y = id f x y?
+
+        Sea g una función cualquiera, w :: a, z :: b. Se verá que ¿curry (uncurry g) w z = id g w z?
+
+        -- LADO IZQUIERDO:
+
+            curry (uncurry g) w z
+        =                                   (curry, f <- (uncurry g), x <- w, y <- z)
+            uncurry g (w, z)
+        =                                   (uncurry, f <- g, (x, y) <- (w, z))
+            g w z
+
+        -- LADO DERECHO: 
+
+            id g w z
+        =                                   (id, x <- g)
+            g w z
+
+        -- Ambos lados llegan a lo mismo, la propiedad es válida.
+
+
     -- 7.B.V.
 
     ¿para todo f. appAssoc f = f . assoc?
+
+    Demostración:
+        Por principio de extensionalidad, es equivalente demostrar que:
+        ¿Para todo p. appAssoc f p = (f . assoc) p?
+
+        Por definición de (.), es equivalente demostrar que:
+        ¿Para todo p. appAssoc f p = f (assoc p)?
+
+        Sea p' :: (a, (b, c)). Se verá que ¿appAssoc f p' = f (assoc p')?
+
+        -- LADO IZQUIERDO:
+
+            appAssoc f p'
+        =                                       (appAssoc, f <- f, p <- p')
+            f (assoc p')
+
+        -- LADO DERECHO:
+
+            (f . assoc) p'
+        =                                       ((.), f <- f, g <- assoc, x <- p')
+            f (assoc p')
+
+        -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
 
 -- 7.C.
