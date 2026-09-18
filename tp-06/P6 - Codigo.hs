@@ -629,20 +629,52 @@ Demostración:
     -- 7.C.I.
 
     ¿doble . doble = cuadruple?
+
+    Demostración:
+
+            (doble . doble)
+        =                           (compose)
+            compose doble doble
+        =                           (Ejercicio 1.b)
+            cuadruple
+
+    -- Mediante otras propiedades, queda demostrado entonces que la propiedad es válida.
     
 
     -- 7.C.II.
 
     ¿para todo f'. curry (uncurry (curry f')) = curry f'?
 
+    Demostración:
+
+        curry (uncurry (curry f'))
+    =                                   (Ejercicio 5.b)
+        curry f'
+
+    -- Mediante otras propiedades, queda demostrado entonces que la propiedad es válida.
+
 
     -- 7.C.III.
 
     ¿para todo f. appAssoc (uncurry (uncurry f))   = (uncurry . uncurry) f . assoc?
+
+    Demostración:
+
+        appAssoc (uncurry (uncurry f))
+    =                                       (Ejercicio 6)
+        uncurry (compose uncurry f)
+
+
+    -- Mediante otras propiedades, queda demostrado entonces que la propiedad es válida.
 
 
     -- 7.C.IV.
 
     ¿para todo f. (uncurry . uncurry) f . assoc   = uncurry (uncurry . f)?
 
-    
+    Demostración:
+
+
+
+
+    -- Mediante otras propiedades, queda demostrado entonces que la propiedad es válida.
