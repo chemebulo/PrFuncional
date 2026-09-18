@@ -398,15 +398,63 @@ Demostración:
 
 -- 5.B
 
-¿para todo f'. uncurry (curry f') = f'?
+¿para todo f. uncurry (curry f) = f?
 
 Demostración:
     Por principio de extensionalidad, es equivalente demostrar que:
+    ¿Para todo f. Para todo p. uncurry (curry f) p = f p?
+
+    Sea (w, z) :: (a, b), g :: ((a, b) -> c). Se verá que ¿uncurry (curry g) (w, z) = g (w, z)?
+
+    -- LADO IZQUIERDO:
+
+        uncurry (curry g) (w, z)
+    =                                       (uncurry, f <- curry g, (x, y) <- (w, z))
+        curry g w z
+    =                                       (curry, f <- g, x <- w, y <- z)
+        g (w, z)
+
+    -- LADO DERECHO:
+
+        g (w, z)
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
 
 > Ejercicio 6:
 
 ¿para todo f. appAssoc (uncurry (uncurry f)) = uncurry (compose uncurry f)?
+
+Demostración:
+    Por principio de extensionalidad, es equivalente demostrar que:
+    ¿Para todo f. para todo p. appAssoc (uncurry (uncurry f)) p = uncurry (compose uncurry f) p?
+
+    Sea g :: (a -> b -> c -> d), (x, (y, z)) :: (a, (b, c)).
+    Se verá que ¿appAssoc (uncurry (uncurry g)) (x, (y, z)) = uncurry (compose uncurry g) (x, (y, z))? 
+
+    -- LADO IZQUIERDO:
+
+        appAssoc (uncurry (uncurry g)) (x, (y, z))
+    =                                                   (appAssoc, f <- uncurry (uncurry g), p <- (x, (y, z)))
+        uncurry (uncurry g) (assoc (x, (y, z)))
+    =                                                   (assoc, (x, (y, z)) <- (x, (y, z)))
+        uncurry (uncurry g) ((x, y), z)
+    =                                                   (uncurry, f <- uncurry g, (x, y) <- ((x, y), z))
+        uncurry g (x, y) z
+    =                                                   (uncurry, f <- g, (x, y) <- (x, y))
+        g x y z                                         
+
+    -- LADO DERECHO:
+
+        uncurry (compose uncurry g) (x, (y, z))
+    =                                                   (uncurry, f <- compose uncurry g, (x, y) <- (x, (y, z)))
+        compose uncurry g x (y, z)
+    =                                                   (compose, f <- uncurry, g <- g, x <- x)
+        uncurry (g x) (y, z)
+    =                                                   (uncurry, f <- g x, (x, y) <- (y, z))
+        g x y z
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
 
 > Ejercicio 7:
@@ -419,15 +467,16 @@ Demostración:
 
     -- 7.A.II.
 
-    doble
+    doble = (*2) . id
 
     -- 7.A.III.
 
-    twice
+    twice = uncurry (.) . dup
 
     -- 7.A.IV.
 
-    many
+    many 0 f = id
+    many n f = f . (many (n-1) f)
 
 
 -- 7.B.
