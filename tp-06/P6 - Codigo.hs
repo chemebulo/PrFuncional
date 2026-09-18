@@ -633,9 +633,9 @@ Demostración:
     Demostración:
 
             (doble . doble)
-        =                           (compose)
+        =                                   (compose)
             compose doble doble
-        =                           (Ejercicio 1.b)
+        =                                   (Ejercicio 1.b)
             cuadruple
 
     -- Mediante otras propiedades, queda demostrado entonces que la propiedad es válida.
@@ -648,7 +648,7 @@ Demostración:
     Demostración:
 
         curry (uncurry (curry f'))
-    =                                   (Ejercicio 5.b)
+    =                                       (Ejercicio 5.B)
         curry f'
 
     -- Mediante otras propiedades, queda demostrado entonces que la propiedad es válida.
@@ -656,25 +656,33 @@ Demostración:
 
     -- 7.C.III.
 
-    ¿para todo f. appAssoc (uncurry (uncurry f))   = (uncurry . uncurry) f . assoc?
+    ¿para todo f. appAssoc (uncurry (uncurry f)) = (uncurry . uncurry) f . assoc?
 
     Demostración:
 
         appAssoc (uncurry (uncurry f))
-    =                                       (Ejercicio 6)
-        uncurry (compose uncurry f)
-
+    =                                       (Ejercicio 7.B.V)
+        (uncurry (uncurry f)) . assoc
+    =                                       ((.))
+        (uncurry . uncurry) f . assoc
 
     -- Mediante otras propiedades, queda demostrado entonces que la propiedad es válida.
 
 
     -- 7.C.IV.
 
-    ¿para todo f. (uncurry . uncurry) f . assoc   = uncurry (uncurry . f)?
+    ¿para todo f. (uncurry . uncurry) f . assoc = uncurry (uncurry . f)?
 
     Demostración:
 
-
-
+        (uncurry . uncurry) f . assoc
+    =                                       ((.))
+        (uncurry (uncurry f)) . assoc
+    =                                       (Ejercicio 7.B.V)
+        appAssoc (uncurry (uncurry f))
+    =                                       (Ejercicio 6)
+        uncurry (compose uncurry f)
+    =                                       ((.))
+        uncurry (uncurry . f)
 
     -- Mediante otras propiedades, queda demostrado entonces que la propiedad es válida.
