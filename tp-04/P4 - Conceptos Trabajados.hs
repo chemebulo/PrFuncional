@@ -24,13 +24,13 @@
 
       > Funciones totales:
             > Son aquellas que nunca dan bottom si recibe valores totalmente definidos.
-                  Ejemplo:
+                  - Ejemplo:
                         succ
                         dup
 
       > Funciones parciales:
             > Son aquellas que pueden dar bottom al recibir valores totalmente definidos. 
-                  Ejemplo:
+                  - Ejemplo:
                         div
                         many
 
@@ -38,12 +38,12 @@
 
       > Funciones estrictas:
             > Son aquellas que siempre devuelve bottom si recibe bottom.
-                  Ejemplo:
+                  - Ejemplo:
                         uncurry
                         apply
 
       > Funciones no estrictas:
             > Son aquellas que pueden devolver algo diferente a bottom si recibe bottom.
-                  Ejemplo:
+                  - Ejemplo:
                         const
                         dup

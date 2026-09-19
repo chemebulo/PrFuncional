@@ -8,42 +8,33 @@
 > Conceptos del sistema de tipo Hindley-Milner Polimórfico:
 
     > Expresiones válidas:
-        Ejemplo:
-
+        - Ejemplo:
             2 + 2
-
             (\n -> n * 2) 4
 
     > Expresiones inválidas:
 
         > Expresiones con partes faltantes:
-            Ejemplo:
-
-            (2 + 
-
-            let (x, y) = (3, 2) x + y 
+            - Ejemplo:
+                (2 + 
+                let (x, y) = (3, 2) x + y 
 
         > Expresiones que no tienen sentido:
-            Ejemplo:
-
-            div 1 0
-
-            a
+            - Ejemplo:
+                div 1 0
+                a
 
         > Expresiones que podrían tener sentido:
-            Ejemplo:
-
-            if True then 1 else False
-
-            2 + False
+            - Ejemplo:
+                if True then 1 else False
+                2 + False
 
     > Polimorfismo paramétrico:
 
         > Es una característica del sistema de tipos, que permite expresar que un cierto parámetro puede
           admitir infinitos tipos, asignando más general que pueda transformarse en cualquiera de ellos.
-            Ejemplo:
-
-            twice :: (a -> a) -> a -> a
+            - Ejemplo:
+                twice :: (a -> a) -> a -> a
 
 
 > Regla para tipar funciones:
