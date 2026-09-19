@@ -73,7 +73,7 @@ Demostración:
 ¿para todo x. para todo y. x && y = not ((not x) || (not y))?
 
 Demostración:
-    Sea b1 y b2 dos booleanos cualquiera. Se verá que ¿b1 && b2 = not ((not b1) || (not b2))?
+    Sea b1 :: Bool, sea b2 :: Bool. Se verá que ¿b1 && b2 = not ((not b1) || (not b2))?
 
     Caso b1 = True:
 
@@ -138,7 +138,7 @@ Demostración:
     Lema IdBool: ¿para todo x. not (not x) = x?
 
     Demostración:
-        Sea b un booleano cualquiera. Se verá que ¿not (not b) = b?
+        Sea b :: Bool. Se verá que ¿not (not b) = b?
 
         Caso b = True:
 
@@ -194,7 +194,7 @@ Demostración:
 ¿para todo x. para todo y. not (x || y) = not x && not y?
 
 Demostración:
-    Sea b1 y b2 dos booleanos cualquiera. Se verá que ¿not (b1 || b2) = not b1 && not b2?
+    Sea b1 :: Bool, sea b2 :: Bool. Se verá que ¿not (b1 || b2) = not b1 && not b2?
 
     Caso b1 = True:
 
