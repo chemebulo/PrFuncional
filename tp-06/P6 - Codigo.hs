@@ -265,7 +265,7 @@ Demostración:
     Por principio de extensionalidad (dos veces), es equivalente demostrar que:
     ¿Para todo x. para todo y. curry suma' x y = suma x y?
 
-    Sea n y m dos números cualquiera. Se verá que ¿curry suma' n m = suma n m?
+    Sea n :: Int, sea m :: Int. Se verá que ¿curry suma' n m = suma n m?
 
     -- LADO IZQUIERDO:
 
@@ -292,7 +292,7 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que:
     ¿Para todo p. uncurry suma p = suma' p?
 
-    Sea (n, m) un par cualquiera de tipo (Int, Int). Se verá que ¿uncurry suma (n, m) = suma' (n, m)?
+    Sea (n, m) un par de tipo (Int, Int). Se verá que ¿uncurry suma (n, m) = suma' (n, m)?
 
     -- LADO IZQUIERDO:
 
@@ -321,7 +321,7 @@ Demostración:
     Por principio de extensionalidad (dos veces), es equivalente demostrar que:
     ¿Para todo x. para todo y. curry fst x y = const x y?
 
-    Sea w :: a, z :: b. Se verá que ¿curry fst w z = const w z?
+    Sea w :: a, sea z :: b. Se verá que ¿curry fst w z = const w z?
 
     -- LADO IZQUIERDO:
 
@@ -348,7 +348,7 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que:
     ¿Para todo p. uncurry (flip const) p = snd p?
 
-    Sea (w, z) :: (a, b). Se verá que ¿uncurry (flip const) (w, z) = snd (w, z)?
+    Sea (w, z) un par de tipo (a, b). Se verá que ¿uncurry (flip const) (w, z) = snd (w, z)?
 
     -- LADO IZQUIERDO:
 
@@ -379,7 +379,8 @@ Demostración:
     Por principio de extensionalidad (dos veces), es equivalente demostrar que:
     ¿Para todo f. para todo x. para todo y. curry (uncurry f) x y = f x y
 
-    Sea g una función cualquiera, w :: a, z :: b. Se verá que ¿curry (uncurry g) w z = g w z?
+    Sea g una función de tipo (a -> b -> c), sea w :: a, sea z :: b.
+    Se verá que ¿curry (uncurry g) w z = g w z?
 
     -- LADO IZQUIERDO:
 
@@ -404,7 +405,8 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que:
     ¿Para todo f. Para todo p. uncurry (curry f) p = f p?
 
-    Sea (w, z) :: (a, b), g una función cualquiera. Se verá que ¿uncurry (curry g) (w, z) = g (w, z)?
+    Sea (w, z) un par de tipo (a, b), sea g una función de tipo ((a, b) -> c).
+    Se verá que ¿uncurry (curry g) (w, z) = g (w, z)?
 
     -- LADO IZQUIERDO:
 
@@ -429,7 +431,7 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que:
     ¿Para todo f. para todo p. appAssoc (uncurry (uncurry f)) p = uncurry (compose uncurry f) p?
 
-    Sea g una función cualquiera, (x, (y, z)) :: (a, (b, c)).
+    Sea g una función de tipo (a -> b -> c -> d), sea (x, (y, z)) :: (a, (b, c)).
     Se verá que ¿appAssoc (uncurry (uncurry g)) (x, (y, z)) = uncurry (compose uncurry g) (x, (y, z))? 
 
     -- LADO IZQUIERDO:
