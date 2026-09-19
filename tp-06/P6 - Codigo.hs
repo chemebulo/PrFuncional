@@ -494,7 +494,8 @@ Demostración:
         Por definición de (.), es equivalente demostrar que:
         ¿Para todo f. para todo g. para todo x. f (g x) = compose f g x?
 
-        Sea h, k dos funciones cualquiera, y :: c. Se verá que ¿h (k y) = compose h k y?
+        Sea h una función de tipo (a -> b), sea k una función de tipo (c -> a), sea y :: c.
+        Se verá que ¿h (k y) = compose h k y?
 
         -- LADO IZQUIERDO:
 
@@ -520,7 +521,7 @@ Demostración:
         Por definición de (.), es equivalente demostrar que:
         ¿Para todo p. swap (swap p) = id p?
 
-        Sea (x, y) :: (a, b). Se verá que ¿swap (swap (x, y)) = id (x, y)?
+        Sea (x, y) un par de tipo (a, b). Se verá que ¿swap (swap (x, y)) = id (x, y)?
 
         -- LADO IZQUIERDO:
 
@@ -547,7 +548,7 @@ Demostración:
         Por principio de extensionalidad, es equivalente demostrar que:
         ¿Para todo f. para todo g. para todo h. para todo x. (f . (g . h)) x = ((f . g) . h) x?
 
-        Sea t, s, k tres funciones cualquiera; y :: c. Se verá que ¿(t . (s . k)) y = ((t . s) . k) y?
+        Sea t, s, k funciones cualquiera, sea y :: c. Se verá que ¿(t . (s . k)) y = ((t . s) . k) y?
 
         -- LADO IZQUIERDO:
 
@@ -579,7 +580,7 @@ Demostración:
         Por definición de (.), es equivalente demostrar que:
         ¿Para todo f. para todo x. para todo y. curry (uncurry f) x y = id f x y?
 
-        Sea g una función cualquiera, w :: a, z :: b. Se verá que ¿curry (uncurry g) w z = id g w z?
+        Sea g una función de tipo (a -> b -> c), sea w :: a, sea z :: b. Se verá que ¿curry (uncurry g) w z = id g w z?
 
         -- LADO IZQUIERDO:
 
@@ -609,7 +610,7 @@ Demostración:
         Por definición de (.), es equivalente demostrar que:
         ¿Para todo p. appAssoc f p = f (assoc p)?
 
-        Sea p' :: (a, (b, c)). Se verá que ¿appAssoc f p' = f (assoc p')?
+        Sea p' un par de tipo (a, (b, c)). Se verá que ¿appAssoc f p' = f (assoc p')?
 
         -- LADO IZQUIERDO:
 
