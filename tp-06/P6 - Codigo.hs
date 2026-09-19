@@ -431,7 +431,7 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que:
     ¿Para todo f. para todo p. appAssoc (uncurry (uncurry f)) p = uncurry (compose uncurry f) p?
 
-    Sea g una función de tipo (a -> b -> c -> d), sea (x, (y, z)) :: (a, (b, c)).
+    Sea g una función de tipo (a -> b -> c -> d), sea (x, (y, z)) un par de tipo (a, (b, c)).
     Se verá que ¿appAssoc (uncurry (uncurry g)) (x, (y, z)) = uncurry (compose uncurry g) (x, (y, z))? 
 
     -- LADO IZQUIERDO:
