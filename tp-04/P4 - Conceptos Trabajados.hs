@@ -23,30 +23,27 @@
 > Funciones totales y parciales:
 
       > Funciones totales:
-            > Son aquellas que ... 
+            > Son aquellas que nunca dan bottom si recibe valores totalmente definidos.
                   Ejemplo:
-
-                  succ
+                        succ
+                        dup
 
       > Funciones parciales:
-            > Son aquellas que ... 
+            > Son aquellas que pueden dar bottom al recibir valores totalmente definidos. 
                   Ejemplo:
-
-                  div
-
+                        div
+                        many
 
 > Funciones estrictas y no estrictas:
 
       > Funciones estrictas:
-            > Son aquellas que ... 
+            > Son aquellas que siempre devuelve bottom si recibe bottom.
                   Ejemplo:
-
-
+                        uncurry
+                        apply
 
       > Funciones no estrictas:
-            > Son aquellas que ... 
+            > Son aquellas que pueden devolver algo diferente a bottom si recibe bottom.
                   Ejemplo:
-
-
-> Redexes según la definición de la función:
-
+                        const
+                        dup
