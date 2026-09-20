@@ -11,6 +11,7 @@
 > Los constructores pueden ser funciones:
     > Los constructores pueden ser funciones, porque algunas en su definición están aplicadas y esperan parámetros.
         - Ejemplo:
+        
             Vasito :: Gusto -> Helado
             Cucurucho :: Gusto -> Gusto -> Helado
             Pote :: Gusto -> Gusto -> Gusto -> Helado
