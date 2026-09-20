@@ -18,7 +18,7 @@
 
 
 > Las Funciones pueden dar significado:
-    > Dado que una función es una regla de correspondencia de un conjunto de entrada A, a un conjunto de salida B;
+    > Dado que una función es una regla de correspondencia de un conjunto de entrada A, a un conjunto de salida B,
       puede ser interesante que una función le aporte significado a un elemento de un Tipo Algebraico.
     > Entonces, resulta útil tener funciones que dado un Tipo Algebraico pueda brindarle un significado según el elemento dado.
         - Ejemplo:
