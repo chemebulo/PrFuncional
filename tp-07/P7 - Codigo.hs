@@ -347,36 +347,55 @@ cantidadDePuntosInteresantes (Bifurcacion _ d1 d2) = 1 + cantidadDePuntosInteres
 -- 3.C
 
 cantidadDePuntosVacios :: Dungeon a -> Int
-cantidadDePuntosVacios (Habitacion n)        =
-cantidadDePuntosVacios (Pasaje m d)          =
-cantidadDePuntosVacios (Bifurcacion m d1 d2) =
+cantidadDePuntosVacios (Habitacion _)        = 0
+cantidadDePuntosVacios (Pasaje m d)          = unoSi (estaVacioM m) + cantidadDePuntosVacios d
+cantidadDePuntosVacios (Bifurcacion m d1 d2) = unoSi (estaVacioM m) + cantidadDePuntosVacios d1 + cantidadDePuntosVacios d2
+
+unoSi :: Bool -> Int
+unoSi True  = 1
+unoSi False = 0
+
+estaVacioM :: Maybe a -> Bool
+estaVacioM Nothing = True
+estaVacioM _       = False 
 
 
 -- 3.D
 
-cantidadDePuntosCon :: Dungeon a -> Int
-cantidadDePuntosCon (Habitacion n)        =
-cantidadDePuntosCon (Pasaje m d)          =
-cantidadDePuntosCon (Bifurcacion m d1 d2) =
+cantidadDePuntosCon :: Eq a => a -> Dungeon a -> Int
+cantidadDePuntosCon x' (Habitacion _)        = 0
+cantidadDePuntosCon x' (Pasaje m d)          = unoSi (tieneM m x') + cantidadDePuntosCon x' d
+cantidadDePuntosCon x' (Bifurcacion m d1 d2) = unoSi (tieneM m x') + cantidadDePuntosCon x' d1 + cantidadDePuntosCon x' d2
+
+tieneM :: Eq a => Maybe a -> a -> Bool
+tieneM Nothing  _  = False
+tieneM (Just x) x' = x == x'
 
 
 -- 3.E
 
 esLineal :: Dungeon a -> Bool
-esLineal (Habitacion n)        =
-esLineal (Pasaje m d)          =
-esLineal (Bifurcacion m d1 d2) =
+esLineal (Habitacion _)        = True
+esLineal (Pasaje _ d)          = esLineal d
+esLineal (Bifurcacion _ d1 d2) = False
 
 
 -- 3.F
 
-llenoDe :: Dungeon a -> Bool
-llenoDe (Habitacion n)        =
-llenoDe (Pasaje m d)          =
-llenoDe (Bifurcacion m d1 d2) =
+llenoDe :: Eq a => a -> Dungeon a -> Bool
+llenoDe x' (Habitacion x)        = mismoEnM (Just x) x'
+llenoDe x' (Pasaje m d)          = mismoEnM m x' && llenoDe x' d
+llenoDe x' (Bifurcacion m d1 d2) = mismoEnM m x' && llenoDe x' d1 && llenoDe x' d2
+
+mismoEnM :: Eq a => Maybe a -> a -> Bool
+mismoEnM Nothing  _  = False
+mismoEnM (Just x) x' = x == x'
 
 
 > Ejercicio 4:
+
+data Tesoro = Cofre | Oro | Joyas
+    deriving Show
 
 
 -- 4.A
