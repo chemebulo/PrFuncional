@@ -4,26 +4,27 @@
 
 --------------------------------------------------------------------------------------------------------
 
-## SECCIÓN 1
+## SECCIÓN 1:
 
 data Pizza = Prepizza | Capa Ingrediente Pizza 
+    deriving Show
 
 data Ingrediente = Aceitunas Int | Anchoas | Cebolla 
                  | Jamón         | Queso   | Salsa
+    deriving Show
 
 
 > Ejercicio 1:
 
 Reglas que definen el conjunto Pizza:
     > Regla base: Prepizza está en el conjunto Pizza.
-
-    > Regla inductiva: Si i está en el conjunto Ingrediente, y p está en el conjunto Pizza, entonces
-                       Capa i p está en el conjunto Pizza.
+    > Regla inductiva: Si i está en el conjunto Ingrediente, p está en el conjunto Pizza,
+                       entonces Capa i p está en el conjunto Pizza.
 
 
 > Ejercicio 2:
 
-f :: Pizza -> ...
+f :: Pizza -> a
 f Prepizza   = ...
 f (Capa i p) = ... i ... f p
 
@@ -201,13 +202,249 @@ Demostración:
 
     -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
+#############################################################################################################################
 
-## Sección 2
+## SECCIÓN 2:
+
+type Nombre = String 
+
+data Planilla = Fin | Registro Nombre Planilla 
+    deriving Show
+
+data Equipo = Becario Nombre 
+            | Investigador Nombre Equipo Equipo Equipo
+    deriving Show
+
 
 > Ejercicio 1:
 
+Reglas que definen el conjunto Planilla:
+    > Regla base: Fin está en el conjunto Planilla.
+    > Regla inductiva: Si n está en el conjunto Nombre, p está en el conjunto Planilla,
+                       entonces Registro n p está en el conjunto Planilla.
+
+Reglas que definen el conjunto Equipo:
+    > Regla base: Becario n está en el conjunto Equipo, siendo que n está en el conjunto Nombre.
+    > Regla inductiva: Si n está en el conjunto Nombre, e1 está en el conjunto Equipo, e2 está en el conjunto Equipo,
+                       e3 está en el conjunto Equipo, entonces Investigador n e1 e2 e3 está en el conjunto Equipo.
 
 
 > Ejercicio 2:
+
+f :: Planilla -> a
+f Fin            = ...
+f (Registro n p) = ... n ... f p ...
+
+f :: Equipo -> a
+f (Becario n)               = ... n
+f (Ingestigador n e1 e2 e3) = ... n ... f e1 ... f e2 ... f e3
+
+
+> Ejercicio 3:
+
+-- 3.A
+
+largoDePlanilla :: Planilla -> Int
+largoDePlanilla Fin            = 0
+largoDePlanilla (Registro _ p) = 1 + largoDePlanilla p
+
+
+-- 3.B
+
+esta :: Nombre -> Planilla -> Bool
+esta n' Fin            = False
+esta n' (Registro n p) = n' == n || esta n' p
+
+
+-- 3.C
+
+juntarPlanillas :: Planilla -> Planilla -> Planilla
+juntarPlanillas Fin            p2 = p2
+juntarPlanillas (Registro n p) p2 = Registro n (juntarPlanillas p p2)
+
+
+-- 3.D
+
+nivelesJerarquicos :: Equipo -> Int
+nivelesJerarquicos (Becario _)               = 0
+nivelesJerarquicos (Investigador _ e1 e2 e3) = 
+    1 + nivelesJerarquicos e1 + nivelesJerarquicos e2 + nivelesJerarquicos e3
+
+
+-- 3.E
+
+cantidadDeIntegrantes :: Equipo -> Int
+cantidadDeIntegrantes (Becario _)               = 1
+cantidadDeIntegrantes (Investigador _ e1 e2 e3) = 
+    1 + cantidadDeIntegrantes e1 + cantidadDeIntegrantes e2 + cantidadDeIntegrantes e3
+
+
+-- 3.F
+
+planillaDeIntegrantes :: Equipo -> Planilla
+planillaDeIntegrantes (Becario n)               = Registro n Fin 
+planillaDeIntegrantes (Investigador n e1 e2 e3) = Registro n (juntarPlanillas 
+                                                                (juntarPlanillas (planillaDeIntegrantes e1)
+                                                                                 (planillaDeIntegrantes e2))
+                                                                (planillaDeIntegrantes e3))
+
+
+> Ejercicio 4:
+
+
+
+> Ejercicio 5:
+
+
+
+
+#############################################################################################################################
+
+## SECCIÓN 3:
+
+data Dungeon a = Habitacion a 
+               | Pasaje (Maybe a) (Dungeon a) 
+               | Bifurcacion (Maybe a) (Dungeon a) (Dungeon a)
+    deriving Show
+
+
+> Ejercicio 1:
+
+Reglas que definen el conjunto Dungeon a:
+    > Regla base: Habitacion a está en el conjunto Dungeon a.
+    > Regla inductiva 1: Si m está en el conjunto Maybe a, d está en el conjunto Dungeon a,
+                         entonces Pasaje m d está en el conjunto Dungeon a.
+    > Regla inductiva 2: Si m está en el conjunto Maybe a, d1 está en el conjunto Dungeon a, d2 está en el
+                         conjunto Dungeon a, entonces Bifurcacion m d1 d2 está en el conjunto Dungeon a.
+
+
+> Ejercicio 2:
+
+f :: Dungeon a -> b
+f (Habitacion n)        = ... n
+f (Pasaje m d)          = ... m ... f d
+f (Bifurcacion m d1 d2) = ... m ... f d1 ... f d2
+
+
+> Ejercicio 3:
+
+-- 3.A
+
+cantidadDeBifurcaciones :: Dungeon a -> Int
+cantidadDeBifurcaciones (Habitacion _)        = 0
+cantidadDeBifurcaciones (Pasaje _ d)          = cantidadDeBifurcaciones d
+cantidadDeBifurcaciones (Bifurcacion _ d1 d2) = 1 + cantidadDeBifurcaciones d1 + cantidadDeBifurcaciones d2
+
+
+-- 3.B
+
+cantidadDePuntosInteresantes :: Dungeon a -> Int
+cantidadDePuntosInteresantes (Habitacion _)        = 0
+cantidadDePuntosInteresantes (Pasaje _ d)          = 1 + cantidadDePuntosInteresantes d
+cantidadDePuntosInteresantes (Bifurcacion _ d1 d2) = 1 + cantidadDePuntosInteresantes d1 + cantidadDePuntosInteresantes d2
+
+
+-- 3.C
+
+cantidadDePuntosVacios :: Dungeon a -> Int
+cantidadDePuntosVacios (Habitacion n)        =
+cantidadDePuntosVacios (Pasaje m d)          =
+cantidadDePuntosVacios (Bifurcacion m d1 d2) =
+
+
+-- 3.D
+
+cantidadDePuntosCon :: Dungeon a -> Int
+cantidadDePuntosCon (Habitacion n)        =
+cantidadDePuntosCon (Pasaje m d)          =
+cantidadDePuntosCon (Bifurcacion m d1 d2) =
+
+
+-- 3.E
+
+esLineal :: Dungeon a -> Bool
+esLineal (Habitacion n)        =
+esLineal (Pasaje m d)          =
+esLineal (Bifurcacion m d1 d2) =
+
+
+-- 3.F
+
+llenoDe :: Dungeon a -> Bool
+llenoDe (Habitacion n)        =
+llenoDe (Pasaje m d)          =
+llenoDe (Bifurcacion m d1 d2) =
+
+
+> Ejercicio 4:
+
+
+-- 4.A
+
+
+
+
+
+
+-- 4.B
+
+
+
+
+
+-- 4.C
+
+
+
+
+
+
+
+-- 4.D
+
+
+
+
+
+
+-- 4.F
+
+
+
+
+> Ejercicio 5:
+
+data VariasCosas a b = Objeto a | Criatura b
+    deriving Show
+
+data Monstruo = Gargola | Dragon | Troll
+    deriving Show
+
+
+-- 5.A
+
+
+
+
+
+
+-- 5.B
+
+
+
+
+-- 5.C
+
+
+
+
+
+-- 5.D
+
+
+
+
+
+-- 5.E
 
 
