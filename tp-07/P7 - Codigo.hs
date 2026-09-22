@@ -400,7 +400,7 @@ data Tesoro = Cofre | Oro | Joyas
 
 -- 4.A
 
-Para todo x :: a. cantidadDePuntosVacios (Habitacion x) = 0
+Para todo x :: a . cantidadDePuntosVacios (Habitacion x) = 0
 
     -- LADO IZQUIERDO
 
@@ -422,13 +422,15 @@ cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas)) = 1
     -- LADO IZQUIERDO
 
         cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas))
-    =                                                                       (cantidadDePuntosVacios.2)
-        unoSiNoHayNada Nothing + cantidadDePuntosVacios (Habitacion Joyas)
-    =                                                                       (cantidadDePuntosVacios.1)
-        unoSiNoHayNada Nothing + 0
-    =                                                                       (unoSiNoHayNada.1)
+    =                                                                           (cantidadDePuntosVacios.2)
+        unoSi (estaVacioM Nothing) + cantidadDePuntosVacios (Habitacion Joyas)
+    =                                                                           (cantidadDePuntosVacios.1)
+        unoSi (estaVacioM Nothing) + 0
+    =                                                                           (estaVacioM.1)
+        unoSi True + 0
+    =                                                                           (unoSi.1)
         1 + 0
-    =                                                                       (aritmética)
+    =                                                                           (aritmética)
         1
 
     -- LADO DERECHO
@@ -440,22 +442,484 @@ cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas)) = 1
 
 -- 4.C
 
+Para todo y :: a . para todo x :: a . cantidadDePuntosVacios (Pasaje (Just y) (Habitacion x)) = 0
 
+    -- LADO IZQUIERDO
 
+        cantidadDePuntosVacios (Pasaje (Just y) (Habitacion x))
+    =                                                                           (cantidadDePuntosVacios.2)
+        unoSi (estaVacioM (Just y)) + cantidadDePuntosVacios (Habitacion x)
+    =                                                                           (cantidadDePuntosVacios.1)
+        unoSi (estaVacioM (Just y)) + 0
+    =                                                                           (estaVacioM.2)
+        unoSi False + 0
+    =                                                                           (unoSi.2)
+        0 + 0
+    =                                                                           (aritmética)
+        0
 
+    -- LADO DERECHO
 
+        0
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
 
 -- 4.D
 
+cantidadDePuntosVacios (Bifurcacion Nothing (Pasaje Nothing (Habitacion Joyas)) (Pasaje (Just Oro) (Habitacion Cofre))) = 2
+
+    -- LADO IZQUIERDO
+
+        cantidadDePuntosVacios (Bifurcacion Nothing (Pasaje Nothing (Habitacion Joyas)) 
+                                                    (Pasaje (Just Oro) (Habitacion Cofre)))
+    =                                                                                               (cantidadDePuntosVacios.3)
+        unoSi (estaVacioM Nothing)
+        + cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas)) 
+        + cantidadDePuntosVacios (Pasaje (Just Oro) (Habitacion Cofre))
+    =                                                                                               (cantidadDePuntosVacios.2)
+        unoSi (estaVacioM Nothing)
+        + unoSi (estaVacioM Nothing)
+        + cantidadDePuntosVacios (Habitacion Joyas)
+        + cantidadDePuntosVacios (Pasaje (Just Oro) (Habitacion Cofre))
+    =                                                                                               (cantidadDePuntosVacios.1)
+        unoSi (estaVacioM Nothing) 
+        + unoSi (estaVacioM Nothing)
+        + 0
+        + cantidadDePuntosVacios (Pasaje (Just Oro) (Habitacion Cofre))
+    =                                                                                               (cantidadDePuntosVacios.2)
+        unoSi (estaVacioM Nothing) 
+        + unoSi (estaVacioM Nothing)
+        + 0
+        + unoSi (estaVacioM (Just Oro))
+        + cantidadDePuntosVacios (Habitacion Cofre)
+    =                                                                                               (cantidadDePuntosVacios.1)
+        unoSi (estaVacioM Nothing) 
+        + unoSi (estaVacioM Nothing)
+        + 0
+        + unoSi (estaVacioM (Just Oro))
+        + 0
+    =                                                                                               (estaVacioM.1)
+        unoSi True 
+        + unoSi (estaVacioM Nothing)
+        + 0
+        + unoSi (estaVacioM (Just Oro))
+        + 0
+    =                                                                                               (estaVacioM.1)
+        unoSi True 
+        + unoSi True
+        + 0
+        + unoSi (estaVacioM (Just Oro))
+        + 0
+    =                                                                                               (estaVacioM.2)
+        unoSi True + unoSi True + 0 + unoSi False + 0
+    =                                                                                               (unoSi.1)
+        1 + unoSi True + 0 + unoSi False + 0
+    =                                                                                               (unoSi.1)
+        1 + 1 + 0 + unoSi False + 0
+    =                                                                                               (unoSi.2)
+        1 + 1 + 0 + 0 + 0
+    =                                                                                               (aritmética)
+        2
+
+    -- LADO DERECHO
+
+        2
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
 
+-- 4.E
 
+Para todo z :: a . para todo y :: a . para todo x :: a . 
+    cantidadDePuntosVacios (Bifurcacion Nothing (Pasaje Nothing  (Habitacion z)) (Pasaje (Just y) (Habitacion x))) = 2
+
+    -- LADO IZQUIERDO
+
+        cantidadDePuntosVacios (Bifurcacion Nothing 
+                                    (Pasaje Nothing  (Habitacion z))
+                                    (Pasaje (Just y) (Habitacion x)))
+    =                                                                                           (cantidadDePuntosVacios.3)
+        unoSi (estaVacioM Nothing)
+        + cantidadDePuntosVacios (Pasaje Nothing (Habitacion z))
+        + cantidadDePuntosVacios (Pasaje (Just y) (Habitacion x))
+    =                                                                                           (cantidadDePuntosVacios.2)
+        unoSi (estaVacioM Nothing)
+        + unoSi (estaVacioM Nothing)
+        + cantidadDePuntosVacios (Habitacion z)
+        + cantidadDePuntosVacios (Pasaje (Just y) (Habitacion x))
+    =                                                                                           (cantidadDePuntosVacios.1)
+        unoSi (estaVacioM Nothing)
+        + unoSi (estaVacioM Nothing)
+        + 0
+        + cantidadDePuntosVacios (Pasaje (Just y) (Habitacion x))
+    =                                                                                           (cantidadDePuntosVacios.2)
+        unoSi (estaVacioM Nothing)
+        + unoSi (estaVacioM Nothing)
+        + 0
+        + unoSi (estaVacioM (Just y))
+        + cantidadDePuntosVacios (Habitacion x)
+    =                                                                                           (cantidadDePuntosVacios.1)
+        unoSi (estaVacioM Nothing)
+        + unoSi (estaVacioM Nothing)
+        + 0
+        + unoSi (estaVacioM (Just y))
+        + 0
+    =                                                                                           (estaVacioM.1)
+        unoSi True
+        + unoSi (estaVacioM Nothing)
+        + 0
+        + unoSi (estaVacioM (Just y))
+        + 0
+    =                                                                                           (estaVacioM.1)
+        unoSi True + unoSi True + 0 + unoSi (estaVacioM (Just y)) + 0
+    =                                                                                           (estaVacioM.2)
+        unoSi True + unoSi True + 0 + unoSi False + 0
+    =                                                                                           (unoSi.1)
+        1 + unoSi True + 0 + unoSi False + 0
+    =                                                                                           (unoSi.1)
+        1 + 1 + 0 + unoSi False + 0
+    =                                                                                           (unoSi.2)
+        1 + 1 + 0 + 0 + 0
+    =                                                                                           (aritmética)
+        2
+
+    -- LADO DERECHO
+
+        2
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
 
 -- 4.F
 
+cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing 
+                                                    (Pasaje Nothing    (Habitacion Joyas)) 
+                                                    (Pasaje (Just Oro) (Habitacion Cofre))
+                                                 ) 
+                                                 (Bifurcacion Nothing 
+                                                    (Pasaje (Just Oro) (Habitacion Oro))
+                                                    (Pasaje Nothing    (Habitacion Joyas))
+                                                 ))
+= 4
 
+    -- LADO IZQUIERDO
+
+        cantidadDePuntosVacios 
+            (Bifurcacion (Just Cofre) 
+                (Bifurcacion Nothing 
+                    (Pasaje Nothing (Habitacion Joyas)) 
+                    (Pasaje (Just Oro) (Habitacion Cofre))
+                ) 
+                (Bifurcacion Nothing 
+                    (Pasaje (Just Oro) (Habitacion Oro))
+                    (Pasaje Nothing (Habitacion Joyas))
+                )
+            )
+    =                                                                                               (cantidadDePuntosVacios.3)
+        unoSi (estaVacioM (Just Cofre))
+        + cantidadDePuntosVacios 
+            (Bifurcacion Nothing 
+                (Pasaje Nothing (Habitacion Joyas)) 
+                (Pasaje (Just Oro) (Habitacion Cofre))
+            )
+        + cantidadDePuntosVacios
+            (Bifurcacion Nothing 
+                (Pasaje (Just Oro) (Habitacion Oro))
+                (Pasaje Nothing (Habitacion Joyas))
+            )
+    =                                                                                               (cantidadDePuntosVacios.3)
+        unoSi (estaVacioM (Just Cofre))
+        + unoSi (estaVacioM Nothing)
+        + cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas))
+        + cantidadDePuntosVacios (Pasaje (Just Oro) (Habitacion Cofre))
+        + cantidadDePuntosVacios
+            (Bifurcacion Nothing 
+                (Pasaje (Just Oro) (Habitacion Oro))
+                (Pasaje Nothing (Habitacion Joyas))
+            )
+    =                                                                                               (cantidadDePuntosVacios.3)
+        unoSi (estaVacioM (Just Cofre))
+        + unoSi (estaVacioM Nothing)
+        + cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas))
+        + cantidadDePuntosVacios (Pasaje (Just Oro) (Habitacion Cofre))
+        + unoSi (estaVacioM Nothing)
+        + cantidadDePuntosVacios (Pasaje (Just Oro) (Habitacion Oro))
+        + cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas))
+    =                                                                                               (cantidadDePuntosVacios.2)
+        unoSi (estaVacioM (Just Cofre))
+        + unoSi (estaVacioM Nothing)
+        + unoSi (estaVacioM Nothing)
+        + cantidadDePuntosVacios (Habitacion Joyas)
+        + cantidadDePuntosVacios (Pasaje (Just Oro) (Habitacion Cofre))
+        + unoSi (estaVacioM Nothing)
+        + cantidadDePuntosVacios (Pasaje (Just Oro) (Habitacion Oro))
+        + cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas))
+    =                                                                                               (cantidadDePuntosVacios.2)
+        unoSi (estaVacioM (Just Cofre))
+        + unoSi (estaVacioM Nothing)
+        + unoSi (estaVacioM Nothing)
+        + cantidadDePuntosVacios (Habitacion Joyas)
+        + unoSi (estaVacioM (Just Oro))
+        + cantidadDePuntosVacios (Habitacion Cofre)
+        + unoSi (estaVacioM Nothing)
+        + cantidadDePuntosVacios (Pasaje (Just Oro) (Habitacion Oro))
+        + cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas))
+    =                                                                                               (cantidadDePuntosVacios.1)
+        unoSi (estaVacioM (Just Cofre))
+        + unoSi (estaVacioM Nothing)
+        + unoSi (estaVacioM Nothing)
+        + 0
+        + unoSi (estaVacioM (Just Oro))
+        + cantidadDePuntosVacios (Habitacion Cofre)
+        + unoSi (estaVacioM Nothing)
+        + cantidadDePuntosVacios (Pasaje (Just Oro) (Habitacion Oro))
+        + cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas))
+    =                                                                                               (cantidadDePuntosVacios.1)
+        unoSi (estaVacioM (Just Cofre))
+        + unoSi (estaVacioM Nothing)
+        + unoSi (estaVacioM Nothing)
+        + 0
+        + unoSi (estaVacioM (Just Oro))
+        + 0
+        + unoSi (estaVacioM Nothing)
+        + cantidadDePuntosVacios (Pasaje (Just Oro) (Habitacion Oro))
+        + cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas))
+    =                                                                                               (cantidadDePuntosVacios.2)
+        unoSi (estaVacioM (Just Cofre))
+        + unoSi (estaVacioM Nothing)
+        + unoSi (estaVacioM Nothing)
+        + 0
+        + unoSi (estaVacioM (Just Oro))
+        + 0
+        + unoSi (estaVacioM Nothing)
+        + unoSi (estaVacioM (Just Oro))
+        + cantidadDePuntosVacios (Habitacion Oro)
+        + cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas))
+    =                                                                                               (cantidadDePuntosVacios.2)
+        unoSi (estaVacioM (Just Cofre))
+        + unoSi (estaVacioM Nothing)
+        + unoSi (estaVacioM Nothing)
+        + 0
+        + unoSi (estaVacioM (Just Oro))
+        + 0
+        + unoSi (estaVacioM Nothing)
+        + unoSi (estaVacioM (Just Oro))
+        + cantidadDePuntosVacios (Habitacion Oro)
+        + unoSi (estaVacioM Nothing)
+        + cantidadDePuntosVacios (Habitacion Joyas)
+    =                                                                                               (cantidadDePuntosVacios.1)
+        unoSi (estaVacioM (Just Cofre))
+        + unoSi (estaVacioM Nothing)
+        + unoSi (estaVacioM Nothing)
+        + 0
+        + unoSi (estaVacioM (Just Oro))
+        + 0
+        + unoSi (estaVacioM Nothing)
+        + unoSi (estaVacioM (Just Oro))
+        + 0
+        + unoSi (estaVacioM Nothing)
+        + cantidadDePuntosVacios (Habitacion Joyas)
+    =                                                                                               (cantidadDePuntosVacios.1)
+        unoSi (estaVacioM (Just Cofre))
+        + unoSi (estaVacioM Nothing)
+        + unoSi (estaVacioM Nothing)
+        + 0
+        + unoSi (estaVacioM (Just Oro))
+        + 0
+        + unoSi (estaVacioM Nothing)
+        + unoSi (estaVacioM (Just Oro))
+        + 0
+        + unoSi (estaVacioM Nothing)
+        + 0
+    =                                                                                               (estaVacioM.1)
+        unoSi (estaVacioM (Just Cofre))
+        + unoSi True
+        + unoSi (estaVacioM Nothing)
+        + 0
+        + unoSi (estaVacioM (Just Oro))
+        + 0
+        + unoSi (estaVacioM Nothing)
+        + unoSi (estaVacioM (Just Oro))
+        + 0
+        + unoSi (estaVacioM Nothing)
+        + 0
+    =                                                                                               (estaVacioM.1)
+        unoSi (estaVacioM (Just Cofre))
+        + unoSi True
+        + unoSi True
+        + 0
+        + unoSi (estaVacioM (Just Oro))
+        + 0
+        + unoSi (estaVacioM Nothing)
+        + unoSi (estaVacioM (Just Oro))
+        + 0
+        + unoSi (estaVacioM Nothing)
+        + 0
+    =                                                                                               (estaVacioM.1)
+        unoSi (estaVacioM (Just Cofre))
+        + unoSi True
+        + unoSi True
+        + 0
+        + unoSi (estaVacioM (Just Oro))
+        + 0
+        + unoSi True
+        + unoSi (estaVacioM (Just Oro))
+        + 0
+        + unoSi (estaVacioM Nothing)
+        + 0
+    =                                                                                               (estaVacioM.1)
+        unoSi (estaVacioM (Just Cofre))
+        + unoSi True
+        + unoSi True
+        + 0
+        + unoSi (estaVacioM (Just Oro))
+        + 0
+        + unoSi True
+        + unoSi (estaVacioM (Just Oro))
+        + 0
+        + unoSi True
+        + 0
+    =                                                                                               (estaVacioM.2)
+        unoSi False
+        + unoSi True
+        + unoSi True
+        + 0
+        + unoSi (estaVacioM (Just Oro))
+        + 0
+        + unoSi True
+        + unoSi (estaVacioM (Just Oro))
+        + 0
+        + unoSi True
+        + 0
+    =                                                                                               (estaVacioM.2)
+        unoSi False
+        + unoSi True
+        + unoSi True
+        + 0
+        + unoSi False
+        + 0
+        + unoSi True
+        + unoSi (estaVacioM (Just Oro))
+        + 0
+        + unoSi True
+        + 0
+    =                                                                                               (estaVacioM.2)
+        unoSi False
+        + unoSi True
+        + unoSi True
+        + 0
+        + unoSi False
+        + 0
+        + unoSi True
+        + unoSi False
+        + 0
+        + unoSi True
+        + 0
+    =                                                                                               (unoSi.1)
+        unoSi False
+        + 1
+        + unoSi True
+        + 0
+        + unoSi False
+        + 0
+        + unoSi True
+        + unoSi False
+        + 0
+        + unoSi True
+        + 0
+    =                                                                                               (unoSi.1)
+        unoSi False
+        + 1
+        + 1
+        + 0
+        + unoSi False
+        + 0
+        + unoSi True
+        + unoSi False
+        + 0
+        + unoSi True
+        + 0
+    =                                                                                               (unoSi.1)
+        unoSi False
+        + 1
+        + 1
+        + 0
+        + unoSi False
+        + 0
+        + 1
+        + unoSi False
+        + 0
+        + unoSi True
+        + 0
+    =                                                                                               (unoSi.1)
+        unoSi False
+        + 1
+        + 1
+        + 0
+        + unoSi False
+        + 0
+        + 1
+        + unoSi False
+        + 0
+        + 1
+        + 0
+    =                                                                                               (unoSi.0)
+        unoSi False
+        + 1
+        + 1
+        + 0
+        + unoSi False
+        + 0
+        + 1
+        + unoSi False
+        + 0
+        + 1
+        + 0
+    =                                                                                               (unoSi.0)
+        0
+        + 1
+        + 1
+        + 0
+        + unoSi False
+        + 0
+        + 1
+        + unoSi False
+        + 0
+        + 1
+        + 0
+    =                                                                                               (unoSi.0)
+        0
+        + 1
+        + 1
+        + 0
+        + 0
+        + 0
+        + 1
+        + unoSi False
+        + 0
+        + 1
+        + 0
+    =                                                                                               (unoSi.0)
+        0
+        + 1
+        + 1
+        + 0
+        + 0
+        + 0
+        + 1
+        + 0
+        + 0
+        + 1
+        + 0
+    =                                                                                               (aritmética)
+        4
+
+    -- LADO DERECHO
+
+        4
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
 
 > Ejercicio 5:
