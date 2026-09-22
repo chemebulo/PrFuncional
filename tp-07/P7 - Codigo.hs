@@ -616,7 +616,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
                     (Pasaje Nothing (Habitacion Joyas))
                 )
             )
-    =                                                                                               (cantidadDePuntosVacios.3)
+    =                                                                               (cantidadDePuntosVacios.3)
         unoSi (estaVacioM (Just Cofre))
         + cantidadDePuntosVacios 
             (Bifurcacion Nothing 
@@ -628,7 +628,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
                 (Pasaje (Just Oro) (Habitacion Oro))
                 (Pasaje Nothing (Habitacion Joyas))
             )
-    =                                                                                               (cantidadDePuntosVacios.3)
+    =                                                                               (cantidadDePuntosVacios.3)
         unoSi (estaVacioM (Just Cofre))
         + unoSi (estaVacioM Nothing)
         + cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas))
@@ -638,7 +638,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
                 (Pasaje (Just Oro) (Habitacion Oro))
                 (Pasaje Nothing (Habitacion Joyas))
             )
-    =                                                                                               (cantidadDePuntosVacios.3)
+    =                                                                               (cantidadDePuntosVacios.3)
         unoSi (estaVacioM (Just Cofre))
         + unoSi (estaVacioM Nothing)
         + cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas))
@@ -646,7 +646,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
         + unoSi (estaVacioM Nothing)
         + cantidadDePuntosVacios (Pasaje (Just Oro) (Habitacion Oro))
         + cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas))
-    =                                                                                               (cantidadDePuntosVacios.2)
+    =                                                                               (cantidadDePuntosVacios.2)
         unoSi (estaVacioM (Just Cofre))
         + unoSi (estaVacioM Nothing)
         + unoSi (estaVacioM Nothing)
@@ -655,7 +655,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
         + unoSi (estaVacioM Nothing)
         + cantidadDePuntosVacios (Pasaje (Just Oro) (Habitacion Oro))
         + cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas))
-    =                                                                                               (cantidadDePuntosVacios.2)
+    =                                                                               (cantidadDePuntosVacios.2)
         unoSi (estaVacioM (Just Cofre))
         + unoSi (estaVacioM Nothing)
         + unoSi (estaVacioM Nothing)
@@ -665,7 +665,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
         + unoSi (estaVacioM Nothing)
         + cantidadDePuntosVacios (Pasaje (Just Oro) (Habitacion Oro))
         + cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas))
-    =                                                                                               (cantidadDePuntosVacios.1)
+    =                                                                               (cantidadDePuntosVacios.1)
         unoSi (estaVacioM (Just Cofre))
         + unoSi (estaVacioM Nothing)
         + unoSi (estaVacioM Nothing)
@@ -675,7 +675,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
         + unoSi (estaVacioM Nothing)
         + cantidadDePuntosVacios (Pasaje (Just Oro) (Habitacion Oro))
         + cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas))
-    =                                                                                               (cantidadDePuntosVacios.1)
+    =                                                                               (cantidadDePuntosVacios.1)
         unoSi (estaVacioM (Just Cofre))
         + unoSi (estaVacioM Nothing)
         + unoSi (estaVacioM Nothing)
@@ -685,7 +685,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
         + unoSi (estaVacioM Nothing)
         + cantidadDePuntosVacios (Pasaje (Just Oro) (Habitacion Oro))
         + cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas))
-    =                                                                                               (cantidadDePuntosVacios.2)
+    =                                                                               (cantidadDePuntosVacios.2)
         unoSi (estaVacioM (Just Cofre))
         + unoSi (estaVacioM Nothing)
         + unoSi (estaVacioM Nothing)
@@ -696,7 +696,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
         + unoSi (estaVacioM (Just Oro))
         + cantidadDePuntosVacios (Habitacion Oro)
         + cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas))
-    =                                                                                               (cantidadDePuntosVacios.2)
+    =                                                                               (cantidadDePuntosVacios.2)
         unoSi (estaVacioM (Just Cofre))
         + unoSi (estaVacioM Nothing)
         + unoSi (estaVacioM Nothing)
@@ -708,7 +708,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
         + cantidadDePuntosVacios (Habitacion Oro)
         + unoSi (estaVacioM Nothing)
         + cantidadDePuntosVacios (Habitacion Joyas)
-    =                                                                                               (cantidadDePuntosVacios.1)
+    =                                                                               (cantidadDePuntosVacios.1)
         unoSi (estaVacioM (Just Cofre))
         + unoSi (estaVacioM Nothing)
         + unoSi (estaVacioM Nothing)
@@ -720,7 +720,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
         + 0
         + unoSi (estaVacioM Nothing)
         + cantidadDePuntosVacios (Habitacion Joyas)
-    =                                                                                               (cantidadDePuntosVacios.1)
+    =                                                                               (cantidadDePuntosVacios.1)
         unoSi (estaVacioM (Just Cofre))
         + unoSi (estaVacioM Nothing)
         + unoSi (estaVacioM Nothing)
@@ -732,7 +732,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
         + 0
         + unoSi (estaVacioM Nothing)
         + 0
-    =                                                                                               (estaVacioM.1)
+    =                                                                               (estaVacioM.1)
         unoSi (estaVacioM (Just Cofre))
         + unoSi True
         + unoSi (estaVacioM Nothing)
@@ -744,7 +744,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
         + 0
         + unoSi (estaVacioM Nothing)
         + 0
-    =                                                                                               (estaVacioM.1)
+    =                                                                               (estaVacioM.1)
         unoSi (estaVacioM (Just Cofre))
         + unoSi True
         + unoSi True
@@ -756,7 +756,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
         + 0
         + unoSi (estaVacioM Nothing)
         + 0
-    =                                                                                               (estaVacioM.1)
+    =                                                                               (estaVacioM.1)
         unoSi (estaVacioM (Just Cofre))
         + unoSi True
         + unoSi True
@@ -768,7 +768,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
         + 0
         + unoSi (estaVacioM Nothing)
         + 0
-    =                                                                                               (estaVacioM.1)
+    =                                                                               (estaVacioM.1)
         unoSi (estaVacioM (Just Cofre))
         + unoSi True
         + unoSi True
@@ -780,7 +780,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
         + 0
         + unoSi True
         + 0
-    =                                                                                               (estaVacioM.2)
+    =                                                                               (estaVacioM.2)
         unoSi False
         + unoSi True
         + unoSi True
@@ -792,7 +792,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
         + 0
         + unoSi True
         + 0
-    =                                                                                               (estaVacioM.2)
+    =                                                                               (estaVacioM.2)
         unoSi False
         + unoSi True
         + unoSi True
@@ -804,7 +804,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
         + 0
         + unoSi True
         + 0
-    =                                                                                               (estaVacioM.2)
+    =                                                                               (estaVacioM.2)
         unoSi False
         + unoSi True
         + unoSi True
@@ -816,7 +816,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
         + 0
         + unoSi True
         + 0
-    =                                                                                               (unoSi.1)
+    =                                                                               (unoSi.1)
         unoSi False
         + 1
         + unoSi True
@@ -828,7 +828,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
         + 0
         + unoSi True
         + 0
-    =                                                                                               (unoSi.1)
+    =                                                                               (unoSi.1)
         unoSi False
         + 1
         + 1
@@ -840,7 +840,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
         + 0
         + unoSi True
         + 0
-    =                                                                                               (unoSi.1)
+    =                                                                               (unoSi.1)
         unoSi False
         + 1
         + 1
@@ -852,7 +852,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
         + 0
         + unoSi True
         + 0
-    =                                                                                               (unoSi.1)
+    =                                                                               (unoSi.1)
         unoSi False
         + 1
         + 1
@@ -864,7 +864,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
         + 0
         + 1
         + 0
-    =                                                                                               (unoSi.0)
+    =                                                                               (unoSi.0)
         unoSi False
         + 1
         + 1
@@ -876,7 +876,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
         + 0
         + 1
         + 0
-    =                                                                                               (unoSi.0)
+    =                                                                               (unoSi.0)
         0
         + 1
         + 1
@@ -888,7 +888,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
         + 0
         + 1
         + 0
-    =                                                                                               (unoSi.0)
+    =                                                                               (unoSi.0)
         0
         + 1
         + 1
@@ -900,7 +900,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
         + 0
         + 1
         + 0
-    =                                                                                               (unoSi.0)
+    =                                                                               (unoSi.0)
         0
         + 1
         + 1
@@ -912,7 +912,7 @@ cantidadDePuntosVacios (Bifurcacion (Just Cofre) (Bifurcacion Nothing
         + 0
         + 1
         + 0
-    =                                                                                               (aritmética)
+    =                                                                               (aritmética)
         4
 
     -- LADO DERECHO
