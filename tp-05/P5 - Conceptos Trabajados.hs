@@ -6,7 +6,12 @@
 --------------------------------------------------------------------------------------------------------
 
 > Los elementos de los Tipos Algebraicos no tienen redexes:
-    > 
+    > Cada elemento son expresiones atómicas, por ende, no tienen asociada una regla de reducción (no forman redexes).
+        - Ejemplos no reducibles:
+
+            Vasito DulceDeLeche
+            Vasito error "Chocolate"
+
 
 > Los constructores pueden ser funciones:
     > Los constructores pueden ser funciones, porque algunas en su definición están aplicadas y esperan parámetros.
