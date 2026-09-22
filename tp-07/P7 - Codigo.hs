@@ -400,15 +400,42 @@ data Tesoro = Cofre | Oro | Joyas
 
 -- 4.A
 
+Para todo x :: a. cantidadDePuntosVacios (Habitacion x) = 0
 
+    -- LADO IZQUIERDO
 
+        cantidadDePuntosVacios (Habitacion x)
+    =                                               (cantidadDePuntosVacios.1)
+        0
 
+    -- LADO DERECHO
+
+        0
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
 
 -- 4.B
 
+cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas)) = 1
 
+    -- LADO IZQUIERDO
 
+        cantidadDePuntosVacios (Pasaje Nothing (Habitacion Joyas))
+    =                                                                       (cantidadDePuntosVacios.2)
+        unoSiNoHayNada Nothing + cantidadDePuntosVacios (Habitacion Joyas)
+    =                                                                       (cantidadDePuntosVacios.1)
+        unoSiNoHayNada Nothing + 0
+    =                                                                       (unoSiNoHayNada.1)
+        1 + 0
+    =                                                                       (aritmética)
+        1
+
+    -- LADO DERECHO
+
+        1
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
 
 -- 4.C
