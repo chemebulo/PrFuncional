@@ -291,10 +291,66 @@ planillaDeIntegrantes (Investigador n e1 e2 e3) = Registro n (juntarPlanillas
 
 > Ejercicio 4:
 
+-- 4.A
+
+
+
+-- 4.B
+
+
+
+-- 4.C
+
+
+
+-- 4.D
+
 
 
 > Ejercicio 5:
 
+-- 5.A
+
+largoDePlanilla (planillaDeIntegrantes (Becario "Alan")) = cantidadDeIntegrantes (Becario "Alan")
+
+    -- LADO IZQUIERDO
+
+        largoDePlanilla (planillaDeIntegrantes (Becario "Alan")) 
+    =                                                               (planillaDeIntegrantes.1)
+        largoDePlanilla (Registro "Alan" Fin)
+    =                                                               (largoDePlanilla.2)
+        1 + largoDePlanilla Fin
+    =                                                               (largoDePlanilla.1)
+        1 + 0
+    =                                                               (aritmética)
+        1
+
+    -- LADO DERECHO
+
+        cantidadDeIntegrantes (Becario "Alan")
+    =                                                               (cantidadDeIntegrantes.1)
+        1
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
+
+
+-- 5.B
+
+
+
+-- 5.C
+
+
+
+-- 5.D
+
+
+
+-- 5.E
+
+
+
+-- 5.F
 
 
 
@@ -933,9 +989,19 @@ data Monstruo = Gargola | Dragon | Troll
 
 -- 5.A
 
+cantidadDePuntosCon (Criatura Troll) (Habitacion (Objeto Oro)) = 0 
 
+    -- LADO IZQUIERDO
 
+        cantidadDePuntosCon (Criatura Troll) (Habitacion (Objeto Oro))
+    =                                                                           (cantidadDePuntosCon.1)
+        0
 
+    -- LADO DERECHO
+
+        0
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
 
 -- 5.B
