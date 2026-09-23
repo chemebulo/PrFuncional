@@ -3192,4 +3192,163 @@ cantidadDePuntosCon (Criatura Troll)
 
 -- 5.E
 
+cantidadDePuntosCon (Criatura Troll) 
+                        (Pasaje (Just (Criatura Troll)) 
+                            (Bifurcacion (Just (Criatura Troll)) 
+                                (Pasaje (Just (Criatura Troll)) 
+                                        (Habitacion (Objeto Oro))
+                                ) 
+                                (Pasaje (Just (Criatura Troll)) 
+                                        (Habitacion (Criatura Troll))
+                                )
+                            )
+                        ) = 5
 
+    -- LADO IZQUIERDO
+
+        cantidadDePuntosCon (Criatura Troll) 
+                                (Pasaje (Just (Criatura Troll)) 
+                                    (Bifurcacion (Just (Criatura Troll)) 
+                                        (Pasaje (Just (Criatura Troll)) 
+                                                (Habitacion (Objeto Oro))
+                                        ) 
+                                        (Pasaje (Just (Criatura Troll)) 
+                                                (Habitacion (Criatura Troll))
+                                        )
+                                    )
+                                )
+    =                                                                                               (cantidadDePuntosCon.2)
+        unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + cantidadDePuntosCon (Criatura Troll)
+                                (Bifurcacion (Just (Criatura Troll)) 
+                                    (Pasaje (Just (Criatura Troll)) 
+                                        (Habitacion (Objeto Oro))
+                                    ) 
+                                    (Pasaje (Just (Criatura Troll)) 
+                                        (Habitacion (Criatura Troll))
+                                    )
+                                )
+    =                                                                                               (cantidadDePuntosCon.3)
+        unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + cantidadDePuntosCon (Criatura Troll)
+                                (Pasaje (Just (Criatura Troll))
+                                    (Habitacion (Objeto Oro)))
+        + cantidadDePuntosCon (Criatura Troll)
+                                (Pasaje (Just (Criatura Troll))
+                                    (Habitacion (Criatura Troll)))
+    =                                                                                               (cantidadDePuntosCon.2)
+        unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + cantidadDePuntosCon (Criatura Troll) (Habitacion (Objeto Oro))
+        + cantidadDePuntosCon (Criatura Troll)
+                                (Pasaje (Just (Criatura Troll))
+                                    (Habitacion (Criatura Troll)))
+    =                                                                                               (cantidadDePuntosCon.2)
+        unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi ((Criatura Troll) == (Objeto Oro))
+        + cantidadDePuntosCon (Criatura Troll)
+                                (Pasaje (Just (Criatura Troll))
+                                    (Habitacion (Criatura Troll)))
+    =                                                                                               (cantidadDePuntosCon.2)
+        unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi ((Criatura Troll) == (Objeto Oro))
+        + unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + cantidadDePuntosCon (Criatura Troll) (Habitacion (Criatura Troll))
+    =                                                                                               (cantidadDePuntosCon.1)
+        unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi ((Criatura Troll) == (Objeto Oro))
+        + unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi ((Criatura Troll) == (Criatura Troll))
+    =                                                                                               (==)
+        unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi False
+        + unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi ((Criatura Troll) == (Criatura Troll))
+    =                                                                                               (==)
+        unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi False
+        + unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi True
+    =                                                                                               (tieneM.2)
+        unoSi ((Criatura Troll) == (Criatura Troll))
+        + unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi False
+        + unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi True
+    =                                                                                               (tieneM.2)
+        unoSi ((Criatura Troll) == (Criatura Troll))
+        + unoSi ((Criatura Troll) == (Criatura Troll))
+        + unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi False
+        + unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi True
+    =                                                                                               (tieneM.2)
+        unoSi ((Criatura Troll) == (Criatura Troll))
+        + unoSi ((Criatura Troll) == (Criatura Troll))
+        + unoSi ((Criatura Troll) == (Criatura Troll))
+        + unoSi False
+        + unoSi (tieneM (Criatura Troll) (Just (Criatura Troll)))
+        + unoSi True
+    =                                                                                               (tieneM.2)
+        unoSi ((Criatura Troll) == (Criatura Troll))
+        + unoSi ((Criatura Troll) == (Criatura Troll))
+        + unoSi ((Criatura Troll) == (Criatura Troll))
+        + unoSi False
+        + unoSi ((Criatura Troll) == (Criatura Troll))
+        + unoSi True
+    =                                                                                               (==)
+        unoSi ((Criatura Troll) == (Criatura Troll))
+        + unoSi ((Criatura Troll) == (Criatura Troll))
+        + unoSi ((Criatura Troll) == (Criatura Troll))
+        + unoSi False
+        + unoSi True
+        + unoSi True
+    =                                                                                               (==)
+        unoSi ((Criatura Troll) == (Criatura Troll))
+        + unoSi ((Criatura Troll) == (Criatura Troll))
+        + unoSi True
+        + unoSi False
+        + unoSi True
+        + unoSi True
+    =                                                                                               (==)
+        unoSi ((Criatura Troll) == (Criatura Troll))
+        + unoSi True
+        + unoSi True
+        + unoSi False
+        + unoSi True
+        + unoSi True
+    =                                                                                               (==)
+        unoSi True + unoSi True + unoSi True + unoSi False + unoSi True + unoSi True
+    =                                                                                               (unoSi.1)
+        1 + unoSi True + unoSi True + unoSi False + unoSi True + unoSi True
+    =                                                                                               (unoSi.1)
+        1 + 1 + unoSi True + unoSi False + unoSi True + unoSi True
+    =                                                                                               (unoSi.1)
+        1 + 1 + 1 + unoSi False + unoSi True + unoSi True
+    =                                                                                               (unoSi.2)
+        1 + 1 + 1 + 0 + unoSi True + unoSi True
+    =                                                                                               (unoSi.1)
+        1 + 1 + 1 + 0 + 1 + unoSi True
+    =                                                                                               (unoSi.1)
+        1 + 1 + 1 + 0 + 1 + 1
+    =                                                                                               (aritmética)
+        5
+        
+    -- LADO DERECHO
+
+        5
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
