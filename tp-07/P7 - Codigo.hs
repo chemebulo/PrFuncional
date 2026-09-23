@@ -526,11 +526,1691 @@ cantidadDeIntegrantes (Investigador "Alonzo" (Becario "Alan") (Becario "Alfred")
 
 -- 5.E
 
+para todo n :: Nombre . para todo n1 :: Nombre . para todo n2 :: Nombre . para todo n3 :: Nombre . 
+largoDePlanilla (planillaDeIntegrantes (Investigador n (Becario n1) (Becario n2) (Becario n3))) =
+cantidadDeIntegrantes (Investigador n (Becario n1) (Becario n2) (Becario n3))
+
+    -- LADO IZQUIERDO
+
+        largoDePlanilla (planillaDeIntegrantes
+                            (Investigador n
+                                (Becario n1)
+                                (Becario n2)
+                                (Becario n3)
+                            )
+                        )
+    =                                                                                               (planillaDeIntegrantes.2)
+        largoDePlanilla (Registro n (juntarPlanillas 
+                                        (juntarPlanillas 
+                                            (planillaDeIntegrantes (Becario n1))
+                                            (planillaDeIntegrantes (Becario n2))
+                                        ) 
+                                        (planillaDeIntegrantes (Becario n3))
+                                    )
+                        )
+    =                                                                                               (planillaDeIntegrantes.1)
+        largoDePlanilla (Registro n (juntarPlanillas 
+                                        (juntarPlanillas 
+                                            (Registro n1 Fin)
+                                            (planillaDeIntegrantes (Becario n2))
+                                        ) 
+                                        (planillaDeIntegrantes (Becario n3))
+                                    )
+                        )
+    =                                                                                               (planillaDeIntegrantes.1)
+        largoDePlanilla (Registro n (juntarPlanillas 
+                                        (juntarPlanillas 
+                                            (Registro n1 Fin)
+                                            (Registro n2 Fin)
+                                        ) 
+                                        (planillaDeIntegrantes (Becario n3))
+                                    )
+                        )
+    =                                                                                               (planillaDeIntegrantes.1)
+        largoDePlanilla (Registro n (juntarPlanillas 
+                                        (juntarPlanillas 
+                                            (Registro n1 Fin)
+                                            (Registro n2 Fin)
+                                        ) 
+                                        (Registro n3 Fin)
+                                    )
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro n (juntarPlanillas 
+                                        (Registro n1 
+                                            (juntarPlanillas
+                                                Fin
+                                                (Registro n2 Fin)
+                                            ) 
+                                        ) 
+                                        (Registro n3 Fin)
+                                    )
+                        )
+    =                                                                                               (juntarPlanillas.1)
+        largoDePlanilla (Registro n (juntarPlanillas 
+                                        (Registro n1 (Registro n2 Fin)) 
+                                        (Registro n3 Fin)
+                                    )
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro n (Registro n1
+                                        (juntarPlanillas
+                                            (Registro n2 Fin)
+                                            (Registro n3 Fin)
+                                        )
+                                    )
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro n (Registro n1
+                                        (Registrar n2
+                                            (juntarPlanillas
+                                                Fin
+                                                (Registro n3 Fin)
+                                            )
+                                        )
+                                    )
+                        )
+    =                                                                                               (juntarPlanillas.1)
+        largoDePlanilla (Registro n (Registro n1 (Registro n2 (Registro n3 Fin))))
+    =                                                                                               (largoDePlanilla.2)
+        1 + largoDePlanilla (Registro n1 (Registro n2 (Registro n3 Fin)))
+    =                                                                                               (largoDePlanilla.2)
+        1 + 1 + largoDePlanilla (Registro n2 (Registro n3 Fin))
+    =                                                                                               (largoDePlanilla.2)
+        1 + 1 + 1 + largoDePlanilla (Registro n3 Fin)
+    =                                                                                               (largoDePlanilla.2)
+        1 + 1 + 1 + 1 + largoDePlanilla Fin
+    =                                                                                               (largoDePlanilla.1)
+        1 + 1 + 1 + 1 + 0
+    =                                                                                               (aritmética)
+        4
+
+        cantidadDeIntegrantes (Investigador n (Becario n1) (Becario n2) (Becario n3))
+    =                                                                                               (cantidadDeIntegrantes.2)
+        1
+        + cantidadDeIntegrantes (Becario n1)
+        + cantidadDeIntegrantes (Becario n2)
+        + cantidadDeIntegrantes (Becario n3)
+    =                                                                                               (cantidadDeIntegrantes.1)
+        1
+        + 1
+        + cantidadDeIntegrantes (Becario n2)
+        + cantidadDeIntegrantes (Becario n3)
+    =                                                                                               (cantidadDeIntegrantes.1)
+        1
+        + 1
+        + 1
+        + cantidadDeIntegrantes (Becario n3)
+    =                                                                                               (cantidadDeIntegrantes.1)
+        1 + 1 + 1 + 1
+    =                                                                                               (aritmética)
+        4
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
 
 -- 5.F
 
+largoDePlanilla (planillaDeIntegrantes 
+                    (Investigador "Oswald" 
+                       (Investigador "Alonzo" 
+                            (Becario "Alan") 
+                            (Becario "Alfred") 
+                            (Becario "Stephen")
+                        ) 
+                        (Investigador "John"   
+                            (Becario "Brian") 
+                            (Becario "Graham") 
+                            (Becario "Ioan")
+                        ) 
+                        (Investigador "Robert" 
+                            (Becario "Gordon") 
+                            (Becario "John") 
+                            (Becario "Raymond")
+                        )
+                    )
+                ) = 
+cantidadDeIntegrantes (Investigador "Oswald" 
+                            (Investigador "Alonzo" 
+                                (Becario "Alan") 
+                                (Becario "Alfred") 
+                                (Becario "Stephen")
+                            ) 
+                            (Investigador "John"   
+                                (Becario "Brian") 
+                                (Becario "Graham") 
+                                (Becario "Ioan")
+                            ) 
+                            (Investigador "Robert" 
+                                (Becario "Gordon") 
+                                (Becario "John") 
+                                (Becario "Raymond")
+                            )
+                        )
 
+    -- LADO IZQUIERDO
+
+        largoDePlanilla (planillaDeIntegrantes 
+                            (Investigador "Oswald" 
+                                (Investigador "Alonzo" 
+                                    (Becario "Alan") 
+                                    (Becario "Alfred") 
+                                    (Becario "Stephen")
+                                ) 
+                                (Investigador "John"   
+                                    (Becario "Brian") 
+                                    (Becario "Graham") 
+                                    (Becario "Ioan")
+                                ) 
+                                (Investigador "Robert" 
+                                    (Becario "Gordon") 
+                                    (Becario "John") 
+                                    (Becario "Raymond")
+                                )
+                            )
+                        )
+    =                                                                                               (planillaDeIntegrantes.2)
+        largoDePlanilla (Registro "Oswald"
+                                (juntarPlanillas 
+                                        (juntarPlanillas 
+                                            (planillaDeIntegrantes 
+                                                (Investigador "Alonzo" 
+                                                    (Becario "Alan") 
+                                                    (Becario "Alfred") 
+                                                    (Becario "Stephen")
+                                                ) 
+                                            )
+                                            (planillaDeIntegrantes
+                                                (Investigador "John"   
+                                                    (Becario "Brian") 
+                                                    (Becario "Graham") 
+                                                    (Becario "Ioan")
+                                                ) 
+                                            )
+                                        ) 
+                                        (planillaDeIntegrantes
+                                            (Investigador "Robert" 
+                                                (Becario "Gordon") 
+                                                (Becario "John") 
+                                                (Becario "Raymond")
+                                            )
+                                        )
+                                )
+                        )
+    =                                                                                               (planillaDeIntegrantes.2)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (planillaDeIntegrantes 
+                                        (Investigador "Alonzo" 
+                                            (Becario "Alan") 
+                                            (Becario "Alfred") 
+                                            (Becario "Stephen")
+                                        ) 
+                                    )
+                                    (planillaDeIntegrantes
+                                        (Investigador "John"   
+                                            (Becario "Brian") 
+                                            (Becario "Graham") 
+                                            (Becario "Ioan")
+                                        ) 
+                                    )
+                                ) 
+                                (Registro "Robert"
+                                    (juntarPlanillas 
+                                        (juntarPlanillas 
+                                            (planillaDeIntegrantes (Becario "Gordon") )
+                                            (planillaDeIntegrantes (Becario "John"))
+                                        ) 
+                                        (planillaDeIntegrantes (Becario "Raymond"))
+                                    )
+                                )
+                            )
+                        )
+    =                                                                                               (planillaDeIntegrantes.1)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (planillaDeIntegrantes 
+                                        (Investigador "Alonzo" 
+                                            (Becario "Alan") 
+                                            (Becario "Alfred") 
+                                            (Becario "Stephen")
+                                        ) 
+                                    )
+                                    (planillaDeIntegrantes
+                                        (Investigador "John"   
+                                            (Becario "Brian") 
+                                            (Becario "Graham") 
+                                            (Becario "Ioan")
+                                        ) 
+                                    )
+                                ) 
+                                (Registro "Robert"
+                                    (juntarPlanillas 
+                                        (juntarPlanillas 
+                                            (Registro "Gordon" Fin)
+                                            (planillaDeIntegrantes (Becario "John"))
+                                        ) 
+                                        (planillaDeIntegrantes (Becario "Raymond"))
+                                    )
+                                )
+                            )
+                        )
+    =                                                                                               (planillaDeIntegrantes.1)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (planillaDeIntegrantes 
+                                        (Investigador "Alonzo" 
+                                            (Becario "Alan") 
+                                            (Becario "Alfred") 
+                                            (Becario "Stephen")
+                                        ) 
+                                    )
+                                    (planillaDeIntegrantes
+                                        (Investigador "John"   
+                                            (Becario "Brian") 
+                                            (Becario "Graham") 
+                                            (Becario "Ioan")
+                                        ) 
+                                    )
+                                ) 
+                                (Registro "Robert"
+                                    (juntarPlanillas 
+                                        (juntarPlanillas 
+                                            (Registro "Gordon" Fin)
+                                            (Registro "John" Fin)
+                                        ) 
+                                        (planillaDeIntegrantes (Becario "Raymond"))
+                                    )
+                                )
+                            )
+                        )
+    =                                                                                               (planillaDeIntegrantes.1)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (planillaDeIntegrantes 
+                                        (Investigador "Alonzo" 
+                                            (Becario "Alan") 
+                                            (Becario "Alfred") 
+                                            (Becario "Stephen")
+                                        ) 
+                                    )
+                                    (planillaDeIntegrantes
+                                        (Investigador "John"   
+                                            (Becario "Brian") 
+                                            (Becario "Graham") 
+                                            (Becario "Ioan")
+                                        ) 
+                                    )
+                                ) 
+                                (Registro "Robert"
+                                    (juntarPlanillas 
+                                        (juntarPlanillas 
+                                            (Registro "Gordon" Fin)
+                                            (Registro "John" Fin)
+                                        ) 
+                                        (Registro "Raymond" Fin)
+                                    )
+                                )
+                            )
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (planillaDeIntegrantes 
+                                        (Investigador "Alonzo" 
+                                            (Becario "Alan") 
+                                            (Becario "Alfred") 
+                                            (Becario "Stephen")
+                                        ) 
+                                    )
+                                    (planillaDeIntegrantes
+                                        (Investigador "John"   
+                                            (Becario "Brian") 
+                                            (Becario "Graham") 
+                                            (Becario "Ioan")
+                                        ) 
+                                    )
+                                ) 
+                                (Registro "Robert"
+                                    (juntarPlanillas 
+                                        (Registro "Gordon"
+                                            (juntarPlanillas
+                                                Fin
+                                                (Registro "John" Fin)
+                                            )
+                                        ) 
+                                        (Registro "Raymond" Fin)
+                                    )
+                                )
+                            )
+                        )
+    =                                                                                               (juntarPlanillas.1)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (planillaDeIntegrantes 
+                                        (Investigador "Alonzo" 
+                                            (Becario "Alan") 
+                                            (Becario "Alfred") 
+                                            (Becario "Stephen")
+                                        ) 
+                                    )
+                                    (planillaDeIntegrantes
+                                        (Investigador "John"   
+                                            (Becario "Brian") 
+                                            (Becario "Graham") 
+                                            (Becario "Ioan")
+                                        ) 
+                                    )
+                                ) 
+                                (Registro "Robert"
+                                    (juntarPlanillas 
+                                        (Registro "Gordon" (Registro "John" Fin)) 
+                                        (Registro "Raymond" Fin)
+                                    )
+                                )
+                            )   
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (planillaDeIntegrantes 
+                                        (Investigador "Alonzo" 
+                                            (Becario "Alan") 
+                                            (Becario "Alfred") 
+                                            (Becario "Stephen")
+                                        ) 
+                                    )
+                                    (planillaDeIntegrantes
+                                        (Investigador "John"   
+                                            (Becario "Brian") 
+                                            (Becario "Graham") 
+                                            (Becario "Ioan")
+                                        ) 
+                                    )
+                                ) 
+                                (Registro "Robert"
+                                    (Registro "Gordon"
+                                        (juntarPlanillas
+                                            (Registro "John" Fin)
+                                            (Registro "Raymond" Fin)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (planillaDeIntegrantes 
+                                        (Investigador "Alonzo" 
+                                            (Becario "Alan") 
+                                            (Becario "Alfred") 
+                                            (Becario "Stephen")
+                                        ) 
+                                    )
+                                    (planillaDeIntegrantes
+                                        (Investigador "John"   
+                                            (Becario "Brian") 
+                                            (Becario "Graham") 
+                                            (Becario "Ioan")
+                                        ) 
+                                    )
+                                ) 
+                                (Registro "Robert"
+                                    (Registro "Gordon"
+                                        (Registro "John" 
+                                            (juntarPlanillas
+                                                Fin
+                                                (Registro "Raymond" Fin)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+    =                                                                                               (juntarPlanillas.1)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (planillaDeIntegrantes 
+                                        (Investigador "Alonzo" 
+                                            (Becario "Alan") 
+                                            (Becario "Alfred") 
+                                            (Becario "Stephen")
+                                        ) 
+                                    )
+                                    (planillaDeIntegrantes
+                                        (Investigador "John"   
+                                            (Becario "Brian") 
+                                            (Becario "Graham") 
+                                            (Becario "Ioan")
+                                        ) 
+                                    )
+                                ) 
+                                (Registro "Robert"
+                                    (Registro "Gordon"
+                                        (Registro "John"
+                                            (Registro "Raymond" Fin))))
+                            )
+                        )
+    =                                                                                               (planillaDeIntegrantes.2)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (planillaDeIntegrantes 
+                                        (Investigador "Alonzo" 
+                                            (Becario "Alan") 
+                                            (Becario "Alfred") 
+                                            (Becario "Stephen")
+                                        ) 
+                                    )
+                                    (Registro "John"
+                                        (juntarPlanillas 
+                                            (juntarPlanillas 
+                                                (planillaDeIntegrantes (Becario "Brian"))
+                                                (planillaDeIntegrantes (Becario "Graham"))
+                                            ) 
+                                            (planillaDeIntegrantes (Becario "Ioan"))
+                                        )
+                                    ) 
+                                )
+                                (Registro "Robert"
+                                    (Registro "Gordon"
+                                        (Registro "John"
+                                            (Registro "Raymond" Fin))))
+                            ) 
+                        )
+    =                                                                                               (planillaDeIntegrantes.2)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (Registro "Alonzo"
+                                        (juntarPlanillas 
+                                            (juntarPlanillas 
+                                                (planillaDeIntegrantes (Becario "Alan"))
+                                                (planillaDeIntegrantes (Becario "Alfred"))
+                                            ) 
+                                            (planillaDeIntegrantes (Becario "Stephen"))
+                                        )
+                                    ) 
+                                    (Registro "John"
+                                        (juntarPlanillas 
+                                            (juntarPlanillas 
+                                                (planillaDeIntegrantes (Becario "Brian"))
+                                                (planillaDeIntegrantes (Becario "Graham"))
+                                            ) 
+                                            (planillaDeIntegrantes (Becario "Ioan"))
+                                        )
+                                    ) 
+                                )
+                                (Registro "Robert"
+                                    (Registro "Gordon"
+                                        (Registro "John"
+                                            (Registro "Raymond" Fin))))
+                            ) 
+                        )
+    =                                                                                               (planillaDeIntegrantes.1)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (Registro "Alonzo"
+                                        (juntarPlanillas 
+                                            (juntarPlanillas 
+                                                (planillaDeIntegrantes (Becario "Alan"))
+                                                (planillaDeIntegrantes (Becario "Alfred"))
+                                            ) 
+                                            (planillaDeIntegrantes (Becario "Stephen"))
+                                        )
+                                    ) 
+                                    (Registro "John"
+                                        (juntarPlanillas 
+                                            (juntarPlanillas 
+                                                (Registro "Brian" Fin)
+                                                (planillaDeIntegrantes (Becario "Graham"))
+                                            ) 
+                                            (planillaDeIntegrantes (Becario "Ioan"))
+                                        )
+                                    ) 
+                                )
+                                (Registro "Robert"
+                                    (Registro "Gordon"
+                                        (Registro "John"
+                                            (Registro "Raymond" Fin))))
+                            ) 
+                        )
+    =                                                                                               (planillaDeIntegrantes.1)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (Registro "Alonzo"
+                                        (juntarPlanillas 
+                                            (juntarPlanillas 
+                                                (planillaDeIntegrantes (Becario "Alan"))
+                                                (planillaDeIntegrantes (Becario "Alfred"))
+                                            ) 
+                                            (planillaDeIntegrantes (Becario "Stephen"))
+                                        )
+                                    ) 
+                                    (Registro "John"
+                                        (juntarPlanillas 
+                                            (juntarPlanillas 
+                                                (Registro "Brian" Fin)
+                                                (Registro "Graham" Fin)
+                                            ) 
+                                            (planillaDeIntegrantes (Becario "Ioan"))
+                                        )
+                                    ) 
+                                )
+                                (Registro "Robert"
+                                    (Registro "Gordon"
+                                        (Registro "John"
+                                            (Registro "Raymond" Fin))))
+                            ) 
+                        )
+    =                                                                                               (planillaDeIntegrantes.1)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (Registro "Alonzo"
+                                        (juntarPlanillas 
+                                            (juntarPlanillas 
+                                                (planillaDeIntegrantes (Becario "Alan"))
+                                                (planillaDeIntegrantes (Becario "Alfred"))
+                                            ) 
+                                            (planillaDeIntegrantes (Becario "Stephen"))
+                                        )
+                                    ) 
+                                    (Registro "John"
+                                        (juntarPlanillas 
+                                            (juntarPlanillas 
+                                                (Registro "Brian" Fin)
+                                                (Registro "Graham" Fin)
+                                            ) 
+                                            (Registro "Ioan" Fin)
+                                        )
+                                    ) 
+                                )
+                                (Registro "Robert"
+                                    (Registro "Gordon"
+                                        (Registro "John"
+                                            (Registro "Raymond" Fin))))
+                            ) 
+                        )
+    =                                                                                               (planillaDeIntegrantes.1)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (Registro "Alonzo"
+                                        (juntarPlanillas 
+                                            (juntarPlanillas 
+                                                (Registro "Alan" Fin)
+                                                (planillaDeIntegrantes (Becario "Alfred"))
+                                            ) 
+                                            (planillaDeIntegrantes (Becario "Stephen"))
+                                        )
+                                    ) 
+                                    (Registro "John"
+                                        (juntarPlanillas 
+                                            (juntarPlanillas 
+                                                (Registro "Brian" Fin)
+                                                (Registro "Graham" Fin)
+                                            ) 
+                                            (Registro "Ioan" Fin)
+                                        )
+                                    ) 
+                                )
+                                (Registro "Robert"
+                                    (Registro "Gordon"
+                                        (Registro "John"
+                                            (Registro "Raymond" Fin))))
+                            ) 
+                        )
+    =                                                                                               (planillaDeIntegrantes.1)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (Registro "Alonzo"
+                                        (juntarPlanillas 
+                                            (juntarPlanillas 
+                                                (Registro "Alan" Fin)
+                                                (Registro "Alfred" Fin)
+                                            ) 
+                                            (planillaDeIntegrantes (Becario "Stephen"))
+                                        )
+                                    ) 
+                                    (Registro "John"
+                                        (juntarPlanillas 
+                                            (juntarPlanillas 
+                                                (Registro "Brian" Fin)
+                                                (Registro "Graham" Fin)
+                                            ) 
+                                            (Registro "Ioan" Fin)
+                                        )
+                                    ) 
+                                )
+                                (Registro "Robert"
+                                    (Registro "Gordon"
+                                        (Registro "John"
+                                            (Registro "Raymond" Fin))))
+                            ) 
+                        )
+    =                                                                                               (planillaDeIntegrantes.1)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (Registro "Alonzo"
+                                        (juntarPlanillas 
+                                            (juntarPlanillas 
+                                                (Registro "Alan" Fin)
+                                                (Registro "Alfred" Fin)
+                                            ) 
+                                            (Registro "Stephen" Fin)
+                                        )
+                                    ) 
+                                    (Registro "John"
+                                        (juntarPlanillas 
+                                            (juntarPlanillas 
+                                                (Registro "Brian" Fin)
+                                                (Registro "Graham" Fin)
+                                            ) 
+                                            (Registro "Ioan" Fin)
+                                        )
+                                    ) 
+                                )
+                                (Registro "Robert"
+                                    (Registro "Gordon"
+                                        (Registro "John"
+                                            (Registro "Raymond" Fin))))
+                            ) 
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (Registro "Alonzo"
+                                        (juntarPlanillas 
+                                            (juntarPlanillas 
+                                                (Registro "Alan" Fin)
+                                                (Registro "Alfred" Fin)
+                                            ) 
+                                            (Registro "Stephen" Fin)
+                                        )
+                                    ) 
+                                    (Registro "John"
+                                        (juntarPlanillas 
+                                            (Registro "Brian"
+                                                (juntarPlanillas
+                                                    Fin
+                                                    (Registro "Graham" Fin)
+                                                ) 
+                                            ) 
+                                            (Registro "Ioan" Fin)
+                                        )
+                                    ) 
+                                )
+                                (Registro "Robert"
+                                    (Registro "Gordon"
+                                        (Registro "John"
+                                            (Registro "Raymond" Fin))))
+                            ) 
+                        )
+    =                                                                                               (juntarPlanillas.1)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (Registro "Alonzo"
+                                        (juntarPlanillas 
+                                            (juntarPlanillas 
+                                                (Registro "Alan" Fin)
+                                                (Registro "Alfred" Fin)
+                                            ) 
+                                            (Registro "Stephen" Fin)
+                                        )
+                                    ) 
+                                    (Registro "John"
+                                        (juntarPlanillas 
+                                            (Registro "Brian" (Registro "Graham" Fin)) 
+                                            (Registro "Ioan" Fin)
+                                        )
+                                    ) 
+                                )
+                                (Registro "Robert"
+                                    (Registro "Gordon"
+                                        (Registro "John"
+                                            (Registro "Raymond" Fin))))
+                            ) 
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (Registro "Alonzo"
+                                        (juntarPlanillas 
+                                            (Registro "Alan"
+                                                (juntarPlanillas
+                                                    Fin
+                                                    (Registro "Alfred" Fin)
+                                                ) 
+                                            ) 
+                                            (Registro "Stephen" Fin)
+                                        )
+                                    ) 
+                                    (Registro "John"
+                                        (juntarPlanillas 
+                                            (Registro "Brian" (Registro "Graham" Fin)) 
+                                            (Registro "Ioan" Fin)
+                                        )
+                                    ) 
+                                )
+                                (Registro "Robert"
+                                    (Registro "Gordon"
+                                        (Registro "John"
+                                            (Registro "Raymond" Fin))))
+                            ) 
+                        )
+    =                                                                                               (juntarPlanillas.1)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (Registro "Alonzo"
+                                        (juntarPlanillas 
+                                            (Registro "Alan" (Registro "Alfred" Fin)) 
+                                            (Registro "Stephen" Fin)
+                                        )
+                                    ) 
+                                    (Registro "John"
+                                        (juntarPlanillas 
+                                            (Registro "Brian" (Registro "Graham" Fin)) 
+                                            (Registro "Ioan" Fin)
+                                        )
+                                    ) 
+                                )
+                                (Registro "Robert"
+                                    (Registro "Gordon"
+                                        (Registro "John"
+                                            (Registro "Raymond" Fin))))
+                            ) 
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (Registro "Alonzo"
+                                        (juntarPlanillas 
+                                            (Registro "Alan" (Registro "Alfred" Fin)) 
+                                            (Registro "Stephen" Fin)
+                                        )
+                                    ) 
+                                    (Registro "John"
+                                        (Registro "Brian"
+                                            (juntarPlanillas
+                                                (Registro "Graham" Fin)
+                                                (Registro "Ioan" Fin)
+                                            )
+                                        )
+                                    ) 
+                                )
+                                (Registro "Robert"
+                                    (Registro "Gordon"
+                                        (Registro "John"
+                                            (Registro "Raymond" Fin))))
+                            ) 
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (Registro "Alonzo"
+                                        (Registro "Alan"
+                                            (juntarPlanillas
+                                                (Registro "Alfred" Fin)
+                                                (Registro "Stephen" Fin)
+                                            )
+                                        )
+                                    ) 
+                                    (Registro "John"
+                                        (Registro "Brian"
+                                            (juntarPlanillas
+                                                (Registro "Graham" Fin)
+                                                (Registro "Ioan" Fin)
+                                            )
+                                        )
+                                    ) 
+                                )
+                                (Registro "Robert"
+                                    (Registro "Gordon"
+                                        (Registro "John"
+                                            (Registro "Raymond" Fin))))
+                            ) 
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (Registro "Alonzo"
+                                        (Registro "Alan"
+                                            (juntarPlanillas
+                                                (Registro "Alfred" Fin)
+                                                (Registro "Stephen" Fin)
+                                            )
+                                        )
+                                    ) 
+                                    (Registro "John"
+                                        (Registro "Brian"
+                                            (Registro "Graham"
+                                                (juntarPlanillas
+                                                    Fin
+                                                    (Registro "Ioan" Fin)
+                                                )
+                                            )
+                                        )
+                                    ) 
+                                )
+                                (Registro "Robert"
+                                    (Registro "Gordon"
+                                        (Registro "John"
+                                            (Registro "Raymond" Fin))))
+                            ) 
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (Registro "Alonzo"
+                                        (Registro "Alan"
+                                            (Registro "Alfred"
+                                                (juntarPlanillas
+                                                    Fin
+                                                    (Registro "Stephen" Fin)
+                                                )
+                                            )
+                                        )
+                                    ) 
+                                    (Registro "John"
+                                        (Registro "Brian"
+                                            (Registro "Graham"
+                                                (juntarPlanillas
+                                                    Fin
+                                                    (Registro "Ioan" Fin)
+                                                )
+                                            )
+                                        )
+                                    ) 
+                                )
+                                (Registro "Robert"
+                                    (Registro "Gordon"
+                                        (Registro "John"
+                                            (Registro "Raymond" Fin))))
+                            ) 
+                        )
+    =                                                                                               (juntarPlanillas.1)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                    (Registro "Alonzo"
+                                        (Registro "Alan"
+                                            (Registro "Alfred"
+                                                (Registro "Stephen" Fin)))) 
+                                    (Registro "John"
+                                        (Registro "Brian"
+                                            (Registro "Graham"
+                                                (juntarPlanillas
+                                                    Fin
+                                                    (Registro "Ioan" Fin)
+                                                )
+                                            )
+                                        )
+                                    ) 
+                                )
+                                (Registro "Robert"
+                                    (Registro "Gordon"
+                                        (Registro "John"
+                                            (Registro "Raymond" Fin))))
+                            ) 
+                        )
+    =                                                                                               (juntarPlanillas.1)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (juntarPlanillas 
+                                        (Registro "Alonzo"
+                                            (Registro "Alan"
+                                                (Registro "Alfred"
+                                                    (Registro "Stephen" Fin)))) 
+                                        (Registro "John"
+                                            (Registro "Brian"
+                                                (Registro "Graham"
+                                                    (Registro "Ioan" Fin)))) 
+                                )
+                                (Registro "Robert"
+                                    (Registro "Gordon"
+                                        (Registro "John"
+                                            (Registro "Raymond" Fin))))
+                            ) 
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (Registro "Alonzo"
+                                    (juntarPlanillas
+                                        (Registro "Alan"
+                                            (Registro "Alfred"
+                                                (Registro "Stephen" Fin)))
+                                        (Registro "John"
+                                            (Registro "Brian"
+                                                (Registro "Graham"
+                                                    (Registro "Ioan" Fin))))
+                                    ) 
+                                )
+                                (Registro "Robert"
+                                    (Registro "Gordon" (Registro "John"
+                                        (Registro "Raymond" Fin))))
+                            ) 
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (Registro "Alonzo"
+                                    (Registro "Alan" 
+                                        (juntarPlanillas
+                                            (Registro "Alfred"
+                                                (Registro "Stephen" Fin))
+                                            (Registro "John"
+                                                (Registro "Brian"
+                                                    (Registro "Graham"
+                                                        (Registro "Ioan" Fin))))
+                                        )
+                                    ) 
+                                )
+                                (Registro "Robert"
+                                    (Registro "Gordon"
+                                        (Registro "John"
+                                            (Registro "Raymond" Fin))))
+                            ) 
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (Registro "Alonzo"
+                                    (Registro "Alan" 
+                                        (Registro "Alfred"
+                                            (juntarPlanillas
+                                                (Registro "Stephen" Fin)
+                                                (Registro "John"
+                                                    (Registro "Brian"
+                                                        (Registro "Graham"
+                                                            (Registro "Ioan" Fin))))
+                                            )
+                                        )
+                                    ) 
+                                )
+                                (Registro "Robert"
+                                    (Registro "Gordon"
+                                        (Registro "John"
+                                            (Registro "Raymond" Fin))))
+                            ) 
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (Registro "Alonzo"
+                                    (Registro "Alan" 
+                                        (Registro "Alfred"
+                                            (Registro "Stephen"
+                                                (juntarPlanillas
+                                                    Fin
+                                                    (Registro "John"
+                                                        (Registro "Brian"
+                                                            (Registro "Graham"
+                                                                (Registro "Ioan" Fin))))
+                                                )
+                                            )
+                                        )
+                                    ) 
+                                )
+                                (Registro "Robert"
+                                    (Registro "Gordon"
+                                        (Registro "John"
+                                            (Registro "Raymond" Fin))))
+                            ) 
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Oswald"
+                            (juntarPlanillas 
+                                (Registro "Alonzo"
+                                    (Registro "Alan" 
+                                        (Registro "Alfred"
+                                            (Registro "Stephen"
+                                                    (Registro "John"
+                                                        (Registro "Brian"
+                                                            (Registro "Graham"
+                                                                (Registro "Ioan" Fin))))
+                                            )
+                                        )
+                                    ) 
+                                )
+                                (Registro "Robert" 
+                                    (Registro "Gordon" 
+                                        (Registro "John"
+                                            (Registro "Raymond" Fin)
+                                        )
+                                    )
+                                )
+                            ) 
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Oswald"
+                            (Registro "Alonzo"
+                                (juntarPlanillas
+                                    (Registro "Alan" 
+                                        (Registro "Alfred"
+                                            (Registro "Stephen"
+                                                (Registro "John"
+                                                    (Registro "Brian"
+                                                        (Registro "Graham"
+                                                            (Registro "Ioan" Fin))))
+                                            )
+                                        )
+                                    )
+                                    (Registro "Robert" 
+                                        (Registro "Gordon" 
+                                            (Registro "John"
+                                                (Registro "Raymond" Fin)
+                                            )
+                                        )
+                                    )
+                                )
+                            ) 
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Oswald"
+                            (Registro "Alonzo"
+                                (Registro "Alan"
+                                    (juntarPlanillas
+                                        (Registro "Alfred"
+                                            (Registro "Stephen"
+                                                (Registro "John" 
+                                                    (Registro "Brian" 
+                                                        (Registro "Graham" 
+                                                            (Registro "Ioan" Fin)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        (Registro "Robert" 
+                                            (Registro "Gordon" 
+                                                (Registro "John"
+                                                    (Registro "Raymond" Fin)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            ) 
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Oswald"
+                            (Registro "Alonzo"
+                                (Registro "Alan"
+                                    (Registro "Alfred"
+                                        (juntarPlanillas
+                                            (Registro "Stephen"
+                                                (Registro "John" 
+                                                    (Registro "Brian" 
+                                                        (Registro "Graham" 
+                                                            (Registro "Ioan" Fin)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            (Registro "Robert" 
+                                                (Registro "Gordon" 
+                                                    (Registro "John"
+                                                        (Registro "Raymond" Fin)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            ) 
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Oswald"
+                            (Registro "Alonzo"
+                                (Registro "Alan"
+                                    (Registro "Alfred"
+                                        (juntarPlanillas
+                                            (Registro "Stephen"
+                                                (Registro "John" 
+                                                    (Registro "Brian" 
+                                                        (Registro "Graham" 
+                                                            (Registro "Ioan" Fin)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            (Registro "Robert" 
+                                                (Registro "Gordon" 
+                                                    (Registro "John"
+                                                        (Registro "Raymond" Fin)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            ) 
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Oswald"
+                            (Registro "Alonzo"
+                                (Registro "Alan"
+                                    (Registro "Alfred"
+                                        (Registro "Stephen"
+                                            (juntarPlanillas
+                                                (Registro "John" 
+                                                    (Registro "Brian" 
+                                                        (Registro "Graham" 
+                                                            (Registro "Ioan" Fin)
+                                                        )
+                                                    )
+                                                )
+                                                (Registro "Robert" 
+                                                    (Registro "Gordon" 
+                                                        (Registro "John"
+                                                            (Registro "Raymond" Fin)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            ) 
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Oswald"
+                            (Registro "Alonzo"
+                                (Registro "Alan"
+                                    (Registro "Alfred"
+                                        (Registro "Stephen"
+                                            (Registro "John"
+                                                (juntarPlanillas
+                                                    (Registro "Brian" 
+                                                        (Registro "Graham" 
+                                                            (Registro "Ioan" Fin)
+                                                        )
+                                                    )
+                                                    (Registro "Robert" 
+                                                        (Registro "Gordon" 
+                                                            (Registro "John"
+                                                                (Registro "Raymond" Fin)
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            ) 
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Oswald"
+                            (Registro "Alonzo"
+                                (Registro "Alan"
+                                    (Registro "Alfred"
+                                        (Registro "Stephen"
+                                            (Registro "John"
+                                                (Registro "Brian"
+                                                    (juntarPlanillas
+                                                        (Registro "Graham" 
+                                                            (Registro "Ioan" Fin)
+                                                        )
+                                                        (Registro "Robert" 
+                                                            (Registro "Gordon" 
+                                                                (Registro "John"
+                                                                    (Registro "Raymond" Fin)
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            ) 
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Oswald"
+                            (Registro "Alonzo"
+                                (Registro "Alan"
+                                    (Registro "Alfred"
+                                        (Registro "Stephen"
+                                            (Registro "John"
+                                                (Registro "Brian"
+                                                    (Registro "Graham" 
+                                                        (juntarPlanillas
+                                                            (Registro "Ioan" Fin)
+                                                            (Registro "Robert" 
+                                                                (Registro "Gordon" 
+                                                                    (Registro "John"
+                                                                        (Registro "Raymond" Fin)
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            ) 
+                        )
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Oswald"
+                            (Registro "Alonzo"
+                                (Registro "Alan"
+                                    (Registro "Alfred"
+                                        (Registro "Stephen"
+                                            (Registro "John"
+                                                (Registro "Brian"
+                                                    (Registro "Graham" 
+                                                        (Registro "Ioan"
+                                                            (juntarPlanillas
+                                                                Fin
+                                                                (Registro "Robert" 
+                                                                    (Registro "Gordon" 
+                                                                        (Registro "John"
+                                                                            (Registro "Raymond" Fin)
+                                                                        )
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            ) 
+                        )
+    =                                                                                               (largoDePlanilla.2)
+        largoDePlanilla (Registro "Oswald"
+                            (Registro "Alonzo"
+                                (Registro "Alan"
+                                    (Registro "Alfred"
+                                        (Registro "Stephen"
+                                            (Registro "John"
+                                                (Registro "Brian"
+                                                    (Registro "Graham" 
+                                                        (Registro "Ioan"
+                                                            (Registro "Robert" 
+                                                                (Registro "Gordon" 
+                                                                    (Registro "John"
+                                                                        (Registro "Raymond" Fin)
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+    =                                                                                               (largoDePlanilla.2)
+        1 + largoDePlanilla (Registro "Alonzo"
+                                (Registro "Alan"
+                                    (Registro "Alfred"
+                                        (Registro "Stephen"
+                                            (Registro "John"
+                                                (Registro "Brian"
+                                                    (Registro "Graham" 
+                                                        (Registro "Ioan"
+                                                            (Registro "Robert" 
+                                                                (Registro "Gordon" 
+                                                                    (Registro "John"
+                                                                        (Registro "Raymond" Fin)
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+    =                                                                                               (largoDePlanilla.2)
+        1 + 1 + largoDePlanilla (Registro "Alan"
+                                    (Registro "Alfred"
+                                        (Registro "Stephen"
+                                            (Registro "John"
+                                                (Registro "Brian"
+                                                    (Registro "Graham" 
+                                                        (Registro "Ioan"
+                                                            (Registro "Robert" 
+                                                                (Registro "Gordon" 
+                                                                    (Registro "John"
+                                                                        (Registro "Raymond" Fin)
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+    =                                                                                               (largoDePlanilla.2)
+        1 + 1 + 1 + largoDePlanilla (Registro "Alfred"
+                                        (Registro "Stephen"
+                                            (Registro "John"
+                                                (Registro "Brian"
+                                                    (Registro "Graham" 
+                                                        (Registro "Ioan"
+                                                            (Registro "Robert" 
+                                                                (Registro "Gordon" 
+                                                                    (Registro "John"
+                                                                        (Registro "Raymond" Fin)
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+    =                                                                                               (largoDePlanilla.2)
+        1 + 1 + 1 + 1 + largoDePlanilla (Registro "Stephen"
+                                            (Registro "John"
+                                                (Registro "Brian"
+                                                    (Registro "Graham" 
+                                                        (Registro "Ioan"
+                                                            (Registro "Robert" 
+                                                                (Registro "Gordon" 
+                                                                    (Registro "John"
+                                                                        (Registro "Raymond" Fin)
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+    =                                                                                               (largoDePlanilla.2)
+        1 + 1 + 1 + 1 + 1 + largoDePlanilla (Registro "John"
+                                                (Registro "Brian"
+                                                    (Registro "Graham" 
+                                                        (Registro "Ioan"
+                                                            (Registro "Robert" 
+                                                                (Registro "Gordon" 
+                                                                    (Registro "John"
+                                                                        (Registro "Raymond" Fin)
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+    =                                                                                               (largoDePlanilla.2)
+        1 + 1 + 1 + 1 + 1 + 1 + largoDePlanilla (Registro "Brian"
+                                                    (Registro "Graham" 
+                                                        (Registro "Ioan"
+                                                            (Registro "Robert" 
+                                                                (Registro "Gordon" 
+                                                                    (Registro "John"
+                                                                        (Registro "Raymond" Fin)
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+    =                                                                                               (largoDePlanilla.2)
+        1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + largoDePlanilla (Registro "Ioan"
+                                                            (Registro "Robert" 
+                                                                (Registro "Gordon" 
+                                                                    (Registro "John"
+                                                                        (Registro "Raymond" Fin)
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+    =                                                                                               (largoDePlanilla.2)
+        1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + largoDePlanilla (Registro "Robert" 
+                                                                (Registro "Gordon" 
+                                                                    (Registro "John"
+                                                                        (Registro "Raymond" Fin)
+                                                                    )
+                                                                )
+                                                            )
+    =                                                                                               (largoDePlanilla.2)
+        1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + largoDePlanilla (Registro "Gordon" 
+                                                                    (Registro "John"
+                                                                        (Registro "Raymond" Fin)
+                                                                    )
+                                                                )
+    =                                                                                               (largoDePlanilla.2)
+        1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + largoDePlanilla (Registro "John"
+                                                                        (Registro "Raymond" Fin)
+                                                                    )
+    =                                                                                               (largoDePlanilla.2)
+        1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + largoDePlanilla (Registro "Raymond" Fin)
+    =                                                                                               (largoDePlanilla.2)
+        1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + largoDePlanilla Fin
+    =                                                                                               (largoDePlanilla.1)
+        1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 0
+    =                                                                                               (aritmética)
+        13 
+
+    -- LADO DERECHO
+
+        cantidadDeIntegrantes (Investigador "Oswald" 
+                                (Investigador "Alonzo" 
+                                    (Becario "Alan") 
+                                    (Becario "Alfred") 
+                                    (Becario "Stephen")
+                                ) 
+                                (Investigador "John"   
+                                    (Becario "Brian") 
+                                    (Becario "Graham") 
+                                    (Becario "Ioan")
+                                ) 
+                                (Investigador "Robert" 
+                                    (Becario "Gordon") 
+                                    (Becario "John") 
+                                    (Becario "Raymond")
+                                )
+                            )
+    =                                                                                               (cantidadDeIntegrantes.2)
+        1
+        + cantidadDeIntegrantes (Investigador "Alonzo" 
+                                    (Becario "Alan") 
+                                    (Becario "Alfred") 
+                                    (Becario "Stephen")
+                                )
+        + cantidadDeIntegrantes (Investigador "John"   
+                                    (Becario "Brian") 
+                                    (Becario "Graham") 
+                                    (Becario "Ioan")
+                                )
+        + cantidadDeIntegrantes (Investigador "Robert" 
+                                    (Becario "Gordon") 
+                                    (Becario "John") 
+                                    (Becario "Raymond")
+                                )
+    =                                                                                               (cantidadDeIntegrantes.2)
+        1
+        + 1
+        + cantidadDeIntegrantes (Becario "Alan")
+        + cantidadDeIntegrantes (Becario "Alfred")
+        + cantidadDeIntegrantes (Becario "Stephen")
+        + cantidadDeIntegrantes (Investigador "John"   
+                                    (Becario "Brian") 
+                                    (Becario "Graham") 
+                                    (Becario "Ioan")
+                                )
+        + cantidadDeIntegrantes (Investigador "Robert" 
+                                    (Becario "Gordon") 
+                                    (Becario "John") 
+                                    (Becario "Raymond")
+                                )
+    =                                                                                               (cantidadDeIntegrantes.2)
+        1
+        + 1
+        + cantidadDeIntegrantes (Becario "Alan")
+        + cantidadDeIntegrantes (Becario "Alfred")
+        + cantidadDeIntegrantes (Becario "Stephen")
+        + cantidadDeIntegrantes (Becario "Brian")
+        + cantidadDeIntegrantes (Becario "Graham")
+        + cantidadDeIntegrantes (Becario "Ioan")
+        + cantidadDeIntegrantes (Investigador "Robert" 
+                                    (Becario "Gordon") 
+                                    (Becario "John") 
+                                    (Becario "Raymond")
+                                )
+    =                                                                                               (cantidadDeIntegrantes.2)
+        1
+        + 1
+        + cantidadDeIntegrantes (Becario "Alan")
+        + cantidadDeIntegrantes (Becario "Alfred")
+        + cantidadDeIntegrantes (Becario "Stephen")
+        + 1
+        + cantidadDeIntegrantes (Becario "Brian")
+        + cantidadDeIntegrantes (Becario "Graham")
+        + cantidadDeIntegrantes (Becario "Ioan")
+        + 1
+        + cantidadDeIntegrantes (Becario "Gordon")
+        + cantidadDeIntegrantes (Becario "John")
+        + cantidadDeIntegrantes (Becario "Raymond")
+    =                                                                                               (cantidadDeIntegrantes.1)
+        1
+        + 1
+        + 1
+        + cantidadDeIntegrantes (Becario "Alfred")
+        + cantidadDeIntegrantes (Becario "Stephen")
+        + 1
+        + cantidadDeIntegrantes (Becario "Brian")
+        + cantidadDeIntegrantes (Becario "Graham")
+        + cantidadDeIntegrantes (Becario "Ioan")
+        + 1
+        + cantidadDeIntegrantes (Becario "Gordon")
+        + cantidadDeIntegrantes (Becario "John")
+        + cantidadDeIntegrantes (Becario "Raymond")
+    =                                                                                               (cantidadDeIntegrantes.1)
+        1
+        + 1
+        + 1
+        + 1
+        + cantidadDeIntegrantes (Becario "Stephen")
+        + 1
+        + cantidadDeIntegrantes (Becario "Brian")
+        + cantidadDeIntegrantes (Becario "Graham")
+        + cantidadDeIntegrantes (Becario "Ioan")
+        + 1
+        + cantidadDeIntegrantes (Becario "Gordon")
+        + cantidadDeIntegrantes (Becario "John")
+        + cantidadDeIntegrantes (Becario "Raymond")
+    =                                                                                               (cantidadDeIntegrantes.1)
+        1
+        + 1
+        + 1
+        + 1
+        + 1
+        + 1
+        + cantidadDeIntegrantes (Becario "Brian")
+        + cantidadDeIntegrantes (Becario "Graham")
+        + cantidadDeIntegrantes (Becario "Ioan")
+        + 1
+        + cantidadDeIntegrantes (Becario "Gordon")
+        + cantidadDeIntegrantes (Becario "John")
+        + cantidadDeIntegrantes (Becario "Raymond")
+    =                                                                                               (cantidadDeIntegrantes.1)
+        1
+        + 1
+        + 1
+        + 1
+        + 1
+        + 1
+        + 1
+        + cantidadDeIntegrantes (Becario "Graham")
+        + cantidadDeIntegrantes (Becario "Ioan")
+        + 1
+        + cantidadDeIntegrantes (Becario "Gordon")
+        + cantidadDeIntegrantes (Becario "John")
+        + cantidadDeIntegrantes (Becario "Raymond")
+    =                                                                                               (cantidadDeIntegrantes.1)
+        1
+        + 1
+        + 1
+        + 1
+        + 1
+        + 1
+        + 1
+        + 1
+        + cantidadDeIntegrantes (Becario "Ioan")
+        + 1
+        + cantidadDeIntegrantes (Becario "Gordon")
+        + cantidadDeIntegrantes (Becario "John")
+        + cantidadDeIntegrantes (Becario "Raymond")
+    =                                                                                               (cantidadDeIntegrantes.1)
+        1
+        + 1
+        + 1
+        + 1
+        + 1
+        + 1
+        + 1
+        + 1
+        + 1
+        + 1
+        + cantidadDeIntegrantes (Becario "Gordon")
+        + cantidadDeIntegrantes (Becario "John")
+        + cantidadDeIntegrantes (Becario "Raymond")
+    =                                                                                               (cantidadDeIntegrantes.1)
+        1 +
+        + 1
+        + 1
+        + 1
+        + 1
+        + 1
+        + 1
+        + 1
+        + 1
+        + 1
+        + 1
+        + cantidadDeIntegrantes (Becario "John")
+        + cantidadDeIntegrantes (Becario "Raymond")
+    =                                                                                               (cantidadDeIntegrantes.1)
+        1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1
+        + cantidadDeIntegrantes (Becario "Raymond")
+    =                                                                                               (cantidadDeIntegrantes.1)
+        1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1
+    =                                                                                               (aritmética)
+        13
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
 #############################################################################################################################
 
