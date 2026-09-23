@@ -295,18 +295,149 @@ planillaDeIntegrantes (Investigador n e1 e2 e3) = Registro n (juntarPlanillas
 
 -- 4.A
 
+Para todo p :: Planilla . largoDePlanilla (juntarPlanillas Fin p) = largoDePlanilla Fin + largoDePlanilla p
 
+    -- LADO IZQUIERDO
+
+        largoDePlanilla (juntarPlanillas Fin p)
+    =                                                                   (juntarPlanillas.1) 
+        largoDePlanilla p
+
+    -- LADO DERECHO
+
+        largoDePlanilla Fin + largoDePlanilla p
+    =                                                                   (largoDePlanilla.1)
+        0 + largoDePlanilla p
+    =                                                                   (aritmética)
+        largoDePlanilla p
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
+    
 
 -- 4.B
 
+Para todo p :: Planilla . 
+    largoDePlanilla  (juntarPlanillas (Registro "Edsger" Fin) p) = 
+    largoDePlanilla (Registro "Edsger" Fin) + largoDePlanilla p
+
+    -- LADO IZQUIERDO
+
+        largoDePlanilla  (juntarPlanillas (Registro "Edsger" Fin) p)
+    =                                                                   (juntarPlanillas.2)
+        largoDePlanilla (Registro "Edsger" (juntarPlanillas Fin p))
+    =                                                                   (juntarPlanillas.1)
+        largoDePlanilla (Registro "Edsger" p)
+    =                                                                   (largoDePlanilla.2)
+        1 + largoDePlanilla p
+
+    -- LADO DERECHO
+
+        largoDePlanilla (Registro "Edsger" Fin) + largoDePlanilla p
+    =                                                                   (largoDePlanilla.2)
+        1 + largoDePlanilla Fin + largoDePlanilla p
+    =                                                                   (largoDePlanilla.1)
+        1 + 0 + largoDePlanilla p
+    =                                                                   (aritmética)
+        1 + largoDePlanilla p 
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
 
 -- 4.C
 
+Para todo p :: Planilla . largoDePlanilla (juntarPlanillas (Registro "Alan" (Registro "Edsger" Fin)) p) = 
+                          largoDePlanilla (Registro "Alan" (Registro "Edsger" Fin)) + largoDePlanilla p
+
+    -- LADO IZQUIERDO 
+
+        largoDePlanilla (juntarPlanillas (Registro "Alan" (Registro "Edsger" Fin)) p)
+    =                                                                                               (juntarPlanillas.2)  
+        largoDePlanilla (Registro "Alan" (juntarPlanillas (Registro "Edsger" Fin) p))
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Alan" (Registro "Edsger" (juntarPlanillas Fin p)))
+    =                                                                                               (juntarPlanillas.1)
+        largoDePlanilla (Registro "Alan" (Registro "Edsger" p))
+    =                                                                                               (largoDePlanilla.2)
+        1 + largoDePlanilla (Registro "Edsger" p)
+    =                                                                                               (largoDePlanilla.2)
+        1 + 1 + largoDePlanilla p
+    =                                                                                               (aritmética)
+        2 + largoDePlanilla p
+
+    -- LADO DERECHO
+
+        largoDePlanilla (Registro "Alan" (Registro "Edsger" Fin)) + largoDePlanilla p
+    =                                                                                               (largoDePlanilla.2)
+        1 + largoDePlanilla (Registro "Edsger" Fin) + largoDePlanilla p
+    =                                                                                               (largoDePlanilla.2)
+        1 + 1 + largoDePlanilla Fin + largoDePlanilla p
+    =                                                                                               (largoDePlanilla.1)
+        1 + 1 + 0 + largoDePlanilla p
+    =                                                                                               (aritmética)
+        2 + largoDePlanilla p
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
 
 -- 4.D
 
+Para todo p :: Planilla .
+                    largoDePlanilla (juntarPlanillas (Registro "Alonzo" (Registro "Alan" (Registro "Edsger" Fin))) p) = 
+                    largoDePlanilla (Registro "Alonzo" (Registro "Alan" (Registro "Edsger" Fin))) + largoDePlanilla p
+
+    -- LADO IZQUIERDO
+
+        largoDePlanilla (juntarPlanillas
+                            (Registro "Alonzo"
+                                (Registro "Alan"
+                                    (Registro "Edsger" Fin))) p)
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Alonzo"
+                            (juntarPlanillas
+                                (Registro "Alan"
+                                    (Registro "Edsger" Fin)) p))
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Alonzo"
+                            (Registro "Alan"
+                                (juntarPlanillas
+                                    (Registro "Edsger" Fin) p)))
+    =                                                                                               (juntarPlanillas.2)
+        largoDePlanilla (Registro "Alonzo"
+                            (Registro "Alan"
+                                (Registro "Edsger"
+                                    (juntarPlanillas Fin p))))
+    =                                                                                               (juntarPlanillas.1)
+        largoDePlanilla (Registro "Alonzo"
+                            (Registro "Alan"
+                                (Registro "Edsger" p)))
+    =                                                                                               (largoDePlanilla.2)
+        1 + largoDePlanilla (Registro "Alan"
+                                (Registro "Edsger" p))
+    =                                                                                               (largoDePlanilla.2)
+        1 + 1 + largoDePlanilla (Registro "Edsger" p)
+    =                                                                                               (largoDePlanilla.2)
+        1 + 1 + 1 + largoDePlanilla p
+    =                                                                                               (aritmética)
+        3 + largoDePlanilla p
+
+    -- LADO DERECHO
+
+        largoDePlanilla (Registro "Alonzo"
+                            (Registro "Alan"
+                                (Registro "Edsger" Fin))) + largoDePlanilla p
+    =                                                                                               (largoDePlanilla.2)
+        1 + largoDePlanilla (Registro "Alan"
+                                (Registro "Edsger" Fin)) + largoDePlanilla p
+    =                                                                                               (largoDePlanilla.2)
+        1 + 1 + largoDePlanilla (Registro "Edsger" Fin) + largoDePlanilla p
+    =                                                                                               (largoDePlanilla.2)
+        1 + 1 + 1 + largoDePlanilla Fin + largoDePlanilla p
+    =                                                                                               (largoDePlanilla.1)
+        1 + 1 + 1 + 0 + largoDePlanilla p
+    =                                                                                               (aritmética)
+        3 + largoDePlanilla p
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
 
 > Ejercicio 5:
