@@ -259,24 +259,26 @@ esta n' (Registro n p) = n' == n || esta n' p
 -- 3.C
 
 juntarPlanillas :: Planilla -> Planilla -> Planilla
-juntarPlanillas Fin            p2 = p2
-juntarPlanillas (Registro n p) p2 = Registro n (juntarPlanillas p p2)
+juntarPlanillas Fin            p' = p'
+juntarPlanillas (Registro n p) p' = Registro n (juntarPlanillas p p')
 
 
 -- 3.D
 
 nivelesJerarquicos :: Equipo -> Int
 nivelesJerarquicos (Becario _)               = 0
-nivelesJerarquicos (Investigador _ e1 e2 e3) = 
-    1 + nivelesJerarquicos e1 + nivelesJerarquicos e2 + nivelesJerarquicos e3
+nivelesJerarquicos (Investigador _ e1 e2 e3) = 1 + nivelesJerarquicos e1
+                                                 + nivelesJerarquicos e2
+                                                 + nivelesJerarquicos e3
 
 
 -- 3.E
 
 cantidadDeIntegrantes :: Equipo -> Int
 cantidadDeIntegrantes (Becario _)               = 1
-cantidadDeIntegrantes (Investigador _ e1 e2 e3) = 
-    1 + cantidadDeIntegrantes e1 + cantidadDeIntegrantes e2 + cantidadDeIntegrantes e3
+cantidadDeIntegrantes (Investigador _ e1 e2 e3) = 1 + cantidadDeIntegrantes e1
+                                                    + cantidadDeIntegrantes e2
+                                                    + cantidadDeIntegrantes e3
 
 
 -- 3.F
@@ -336,14 +338,190 @@ largoDePlanilla (planillaDeIntegrantes (Becario "Alan")) = cantidadDeIntegrantes
 
 -- 5.B
 
+largoDePlanilla (planillaDeIntegrantes (Becario "Brian")) = cantidadDeIntegrantes (Becario "Brian")
+
+    -- LADO IZQUIERDO
+
+        largoDePlanilla (planillaDeIntegrantes (Becario "Brian")) 
+    =                                                               (planillaDeIntegrantes.1)
+        largoDePlanilla (Registro "Brian" Fin)
+    =                                                               (largoDePlanilla.2)
+        1 + largoDePlanilla Fin
+    =                                                               (largoDePlanilla.1)
+        1 + 0
+    =                                                               (aritmética)
+        1
+
+    -- LADO DERECHO
+
+        cantidadDeIntegrantes (Becario "Brian")
+    =                                                               (cantidadDeIntegrantes.1)
+        1
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
 
 -- 5.C
 
+Para todo n :: Nombre . largoDePlanilla (planillaDeIntegrantes (Becario n)) = cantidadDeIntegrantes (Becario n)
+
+    -- LADO IZQUIERDO
+
+        largoDePlanilla (planillaDeIntegrantes (Becario n))
+    =                                                               (planillaDeIntegrantes.1)
+        largoDePlanilla (Registro n Fin)
+    =                                                               (largoDePlanilla.2)
+        1 + largoDePlanilla Fin
+    =                                                               (largoDePlanilla.1)
+        1 + 0
+    =                                                               (aritmética)
+        1
+
+    -- LADO DERECHO
+
+        cantidadDeIntegrantes (Becario n)
+    =                                                               (cantidadDeIntegrantes.1)
+        1
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.      
 
 
 -- 5.D
 
+largoDePlanilla (planillaDeIntegrantes (Investigador "Alonzo" (Becario "Alan") (Becario "Alfred") (Becario "Stephen"))) = 
+cantidadDeIntegrantes (Investigador "Alonzo" (Becario "Alan") (Becario "Alfred") (Becario "Stephen"))
+
+    -- LADO IZQUIERDO
+
+        largoDePlanilla (planillaDeIntegrantes
+                                (Investigador "Alonzo" (Becario "Alan")
+                                (Becario "Alfred") (Becario "Stephen"))
+                        )
+    =                                                                                           (planillaDeIntegrantes.2)
+        largoDePlanilla (Registro "Alonzo" 
+                            (juntarPlanillas
+                                (juntarPlanillas 
+                                    (planillaDeIntegrantes (Becario "Alan"))
+                                    (planillaDeIntegrantes (Becario "Alfred"))
+                                ) 
+                                (planillaDeIntegrantes (Becario "Stephen"))
+                            )
+                        )
+    =                                                                                           (planillaDeIntegrantes.1)
+        largoDePlanilla (Registro "Alonzo" 
+                            (juntarPlanillas
+                                (juntarPlanillas 
+                                    (Registro "Alan" Fin)
+                                    (planillaDeIntegrantes (Becario "Alfred"))
+                                ) 
+                                (planillaDeIntegrantes (Becario "Stephen"))
+                            )
+                        )
+    =                                                                                           (planillaDeIntegrantes.1)
+        largoDePlanilla (Registro "Alonzo"
+                            (juntarPlanillas
+                                (juntarPlanillas 
+                                    (Registro "Alan" Fin)
+                                    (Registro "Alfred" Fin)
+                                ) 
+                                (planillaDeIntegrantes (Becario "Stephen"))
+                            )
+                        )
+    =                                                                                           (planillaDeIntegrantes.1)
+        largoDePlanilla (Registro "Alonzo"
+                            (juntarPlanillas
+                                (juntarPlanillas 
+                                    (Registro "Alan" Fin)
+                                    (Registro "Alfred" Fin)
+                                ) 
+                                (Registro "Stephen" Fin)
+                            )
+                        )
+    =                                                                                           (juntarPlanillas.2)
+        largoDePlanilla (Registro "Alonzo"
+                            (juntarPlanillas
+                                (Registro "Alan"
+                                    (juntarPlanillas 
+                                        Fin 
+                                        (Registro "Alfred" Fin)
+                                    )
+                                ) 
+                                (Registro "Stephen" Fin)
+                            )
+                        )
+    =                                                                                           (juntarPlanillas.1)
+        largoDePlanilla (Registro "Alonzo"
+                            (juntarPlanillas
+                                (Registro "Alan" (Registro "Alfred" Fin)) 
+                                (Registro "Stephen" Fin)
+                            )
+                        )
+    =                                                                                           (juntarPlanillas.2)
+        largoDePlanilla (Registro "Alonzo"
+                            (Registro "Alan" 
+                                (juntarPlanillas
+                                    (Registro "Alfred" Fin)
+                                    (Registro "Stephen" Fin)
+                                )
+                            )
+                        )
+    =                                                                                           (juntarPlanillas.2)
+        largoDePlanilla (Registro "Alonzo"
+                            (Registro "Alan" 
+                                (Registro "Alfred" 
+                                    (juntarPlanillas
+                                        Fin
+                                        (Registro "Stephen" Fin)
+                                    )
+                                )
+                            )
+                        )
+    =                                                                                           (juntarPlanillas.1)
+        largoDePlanilla (Registro "Alonzo"
+                            (Registro "Alan"
+                                (Registro "Alfred"
+                                    (Registro "Stephen" Fin)
+                                )
+                            )
+                        )
+    =                                                                                           (largoDePlanilla.2)
+        1 + largoDePlanilla (Registro "Alan" (Registro "Alfred" (Registro "Stephen" Fin)))
+    =                                                                                           (largoDePlanilla.2)
+        1 + 1 + largoDePlanilla (Registro "Alfred" (Registro "Stephen" Fin))
+    =                                                                                           (largoDePlanilla.2)
+        1 + 1 + 1 + largoDePlanilla (Registro "Stephen" Fin)
+    =                                                                                           (largoDePlanilla.2)
+        1 + 1 + 1 + 1 + largoDePlanilla Fin
+    =                                                                                           (largoDePlanilla.1)
+        1 + 1 + 1 + 1 + 0
+    =                                                                                           (aritmética)
+        4
+
+    -- LADO DERECHO
+
+        cantidadDeIntegrantes (Investigador "Alonzo" 
+                                    (Becario "Alan")
+                                    (Becario "Alfred")
+                                    (Becario "Stephen")
+                              )
+    =                                                                                           (cantidadDeIntegrantes.2)
+        1
+        + cantidadDeIntegrantes (Becario "Alan")
+        + cantidadDeIntegrantes (Becario "Alfred")
+        + cantidadDeIntegrantes (Becario "Stephen")
+    =                                                                                           (cantidadDeIntegrantes.1)
+        1
+        + 1
+        + cantidadDeIntegrantes (Becario "Alfred")
+        + cantidadDeIntegrantes (Becario "Stephen")
+    =                                                                                           (cantidadDeIntegrantes.1)
+        1 + 1 + 1 + cantidadDeIntegrantes (Becario "Stephen")
+    =                                                                                           (cantidadDeIntegrantes.1)
+        1 + 1 + 1 + 1
+    =                                                                                           (aritmética)
+        4
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
 
 -- 5.E
