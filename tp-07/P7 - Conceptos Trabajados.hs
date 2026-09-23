@@ -62,7 +62,7 @@
         largoDePlanilla (Registro _ p) = 1 + largoDePlanilla p
 
 
-> Aclaración sobre la condición adicional en la reglas de inductivas:
+> Aclaración sobre la condición adicional en las reglas de inductivas:
 
     > Que se pida el menor de todos los conjuntos es porque, según la teoría, sería totalmente válido sin la regla adicional
       que sea válido un conjunto que tenga el conjunto inductivo buscado y además otros más dentro del mismo, porque
