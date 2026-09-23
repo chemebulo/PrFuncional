@@ -2408,7 +2408,7 @@ estaVacioM _       = False
 -- 3.D
 
 cantidadDePuntosCon :: Eq a => a -> Dungeon a -> Int
-cantidadDePuntosCon x' (Habitacion _)        = 0
+cantidadDePuntosCon x' (Habitacion x)        = unoSi (x == x')
 cantidadDePuntosCon x' (Pasaje m d)          = unoSi (tieneM m x') + cantidadDePuntosCon x' d
 cantidadDePuntosCon x' (Bifurcacion m d1 d2) = unoSi (tieneM m x') + cantidadDePuntosCon x' d1 + cantidadDePuntosCon x' d2
 
@@ -2984,6 +2984,10 @@ cantidadDePuntosCon (Criatura Troll) (Habitacion (Objeto Oro)) = 0
 
         cantidadDePuntosCon (Criatura Troll) (Habitacion (Objeto Oro))
     =                                                                           (cantidadDePuntosCon.1)
+        unoSi ((Criatura Troll) == (Objeto Oro))
+    =                                                                           (==)
+        unoSi False
+    =                                                                           (unoSi.2)
         0
 
     -- LADO DERECHO
@@ -2995,19 +2999,184 @@ cantidadDePuntosCon (Criatura Troll) (Habitacion (Objeto Oro)) = 0
 
 -- 5.B
 
+cantidadDePuntosCon (Criatura Troll) (Pasaje (Just (Criatura Troll)) (Habitacion (Objeto Oro))) = 1 
 
+    -- LADO IZQUIERDO
+
+        cantidadDePuntosCon 
+            (Criatura Troll)
+                (Pasaje (Just (Criatura Troll))
+                    (Habitacion (Objeto Oro)))
+    =                                                                                          (cantidadDePuntosCon.2)
+        unoSi (tieneM (Just (Criatura Troll)) (Criatura Troll))
+        + cantidadDePuntosCon (Criatura Troll) (Habitacion (Objeto Oro))
+    =                                                                                          (cantidadDePuntosCon.1)
+        unoSi (tieneM (Just (Criatura Troll)) (Criatura Troll))
+        + unoSi ((Criatura Troll) == (Objeto Oro))
+    =                                                                                          (==)
+        unoSi (tieneM (Just (Criatura Troll)) (Criatura Troll)) + unoSi False
+    =                                                                                          (unoSi.2)
+        unoSi (tieneM (Just (Criatura Troll)) (Criatura Troll)) + 0
+    =                                                                                          (tieneM.2)
+        unoSi ((Criatura Troll) == (Criatura Troll)) + 0
+    =                                                                                          (==)
+        unoSi True + 0
+    =                                                                                          (unoSi.1)
+        1 + 0
+    =                                                                                          (aritmética)
+        1
+
+    -- LADO DERECHO
+
+        1
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
 
 -- 5.C
 
+cantidadDePuntosCon (Criatura Troll) (Pasaje (Just (Criatura Troll)) (Habitacion (Criatura Troll))) = 2 
 
+    -- LADO IZQUIERDO
 
+        cantidadDePuntosCon (Criatura Troll)
+                                (Pasaje (Just (Criatura Troll))
+                                    (Habitacion (Criatura Troll)))
+    =                                                                                           (cantidadDePuntosCon.2)
+        unoSi (tieneM (Just (Criatura Troll)) (Criatura Troll))
+        + cantidadDePuntosCon (Criatura Troll) (Habitacion (Criatura Troll))
+    =                                                                                           (cantidadDePuntosCon.1)
+        unoSi (tieneM (Just (Criatura Troll)) (Criatura Troll))
+        + unoSi ((Criatura Troll) == (Criatura Troll))
+    =                                                                                           (==)
+        unoSi (tieneM (Just (Criatura Troll)) (Criatura Troll))
+        + unoSi True
+    =                                                                                           (unoSi.1)
+        unoSi (tieneM (Just (Criatura Troll)) (Criatura Troll)) + 1
+    =                                                                                           (tieneM.2)
+        unoSi ((Criatura Troll) == (Criatura Troll)) + 1
+    =                                                                                           (==)
+        unoSi True + 1
+    =                                                                                           (unoSi.1)
+        1 + 1
+    =                                                                                           (aritmética)
+        2
+
+    -- LADO DERECHO
+
+        2
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
 
 -- 5.D
 
+cantidadDePuntosCon (Criatura Troll) 
+                        (Bifurcacion (Just (Criatura Troll))
+                            (Pasaje (Just (Criatura Troll)) 
+                                    (Habitacion (Objeto Oro))
+                            ) 
+                            (Pasaje (Just (Criatura Troll)) 
+                                    (Habitacion (Criatura Troll))
+                            )
+                        ) = 4 
 
+    -- LADO IZQUIERDO
 
+        cantidadDePuntosCon (Criatura Troll) 
+                                (Bifurcacion (Just (Criatura Troll))
+                                    (Pasaje (Just (Criatura Troll)) 
+                                            (Habitacion (Objeto Oro))
+                                    ) 
+                                    (Pasaje (Just (Criatura Troll)) 
+                                            (Habitacion (Criatura Troll))
+                                    )
+                            )
+    =                                                                                               (cantidadDePuntosCon.3)
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll))
+        + cantidadDePuntosCon (Criatura Troll)
+                                (Pasaje (Just (Criatura Troll))
+                                (Habitacion (Objeto Oro)))
+        + cantidadDePuntosCon (Criatura Troll)
+                                (Pasaje (Just (Criatura Troll))
+                                (Habitacion (Criatura Troll)))
+    =                                                                                               (cantidadDePuntosCon.2)
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll))
+        + unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll))
+        + cantidadDePuntosCon (Criatura Troll) (Habitacion (Objeto Oro))
+        + cantidadDePuntosCon (Criatura Troll)
+                                (Pasaje (Just (Criatura Troll))
+                                (Habitacion (Criatura Troll)))
+    =                                                                                               (cantidadDePuntosCon.2)
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll))
+        + unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll))
+        + cantidadDePuntosCon (Criatura Troll) (Habitacion (Objeto Oro))
+        + unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll))
+        + cantidadDePuntosCon (Criatura Troll) (Habitacion (Criatura Troll))
+    =                                                                                               (cantidadDePuntosCon.1)
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll))
+        + unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll))
+        + unoSiEs (Criatura Troll) (Objeto Oro)
+        + unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll))
+        + cantidadDePuntosCon (Criatura Troll) (Habitacion (Criatura Troll))
+    =                                                                                               (cantidadDePuntosCon.1)
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll))
+        + unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll))
+        + unoSiEs (Criatura Troll) (Objeto Oro)
+        + unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll))
+        + unoSiEs (Criatura Troll) (Criatura Troll)
+    =                                                                                               (unoSiEs.1)
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll))
+        + unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll))
+        + unoSiEs (Criatura Troll) (Objeto Oro)
+        + unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll))
+        + 1
+    =                                                                                               (unoSiEs.1)
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll))
+        + unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll))
+        + 0
+        + unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll))
+        + 1
+    =                                                                                               (unoSiEstaElementoEn.2)
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll))
+        + unoSiEs (Criatura Troll) (Criatura Troll)
+        + 0
+        + unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll))
+        + 1
+    =                                                                                               (unoSiEstaElementoEn.2)
+        unoSiEstaElementoEn (Criatura Troll) (Just (Criatura Troll))
+        + unoSiEs (Criatura Troll) (Criatura Troll)
+        + 0 
+        + unoSiEs (Criatura Troll) (Criatura Troll)
+        + 1
+    =                                                                                               (unoSiEstaElementoEn.2)
+        unoSiEs (Criatura Troll) (Criatura Troll)
+        + unoSiEs (Criatura Troll) (Criatura Troll)
+        + 0
+        + unoSiEs (Criatura Troll) (Criatura Troll)
+        + 1
+    =                                                                                               (unoSiEs.1)
+        unoSiEs (Criatura Troll) (Criatura Troll)
+        + unoSiEs (Criatura Troll) (Criatura Troll)
+        + 0
+        + 1
+        + 1
+    =                                                                                               (unoSiEs.1)
+        unoSiEs (Criatura Troll) (Criatura Troll)
+        + 1
+        + 0
+        + 1
+        + 1
+    =                                                                                               (unoSiEs.1)
+        1 + 1 + 0 + 1 + 1
+    =                                                                                               (aritmética)
+        4
+
+    -- LADO DERECHO
+
+        4
+
+    -- Ambos lados llegan a lo mismo, la propiedad es válida.
 
 
 -- 5.E
