@@ -26,7 +26,7 @@ Reglas que definen el conjunto Pizza:
 
 f :: Pizza -> a
 f Prepizza   = ...
-f (Capa i p) = ... i ... f p
+f (Capa i p) = ... i ... f p ...
 
 
 > Ejercicio 3:
@@ -236,8 +236,8 @@ f Fin            = ...
 f (Registro n p) = ... n ... f p ...
 
 f :: Equipo -> a
-f (Becario n)               = ... n
-f (Ingestigador n e1 e2 e3) = ... n ... f e1 ... f e2 ... f e3
+f (Becario n)               = ... n ...
+f (Ingestigador n e1 e2 e3) = ... n ... f e1 ... f e2 ... f e3 ...
 
 
 > Ejercicio 3:
@@ -2356,19 +2356,19 @@ data Dungeon a = Habitacion a
 > Ejercicio 1:
 
 Reglas que definen el conjunto Dungeon a:
-    > Regla base: Habitacion a está en el conjunto Dungeon a.
-    > Regla inductiva 1: Si m está en el conjunto Maybe a, d está en el conjunto Dungeon a,
+    > Regla base: Si x :: a, Habitacion x está en el conjunto Dungeon a.
+    > Regla inductiva 1: Si m :: Maybe a, d está en el conjunto Dungeon a,
                          entonces Pasaje m d está en el conjunto Dungeon a.
-    > Regla inductiva 2: Si m está en el conjunto Maybe a, d1 está en el conjunto Dungeon a, d2 está en el
-                         conjunto Dungeon a, entonces Bifurcacion m d1 d2 está en el conjunto Dungeon a.
+    > Regla inductiva 2: Si m :: Maybe a, d1 está en el conjunto Dungeon a, d2 está en el conjunto Dungeon a,
+                         entonces Bifurcacion m d1 d2 está en el conjunto Dungeon a.
 
 
 > Ejercicio 2:
 
 f :: Dungeon a -> b
-f (Habitacion n)        = ... n
-f (Pasaje m d)          = ... m ... f d
-f (Bifurcacion m d1 d2) = ... m ... f d1 ... f d2
+f (Habitacion n)        = ... n ...
+f (Pasaje m d)          = ... m ... f d ...
+f (Bifurcacion m d1 d2) = ... m ... f d1 ... f d2 ...
 
 
 > Ejercicio 3:
