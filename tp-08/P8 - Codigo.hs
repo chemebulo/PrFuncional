@@ -81,14 +81,24 @@ reverse (x:xs) = reverse xs ++ [x]
 -- 1.L
 
 zip :: [a] -> [b] -> [(a, b)]
-zip []     ys = ...
-zip (x:xs) ys = ... 
+zip []     _      = []
+zip _      []     = []  
+zip (x:xs) (y:ys) = (x, y) : zip xs ys
 
 -- 1.M
 
 unzip :: [(a, b)] -> ([a], [b])
-unzip []     = ...
-unzip (x:xs) = ...
+unzip []       = ([], [])
+unzip (xy:xys) = let (x, y) = x
+                     (xs, ys) = unzip xys
+                  in (x:xs, y:ys)
+
+unzip :: [(a, b)] -> ([a], [b])
+unzip []       = ([], [])
+unzip (xy:xys) = merge xy (unzip xys) 
+
+merge :: (a, b) -> ([a], [b]) -> ([a], [b])
+merge (x, y) (xs, ys) = (x:xs, y:ys)
 
 
 > Ejercicio 2:
