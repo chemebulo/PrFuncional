@@ -89,12 +89,6 @@ zip (x:xs) (y:ys) = (x, y) : zip xs ys
 
 unzip :: [(a, b)] -> ([a], [b])
 unzip []       = ([], [])
-unzip (xy:xys) = let (x, y) = x
-                     (xs, ys) = unzip xys
-                  in (x:xs, y:ys)
-
-unzip :: [(a, b)] -> ([a], [b])
-unzip []       = ([], [])
 unzip (xy:xys) = merge xy (unzip xys) 
 
 merge :: (a, b) -> ([a], [b]) -> ([a], [b])
