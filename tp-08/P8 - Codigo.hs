@@ -131,8 +131,8 @@ Demostración:
         0 + length ws
     =                                   (aritmética)
         length ws
-        
-        -- Ambos lados llega a lo mismo, el caso es válido.
+    
+    -- Ambos lados llega a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
         ¿length ((z:zs') ++ ws) = length (z:zs') + length ws?
@@ -153,7 +153,7 @@ Demostración:
     =                                   (length.2)
         1 + length zs' + length ws
 
-        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+    -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 2.B
@@ -189,7 +189,7 @@ Demostración:
     =                                   ((++).1)
         ys' ++ zs'
 
-        -- Ambos lados llegan a lo mismo, el caso es válido.
+    -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
         ¿((x:xs'') ++ ys') ++ zs' = (x:xs'') ++ (ys' ++ zs')?
@@ -211,7 +211,7 @@ Demostración:
     =                                   ((++).2)
         x : (xs'' ++ (ys' ++ zs'))
 
-        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+    -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 2.C
@@ -250,7 +250,7 @@ Demostración:
     =                               (length.1)
         0
 
-        -- Ambos lados llegan a lo mismo, el caso es válido.
+    -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
         ¿count (const True) (y:ys') = length (y:ys')?
@@ -273,7 +273,7 @@ Demostración:
     =                                                       (length.2)
         1 + length ys'
 
-        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+    -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 2.D
@@ -315,7 +315,7 @@ Demostración:
     =                                   (any.1)
         False
 
-        -- Ambos lados llegan a lo mismo, el caso es válido.
+    -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
         ¿elem z (y:ys') = any ((==) z) (y:ys')?
@@ -336,7 +336,7 @@ Demostración:
     =                                   ((==))
         z == y || elem z ys'
 
-        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+    -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 2.E
@@ -407,7 +407,7 @@ Demostración:
     Lema ElemAppend: ¿para todo z. para todo xs. para todo ys. elem z (xs ++ ys) = elem z xs || elem z ys?
     
     Demostración:
-        Sea x :: a, sea ws :: [a], sea ts :: [a]. Por principio de inducción sobre la estructura
+        Sea x :: a, sea ws :: [a], sea ts :: [a]. Por principio de inducción en la estructura
         de ws es equivalente demostrar:
 
         Caso base (ws = []):
@@ -466,7 +466,57 @@ Demostración:
 ¿para todo xs. para todo ys. subset xs ys = all (flip elem ys) xs?
 
 Demostración:
-    a
+    Sea ws :: [a], sea zs :: [a]. Por principio de inducción en la estructura
+    de ws es equivalente demostrar:
+
+    Caso base (ws = []):
+        ¿subset [] zs = all (flip elem zs) []?
+
+    Caso inductivo (ws = (w:ws')):
+        Hipotesis inductiva:
+            ¡subset ws' zs = all (flip elem zs) ws'!
+
+        Tesis inductiva:
+            ¿subset (w:ws') zs = all (flip elem zs) (w:ws')?
+
+    Demostración caso base:
+        ¿subset [] zs = all (flip elem zs) []?
+
+    -- LADO IZQUIERDO:
+
+        subset [] zs
+    =                                           (subset.1)
+        True
+
+    -- LADO DERECHO:
+
+        all (flip elem zs) []
+    =                                           (all.1)
+        True
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo:
+        ¿subset (w:ws') zs = all (flip elem zs) (w:ws')?
+
+    -- LADO IZQUIERDO:
+
+        subset (w:ws') zs
+    =                                               (subset.2)
+        elem w zs && subset ws' zs 
+    =                                               (HI)
+        elem w zs && all (flip elem zs) ws'
+
+    -- LADO DERECHO:
+
+        all (flip elem zs) (w:ws')
+    =                                               (all.2)
+        (flip elem zs) w && all (flip elem zs) ws'
+    =                                               (flip, f <- elem, x <- zs, y <- w)
+        elem w zs && all (flip elem zs) ws'
+
+    -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
 
 -- 2.G
 
