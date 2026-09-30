@@ -97,6 +97,117 @@ merge (x, y) (xs, ys) = (x:xs, y:ys)
 
 > Ejercicio 2:
 
+-- 2.A
+
+¿para todo xs. para todo ys. length (xs ++ ys) = length xs + length ys?
+
+Demostración:
+    Sea zs :: [a], y sea ws :: [a]. Por principio de inducción en la estructura
+    de zs es equivalente demostrar que:
+
+    Caso base (zs = []):
+        ¿length ([] ++ ws) = length [] + length ws?
+
+    Caso inductivo (zs = (z:zs')):
+        Hipotesis inductiva:
+            ¡length (zs' ++ ws) = length zs' + length ws!
+
+        Tesis inductiva::
+            ¿length ((z:zs') ++ ws) = length (z:zs') + length ws?
+
+    Demostración caso base:
+        ¿length ([] ++ ws) = length [] + length ws?
+
+    -- LADO IZQUIERDO:
+
+        length ([] ++ ws)
+    =                                   (++)
+        length ws
+
+    -- LADO DERECHO:
+
+        length [] + length ws
+    =                                   (length.1)
+        0 + length ws
+    =                                   (aritmética)
+        length ws
+        
+        -- Ambos lados llega a lo mismo, el caso es válido.
+
+    Demostración caso inductivo:
+        ¿length ((z:zs') ++ ws) = length (z:zs') + length ws?
+
+    -- LADO IZQUIERDO:
+
+        length ((z:zs') ++ ws)
+    =                                   (++)
+        length (z : (zs' ++ ws))
+    =                                   (length.2)
+        1 + length (zs' ++ ws)
+    =                                   (HI)
+        1 + length zs' + length ws
+
+    -- LADO DERECHO:
+
+        length (z:zs') + length ws
+    =                                   (length.2)
+        1 + length zs' + length ws
+
+        -- Ambos lados llega a lo mismo, la propiedad es válida.
+
+
+-- 2.B
+
+¿para todo xs. para todo ys. para todo zs. (xs ++ ys) ++ zs = xs ++ (ys ++ zs)?
+
+Demostración:
+
+
+
+-- 2.C
+
+¿count (const True) = length?
+
+
+-- 2.D
+
+¿elem = any . (==)?
+
+
+-- 2.E
+
+¿para todo x. any (elem x) = elem x . concat?
+
+
+-- 2.F
+
+¿para todo xs. para todo ys. subset xs ys = all (flip elem ys) xs?
+
+
+-- 2.G
+
+¿all null = null . concat?
+
+
+-- 2.H
+
+¿length = length . reverse?
+
+
+-- 2.I
+
+¿para todo xs. para todo ys. reverse (xs ++ ys) = reverse ys ++ reverse xs?
+
+
+-- 2.J
+
+¿para todo xs. para todo ys. all p (xs ++ ys) = all p (reverse xs) && all p (reverse ys)?
+
+
+-- 2.K
+
+¿para todo xs. para todo ys. unzip (zip xs ys) = (xs, ys)?
+
 
 
 #############################################################################################################################
