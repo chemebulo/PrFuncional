@@ -162,7 +162,7 @@ Demostración:
 
 Demostración:
     Sea xs' :: [a], sea ys' :: [a], sea zs' :: [a]. Por principio de inducción en la estructura
-    xs' es equivalente demostrar que:
+    de xs' es equivalente demostrar que:
 
     Caso base (xs' = []):
         ¿([] ++ ys') ++ zs' = [] ++ (ys' ++ zs')?
@@ -223,7 +223,7 @@ Demostración:
     ¿para todo xs. count (const True) xs = length xs?
 
     Sea ys :: [a]. Por principio de inducción en la estructura
-    ys es equivalente demostrar que:
+    de ys es equivalente demostrar que:
 
     Caso base (ys = []):
         ¿count (const True) [] = length []?
@@ -281,9 +281,62 @@ Demostración:
 ¿elem = any . (==)?
 
 Demostración:
-    
-    
+    Por principio de extensionalidad (dos veces), es equivalente demostrar que:
+    ¿para todo x. para todo xs. elem x xs = (any . (==)) x xs?
 
+    Por definición de (.) es equivalente demostrar que:
+    ¿para todo x. para todo xs. elem x xs = any ((==) x) xs?
+
+    Sea z :: a, sea ys :: [a]. Por principio de inducción en la estructura
+    de ys es equivalente demostrar:
+
+    Caso base (ys = []):
+        ¿elem z [] = any ((==) z) []?
+
+    Caso inductivo (ys = (y:ys')):
+        Hipotesis inductiva:
+            ¡elem z ys' = any ((==) z) ys'!
+
+        Tesis inductiva:
+            ¿elem z (y:ys') = any ((==) z) (y:ys')?
+
+    Demostración caso base:
+        ¿elem z [] = any ((==) z) []?
+
+    -- LADO IZQUIERDO:
+
+        elem z []
+    =                                   (elem.1)
+        False
+
+    -- LADO DERECHO:
+
+        any ((==) z) []
+    =                                   (any.1)
+        False
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo:
+        ¿elem z (y:ys') = any ((==) z) (y:ys')?
+
+    -- LADO IZQUIERDO:
+
+        elem z (y:ys')
+    =                                   (elem.2)
+        z == y || elem z ys'
+
+    -- LADO DERECHO:
+
+        any ((==) z) (y:ys')
+    =                                   (any.2)
+        (==) z y || any ((==) z) ys'     
+    =                                   (HI)
+        (==) z y  || elem z ys'
+    =                                   ((==))
+        z == y || elem z ys'
+
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 2.E
