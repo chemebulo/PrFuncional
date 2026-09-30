@@ -121,7 +121,7 @@ Demostración:
     -- LADO IZQUIERDO:
 
         length ([] ++ ws)
-    =                                   (++.1)
+    =                                   ((++).1)
         length ws
 
     -- LADO DERECHO:
@@ -140,7 +140,7 @@ Demostración:
     -- LADO IZQUIERDO:
 
         length ((z:zs') ++ ws)
-    =                                   (++.2)
+    =                                   ((++).2)
         length (z : (zs' ++ ws))
     =                                   (length.2)
         1 + length (zs' ++ ws)
@@ -153,7 +153,7 @@ Demostración:
     =                                   (length.2)
         1 + length zs' + length ws
 
-        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad es válida.
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 2.B
@@ -180,13 +180,13 @@ Demostración:
     -- LADO IZQUIERDO:
         
         ([] ++ ys') ++ zs'
-    =                                   (++.1)
+    =                                   ((++).1)
         ys' ++ zs'
 
     -- LADO DERECHO:
         
         [] ++ (ys' ++ zs')
-    =                                   (++.1)
+    =                                   ((++).1)
         ys' ++ zs'
 
         -- Ambos lados llegan a lo mismo, el caso es válido.
@@ -197,9 +197,9 @@ Demostración:
     -- LADO IZQUIERDO:
 
         ((x:xs'') ++ ys') ++ zs'
-    =                                   (++.2)
+    =                                   ((++).2)
         (x : (xs'' ++ ys')) ++ zs'
-    =                                   (++.2)
+    =                                   ((++).2)
         x : ((xs'' ++ ys') ++ zs')
     =                                   (aritmética)
         x : (xs'' ++ (ys' ++ zs'))
@@ -208,20 +208,82 @@ Demostración:
     -- LADO DERECHO:
 
         (x:xs'') ++ (ys' ++ zs')
-    =                                   (++.2)
+    =                                   ((++).2)
         x : (xs'' ++ (ys' ++ zs'))
 
-        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad es válida.
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 2.C
 
 ¿count (const True) = length?
 
+Demostración:
+    Por principio de extensionalidad, es equivalente demostrar que:
+    ¿para todo xs. count (const True) xs = length xs?
+
+    Sea ys :: [a]. Por principio de inducción en la estructura
+    ys es equivalente demostrar que:
+
+    Caso base (ys = []):
+        ¿count (const True) [] = length []?
+
+    Caso inductivo (ys = (y:ys'))
+        Hipotesis inductiva:
+            ¡count (const True) ys' = length ys'!
+
+        Tesis inductiva:
+            ¿count (const True) (y:ys') = length (y:ys')?
+    
+    Demotración caso base:
+        ¿count (const True) [] = length []?
+
+    -- LADO IZQUIERDO:
+
+        count (const True) []
+    =                               (count.1)
+        0
+
+    -- LADO DERECHO:
+
+        length []
+    =                               (length.1)
+        0
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo:
+        ¿count (const True) (y:ys') = length (y:ys')?
+
+    -- LADO IZQUIERDO:
+
+        count (const True) (y:ys')
+    =                                                        (count.2)
+        unoSi ((const True) y) + count (const True) ys' 
+    =                                                        (const, x <- True, y <- y)
+        unoSi True + count (const True) ys'
+    =                                                        (unoSi.1)
+        1 + count (const True) ys'
+    =                                                        (HI)
+        1 + length ys'
+
+    -- LADO DERECHO:
+
+        length (y:ys')
+    =                                                       (length.2)
+        1 + length ys'
+
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
 
 -- 2.D
 
 ¿elem = any . (==)?
+
+Demostración:
+    
+    
+
 
 
 -- 2.E
