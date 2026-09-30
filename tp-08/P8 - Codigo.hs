@@ -102,7 +102,7 @@ merge (x, y) (xs, ys) = (x:xs, y:ys)
 ¿para todo xs. para todo ys. length (xs ++ ys) = length xs + length ys?
 
 Demostración:
-    Sea zs :: [a], y sea ws :: [a]. Por principio de inducción en la estructura
+    Sea zs :: [a], sea ws :: [a]. Por principio de inducción en la estructura
     de zs es equivalente demostrar que:
 
     Caso base (zs = []):
@@ -121,7 +121,7 @@ Demostración:
     -- LADO IZQUIERDO:
 
         length ([] ++ ws)
-    =                                   (++)
+    =                                   (++.1)
         length ws
 
     -- LADO DERECHO:
@@ -140,7 +140,7 @@ Demostración:
     -- LADO IZQUIERDO:
 
         length ((z:zs') ++ ws)
-    =                                   (++)
+    =                                   (++.2)
         length (z : (zs' ++ ws))
     =                                   (length.2)
         1 + length (zs' ++ ws)
@@ -153,7 +153,7 @@ Demostración:
     =                                   (length.2)
         1 + length zs' + length ws
 
-        -- Ambos lados llega a lo mismo, la propiedad es válida.
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad es válida.
 
 
 -- 2.B
@@ -161,7 +161,57 @@ Demostración:
 ¿para todo xs. para todo ys. para todo zs. (xs ++ ys) ++ zs = xs ++ (ys ++ zs)?
 
 Demostración:
+    Sea xs' :: [a], sea ys' :: [a], sea zs' :: [a]. Por principio de inducción en la estructura
+    xs' es equivalente demostrar que:
 
+    Caso base (xs' = []):
+        ¿([] ++ ys') ++ zs' = [] ++ (ys' ++ zs')?
+
+    Caso inductivo (xs' = (x:xs'')):
+        Hipotesis inductiva:
+            ¡(xs'' ++ ys') ++ zs' = xs'' ++ (ys' ++ zs')!
+
+        Tesis inductiva:
+            ¿((x:xs'') ++ ys') ++ zs' = (x:xs'') ++ (ys' ++ zs')?
+
+    Demostración caso base:
+        ¿([] ++ ys') ++ zs' = [] ++ (ys' ++ zs')?
+
+    -- LADO IZQUIERDO:
+        
+        ([] ++ ys') ++ zs'
+    =                                   (++.1)
+        ys' ++ zs'
+
+    -- LADO DERECHO:
+        
+        [] ++ (ys' ++ zs')
+    =                                   (++.1)
+        ys' ++ zs'
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo:
+        ¿((x:xs'') ++ ys') ++ zs' = (x:xs'') ++ (ys' ++ zs')?
+
+    -- LADO IZQUIERDO:
+
+        ((x:xs'') ++ ys') ++ zs'
+    =                                   (++.2)
+        (x : (xs'' ++ ys')) ++ zs'
+    =                                   (++.2)
+        x : ((xs'' ++ ys') ++ zs')
+    =                                   (aritmética)
+        x : (xs'' ++ (ys' ++ zs'))
+
+
+    -- LADO DERECHO:
+
+        (x:xs'') ++ (ys' ++ zs')
+    =                                   (++.2)
+        x : (xs'' ++ (ys' ++ zs'))
+
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad es válida.
 
 
 -- 2.C
