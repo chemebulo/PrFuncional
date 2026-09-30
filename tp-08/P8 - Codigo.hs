@@ -343,36 +343,166 @@ Demostración:
 
 ¿para todo x. any (elem x) = elem x . concat?
 
+Demostración:
+    Por principio de extensionalidad, es equivalente demostrar que:
+    ¿para todo x. para todo xss. any (elem x) xss = (elem x . concat) xss?
+
+    Por definición de (.) es equivalente demostrar que:
+    ¿para todo x. para todo xss. any (elem x) xss = elem x (concat xss)?
+
+    Sea z :: a, sea yss :: [[a]]. Por principio de inducción en la estructura
+    de yss es equivalente demostrar:
+
+    Caso base (yss = []):
+        ¿any (elem z) [] = elem z (concat [])?
+
+    Caso inductivo (yss = (ys:yss')):  
+        Hipotesis inductiva:
+            ¡any (elem z) yss' = elem z (concat yss')!
+
+        Tesis inductiva:
+            ¿any (elem z) (ys:yss') = elem z (concat (ys:yss'))?
+
+    Demostración caso base:
+        ¿any (elem z) [] = elem z (concat [])?
+
+    -- LADO IZQUIERDO:
+
+        any (elem z) []
+    =                           (any.1)
+        False
+
+    -- LADO IZQUIERDO:
+
+        elem z (concat [])
+    =                           (concat.1)
+        elem z []
+    =                           (elem.1)
+        False
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo:
+        ¿any (elem z) (ys:yss') = elem z (concat (ys:yss'))?
+
+    -- LADO IZQUIERDO:
+
+        any (elem z) (ys:yss')
+    =                                           (any.2)
+        elem z ys || any (elem z) yss'
+    =                                           (HI)
+        elem z ys || elem z (concat yss')
+
+    -- LADO IZQUIERDO:
+
+        elem z (concat (ys:yss'))
+    =                                           (concat.2)
+        elem z (ys ++ concat yss')
+    =                                           (ElemAppend)
+        elem z ys || elem z (concat yss')
+
+    -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
+
+    Lema ElemAppend: ¿para todo z. para todo xs. para todo ys. elem z (xs ++ ys) = elem z xs || elem z ys?
+    
+    Demostración:
+        Sea x :: a, sea ws :: [a], sea ts :: [a]. Por principio de inducción sobre la estructura
+        de ws es equivalente demostrar:
+
+        Caso base (ws = []):
+            ¿elem x ([] ++ ts) = elem x [] || elem x ts?
+
+        Caso inductivo (ws = (w:ws')):
+            Hipotesis inductiva:
+                ¡elem x (ws' ++ ts) = elem x ws' || elem x ts!
+
+            Tesis inductiva:
+                ¿elem x ((w:ws') ++ ts) = elem x (w:ws') || elem x ts?
+
+        Demostración caso base:
+            ¿elem x ([] ++ ts) = elem x [] || elem x ts?
+
+        -- LADO IZQUIERDO:
+
+            elem x ([] ++ ts)
+        =                                       ((++).1)
+            elem x ts
+
+        -- LADO DERECHO:
+
+            elem x [] || elem x ts
+        =                                       ((++).1)
+            False || elem x ts
+        =                                       (||)
+            elem x ts
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Demostración caso inductivo:
+            ¿elem x ((w:ws') ++ ts) = elem x (w:ws') || elem x ts?
+
+        -- LADO IZQUIERDO:
+
+            elem x ((w:ws') ++ ts)
+        =                                       ((++).2)
+            elem x (w : (ws' ++ ts))
+        =                                       (elem.2)
+            x == w || elem x (ws' ++ ts)
+        =                                       (HI)
+            x == w || elem x ws' || elem x ts
+
+        -- LADO DERECHO:
+
+            elem x (w:ws') || elem x ts
+        =                                       (elem.2)
+            x == w || elem x ws' || elem x ts
+
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
 
 -- 2.F
 
 ¿para todo xs. para todo ys. subset xs ys = all (flip elem ys) xs?
 
+Demostración:
+    a
 
 -- 2.G
 
 ¿all null = null . concat?
 
+Demostración:
+    a
 
 -- 2.H
 
 ¿length = length . reverse?
+
+Demostración:
+    a
 
 
 -- 2.I
 
 ¿para todo xs. para todo ys. reverse (xs ++ ys) = reverse ys ++ reverse xs?
 
+Demostración:
+    a
 
 -- 2.J
 
 ¿para todo xs. para todo ys. all p (xs ++ ys) = all p (reverse xs) && all p (reverse ys)?
 
+Demostración:
+    a
 
 -- 2.K
 
 ¿para todo xs. para todo ys. unzip (zip xs ys) = (xs, ys)?
 
+Demostración:
+    a
 
 
 #############################################################################################################################
