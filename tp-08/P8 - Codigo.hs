@@ -403,7 +403,6 @@ Demostración:
 
     -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
-
     Lema ElemAppend: ¿para todo z. para todo xs. para todo ys. elem z (xs ++ ys) = elem z xs || elem z ys?
     
     Demostración:
@@ -511,7 +510,7 @@ Demostración:
 
         all (flip elem zs) (w:ws')
     =                                               (all.2)
-        (flip elem zs) w && all (flip elem zs) ws'
+        flip elem zs w && all (flip elem zs) ws'
     =                                               (flip, f <- elem, x <- zs, y <- w)
         elem w zs && all (flip elem zs) ws'
 
@@ -523,7 +522,121 @@ Demostración:
 ¿all null = null . concat?
 
 Demostración:
-    a
+    Por principio de extensionalidad, es equivalente demostrar que:
+    ¿para todo xss. all null xss = (null . concat) xss?
+
+    Por definición de (.) es equivalente demostrar que:
+    ¿para todo xss. all null xss = null (concat xss)?
+
+    Sea wss :: [[a]]. Por principio de inducción en la estructura
+    de wss es equivalente demostrar:
+
+    Caso base (wss = []):
+        ¿all null [] = null (concat [])?
+
+    Caso inductivo (wss = (ws:wss')):
+        Hipotesis inductiva:
+            ¡all null wss' = null (concat wss')!
+
+        Tesis inductiva:
+            ¿all null (ws:wss') = null (concat (ws:wss'))?
+
+    Demostración caso base:
+        ¿all null [] = null (concat [])?
+
+    -- LADO IZQUIERDO:
+    
+        all null []
+    =                           (all.1)
+        True
+
+    -- LADO DERECHO:
+    
+        null (concat [])
+    =                           (concat.1)
+        null []
+    =                           (null.1)
+        True
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo:
+        ¿all null (ws:wss') = null (concat (ws:wss'))?
+
+    -- LADO IZQUIERDO:
+
+        all null (ws:wss')
+    =                                       (all.2)
+        null ws && all null wss'
+    =                                       (HI)
+        null ws && null (concat wss')
+
+    -- LADO DERECHO:
+
+        null (concat (ws:wss'))
+    =                                       (concat.2)
+        null (ws ++ concat wss')
+    =                                       (NullAppend)
+        null ws && null (concat wss')
+
+    -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
+    Lema NullAppend: ¿para todo xs. para todo ys. null (xs ++ ys) = null xs && null ys?
+
+    Demostración:
+        Sea ws :: [a], sea zs :: [a]. Por principio de inducción en la estructura
+        de ws es equivalente demostrar que:
+
+        Caso base (ws = []):
+            ¿null ([] ++ zs) = null [] && null zs?
+
+        Caso inductivo (ws = (w:ws')):
+            Hipotesis inductiva:
+                ¡null (ws' ++ zs) = null ws' && null zs!
+
+            Tesis inductiva:
+                ¿null ((w:ws') ++ zs) = null (w:ws') && null zs?
+
+        Demostración caso base:
+            ¿null ([] ++ zs) = null [] && null zs?
+
+        -- LADO IZQUIERDO:
+
+            null ([] ++ zs)
+        =                               ((++).1)
+            null zs
+
+        -- LADO DERECHO:
+
+            null [] && null zs
+        =                               (null.1)
+            True && null zs
+        =                               (&&)
+            null zs
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Demostración caso inductivo:
+            ¿null ((w:ws') ++ zs) = null (w:ws') && null zs?
+
+        -- LADO IZQUIERDO:
+
+            null ((w:ws') ++ zs)
+        =                               ((++).2)
+            null (w : (ws' ++ zs))
+        =                               (null.2)
+            False
+
+        -- LADO DERECHO:
+
+            null (w:ws') && null zs
+        =                               (null.2)
+            False && null zs
+        =                               (&&)
+            False
+
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
 
 -- 2.H
 
