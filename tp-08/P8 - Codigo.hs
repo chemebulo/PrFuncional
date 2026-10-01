@@ -1001,23 +1001,40 @@ data ExpA = Cte Int
 -- 1.A.I
 
 evalExpA :: ExpA -> Int
-evalExpA (Cte n)      =
-evalExpA (Suma e1 e2) =
-evalExpA (Prod e1 e2) =
+evalExpA (Cte n)      = n
+evalExpA (Suma e1 e2) = evalExpA e1 + evalExpA e2
+evalExpA (Prod e1 e2) = evalExpA e1 * evalExpA e2
 
 -- 1.A.II
 
 simplificarExpA :: ExpA -> ExpA
-simplificarExpA (Cte n)      =
-simplificarExpA (Suma e1 e2) =
-simplificarExpA (Prod e1 e2) =
+simplificarExpA (Cte n)      = Cte n
+simplificarExpA (Suma e1 e2) = simplificarSuma (simplificarExpA e1) (simplificarExpA e2)
+simplificarExpA (Prod e1 e2) = simplificarProd (simplificarExpA e1) (simplificarExpA e2)
+
+simplificarSuma :: ExpA -> ExpA -> ExpA
+simplificarSuma (Cte 0) e2      = e2
+simplificarSuma e1      (Cte 0) = e1
+simplificarSuma e1      e1      = Suma e1 e2
+
+simplificarProd :: ExpA -> ExpA -> ExpA
+simplificarProd (Cte 0) e2      = Cte 0
+simplificarProd e1      (Cte 0) = Cte 0
+simplificarProd (Cte 1) e2      = e2
+simplificarProd e1      (Cte 1) = e1
+simplificarProd e1      e1      = Prod e1 e2
 
 -- 1.A.III
 
 cantidadDeSumaCero :: ExpA -> Int
-cantidadDeSumaCero (Cte n)      =
-cantidadDeSumaCero (Suma e1 e2) =
-cantidadDeSumaCero (Prod e1 e2) =
+cantidadDeSumaCero (Cte n)      = 0
+cantidadDeSumaCero (Suma e1 e2) = unoSi (esSumaCero e1 e2) + (cantidadDeSumaCero e1) (cantidadDeSumaCero e2)
+cantidadDeSumaCero (Prod e1 e2) = cantidadDeSumaCero e1 + cantidadDeSumaCero e2
+
+esSumaCero :: ExpA -> ExpA -> Bool
+esSumaCero (Cte 0) _       = True
+esSumaCero _       (Cte 0) = True
+esSumaCero _       _       = False
 
 
 -- 1.B.I
@@ -1041,23 +1058,23 @@ data ExpS = CteS N
 -- 2.A.I
 
 evalES :: ExpS -> Int
-evalES
-evalES
-evalES
+evalES (CteS n)      =
+evalES (SumS e1 e2)  = 
+evalES (ProdS e1 e2) =
 
 -- 2.A.II
 
 es2ExpA :: ExpS -> ExpA
-es2ExpA
-es2ExpA
-es2ExpA
+es2ExpA (CteS n)      = 
+es2ExpA (SumS e1 e2)  =
+es2ExpA (ProdS e1 e2) =
 
 -- 2.A.III
 
 expA2es :: ExpA -> ExpS
-expA2es
-expA2es
-expA2es
+expA2es (CteS n)      =
+expA2es (SumS e1 e2)  =
+expA2es (ProdS e1 e2) =
 
 
 -- 2.B.I
