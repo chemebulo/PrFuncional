@@ -1039,12 +1039,264 @@ esSumaCero _       _       = False
 
 -- 1.B.I
 
-evalExpA . simplificarExpA = evalExpA 
+¿evalExpA . simplificarExpA = evalExpA?
+
+Demostración:
+    Por principio de extensionalidad, es equivalente demostrar que:
+    ¿para todo e. (evalExpA . simplificarExpA) e = evalExpA e?
+
+    Por definición de (.) es equivalente demostrar que:
+    ¿para todo e. evalExpA (simplificarExpA e) = evalExpA e?
+
+    Sea e' :: ExpA. Por principio de inducción en la estructura
+    de e' es equivalente demostrar:
+
+    Caso base (e' = Cte n):
+        ¿evalExpA (simplificarExpA (Cte n)) = evalExpA (Cte n)?
+
+    Caso inductivo 1 (e' = Suma e1 e2):
+        Hipotesis inductiva 1.1:
+            ¡evalExpA (simplificarExpA e1) = evalExpA e1!
+
+        Hipotesis inductiva 1.2:
+            ¡evalExpA (simplificarExpA e2) = evalExpA e2!
+
+        Tesis inductiva 1:
+            ¿evalExpA (simplificarExpA (Suma e1 e2)) = evalExpA (Suma e1 e2)?
+
+    Caso inductivo 2 (e' = Prod e1 e2):
+        Hipotesis inductiva 2.1:
+            ¡evalExpA (simplificarExpA e1) = evalExpA e1!
+
+        Hipotesis inductiva 2.2:
+            ¡evalExpA (simplificarExpA e2) = evalExpA e2!
+
+        Tesis inductiva 2:
+            ¿evalExpA (simplificarExpA (Prod e1 e2)) = evalExpA (Prod e1 e2)?
+
+    Demostración caso base:
+        ¿evalExpA (simplificarExpA (Cte n)) = evalExpA (Cte n)?
+
+    -- LADO IZQUIERDO:
+
+        evalExpA (simplificarExpA (Cte n))
+    =                                           (simplificarExpA.1)
+        evalExpA (Cte n)
+
+    -- LADO DERECHO:
+
+        evalExpA (Cte n)
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo 1:
+        ¿evalExpA (simplificarExpA (Suma e1 e2)) = evalExpA (Suma e1 e2)?
+
+    -- LADO IZQUIERDO:
+
+        evalExpA (simplificarExpA (Suma e1 e2))
+    =                                                                           (simplificarExpA.2)
+        evalExpA (simplificarSuma (simplificarExpA e1) (simplificarExpA e2))
+    =                                                                           (Lema EvalSimpSuma)
+        evalExpA (simplificarExpA e1) + evalExpA (simplificarExpA e2)
+
+    -- LADO DERECHO:
+
+        evalExpA (Suma e1 e2)
+    =                                                                           (evalExpA.2)
+        evalExpA e1 + evalExpA e2
+    =                                                                           (HI 1.1)
+        evalExpA (simplificarExpA e1) + evalExpA e2
+    =                                                                           (HI 1.2)
+        evalExpA (simplificarExpA e1) + evalExpA (simplificarExpA e2)
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo 2:
+        ¿evalExpA (simplificarExpA (Prod e1 e2)) = evalExpA (Prod e1 e2)?
+
+    -- LADO IZQUIERDO:
+
+        evalExpA (simplificarExpA (Prod e1 e2))
+    =                                                                           (simplificarExpA.3)
+        evalExpA (simplificarProd (simplificarExpA e1) (simplificarExpA e2))
+    =                                                                           (Lema EvalSimpProd)
+        evalExpA (simplificarExpA e1) * evalExpA (simplificarExpA e2)
+
+    -- LADO DERECHO:
+
+        evalExpA (Prod e1 e2)
+    =                                                                           (evalExpA.2)
+        evalExpA e1 * evalExpA e2
+    =                                                                           (HI 2.1)
+        evalExpA (simplificarExpA e1) * evalExpA e2
+    =                                                                           (HI 2.2)
+        evalExpA (simplificarExpA e1) * evalExpA (simplificarExpA e2)
+
+    -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
+    Lema EvalSimpSuma: ¿para todo e1. para todo e2. evalExpA (simplificarSuma e1 e2) = evalExpA e1 + evalExpA e2?
+
+    Demostración:
+        Sea e' :: ExpA, sea e'' :: ExpA. Se verá que:
+        ¿para todo e'. para todo e''. evalExpA (simplificarSuma e' e'') = evalExpA e' + evalExpA e''?
+
+        Caso 1 (e' = (Cte 0)):
+
+        -- LADO IZQUIERDO:
+        
+            evalExpA (simplificarSuma (Cte 0) e'')
+        =                                               (simplificarSuma.1)
+            evalExpA e''
+
+        -- LADO DERECHO:
+        
+            evalExpA (Cte 0) + evalExpA e''
+        =                                               (evalExpA.1)
+            0 + evalExpA e''
+        =                                               (aritmética)
+            evalExpA e''
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Caso 2 (e'' = (Cte 0)):
+
+        -- LADO IZQUIERDO:
+
+            evalExpA (simplificarSuma e' (Cte 0))
+        =                                               (simplificarSuma.2)
+            evalExpA e'
+
+        -- LADO DERECHO:
+        
+            evalExpA e' + evalExpA (Cte 0)
+        =                                               (evalExpA.1)
+            evalExpA e' + 0 
+        =                                               (aritmética)
+            evalExpA e'
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Caso 3 (e' /= (Cte 0), e'' /= (Cte 0)):
+
+        -- LADO IZQUIERDO:
+
+            evalExpA (simplificarSuma e' e'')
+        =                                               (simplificarSuma.3)
+            evalExpA (Suma e' e'')
+        =                                               (evalExpA.2)
+            evalExpA e' + evalExpA e''
+
+        -- LADO DERECHO:
+
+            evalExpA e' + evalExpA e''
+
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
+    Lema EvalSimpProd: ¿para todo e1. para todo e2. evalExpA (simplificarProd e1 e2) = evalExpA e1 * evalExpA e2?
+
+    Demostración:
+        Sea e' :: ExpA, sea e'' :: ExpA. Se verá que:
+        ¿para todo e'. para todo e''. evalExpA (simplificarProd e' e'') = evalExpA e' * evalExpA e''?
+
+        Caso 1 (e' = (Cte 0)):
+
+        -- LADO IZQUIERDO:
+        
+            evalExpA (simplificarProd (Cte 0) e'')
+        =                                               (simplificarProd.1)
+            evalExpA (Cte 0)
+        =                                               (evalExpA.1)
+            0
+
+        -- LADO DERECHO:
+        
+            evalExpA (Cte 0) * evalExpA e''
+        =                                               (evalExpA.1)
+            0 * evalExpA e''
+        =                                               (aritmética)
+            0
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Caso 2 (e'' = (Cte 0)):
+
+        -- LADO IZQUIERDO:
+
+            evalExpA (simplificarProd e' (Cte 0))
+        =                                               (simplificarProd.2)
+            evalExpA (Cte 0)
+        =                                               (evalExpA.1)
+            0
+
+        -- LADO DERECHO:
+        
+            evalExpA e' * evalExpA (Cte 0)
+        =                                               (evalExpA.1)
+            evalExpA e' * 0 
+        =                                               (aritmética)
+            0
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Caso 3 (e' = (Cte 1)):
+
+        -- LADO IZQUIERDO:
+        
+            evalExpA (simplificarProd (Cte 1) e'')
+        =                                               (simplificarProd.3)
+            evalExpA e''
+
+        -- LADO DERECHO:
+        
+            evalExpA (Cte 1) * evalExpA e''
+        =                                               (evalExpA.1)
+            1 * evalExpA e''
+        =                                               (aritmética)
+            evalExpA e''
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Caso 4 (e'' = (Cte 1)):
+
+        -- LADO IZQUIERDO:
+
+            evalExpA (simplificarProd e' (Cte 1))
+        =                                               (simplificarProd.4)
+            evalExpA e'
+
+        -- LADO DERECHO:
+        
+            evalExpA e' * evalExpA (Cte 1)
+        =                                               (evalExpA.1)
+            evalExpA e' * 1
+        =                                               (aritmética)
+            evalExpA e'
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Caso 5 (e' /= (Cte 0), e'' /= (Cte 0), e' /= (Cte 1), e'' /= (Cte 1)):
+
+        -- LADO IZQUIERDO:
+
+            evalExpA (simplificarProd e' e'')
+        =                                               (simplificarProd.5)
+            evalExpA (Prod e' e'')
+        =                                               (evalExpA.3)
+            evalExpA e' * evalExpA e''
+
+        -- LADO DERECHO:
+
+            evalExpA e' * evalExpA e''
+
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 1.B.II
 
-cantidadSumaCero . simplificarExpA = const 0
+¿cantidadSumaCero . simplificarExpA = const 0?
+
+Demostración:
 
 
 
@@ -1079,19 +1331,26 @@ expA2es (ProdS e1 e2) =
 
 -- 2.B.I
 
-evalExpA . es2ExpA = evalES 
+¿evalExpA . es2ExpA = evalES? 
 
+Demostración:
 
 -- 2.B.II
 
-evalES . expA2es = evalExpA 
+¿evalES . expA2es = evalExpA? 
+
+Demostración:
 
 
 -- 2.B.III
 
-es2ExpA . expA2es = id 
+¿es2ExpA . expA2es = id? 
+
+Demostración:
 
 
 -- 2.B.IV
 
-expA2es . es2ExpA = id
+¿expA2es . es2ExpA = id?
+
+Demostración:
