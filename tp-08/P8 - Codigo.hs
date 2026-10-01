@@ -769,7 +769,181 @@ Demostración:
 ¿para todo xs. para todo ys. all p (xs ++ ys) = all p (reverse xs) && all p (reverse ys)?
 
 Demostración:
-    a
+    Sea ws :: [a], sea zs :: [a]. Por principio de inducción en la estructura
+    de ws es equivalente demostrar:
+
+    Caso base (ws = []):
+        ¿all p ([] ++ zs) = all p (reverse []) && all p (reverse zs)?
+
+    Caso inductivo (ws = (w:ws')):
+        Hipotesis inductiva:
+            ¡all p (ws' ++ zs) = all p (reverse ws') && all p (reverse zs)!
+
+        Tesis inductiva:
+            ¿all p ((w:ws') ++ zs) = all p (reverse (w:ws')) && all p (reverse zs)?
+
+    Demostración caso base:
+        ¿all p ([] ++ zs) = all p (reverse []) && all p (reverse zs)?
+
+    -- LADO IZQUIERDO:
+
+        all p ([] ++ zs)
+    =                                                   ((++).1)
+        all p zs
+
+    -- LADO DERECHO:
+
+        all p (reverse []) && all p (reverse zs)
+    =                                                   (reverse.1)
+        all p [] && all p (reverse zs)
+    =                                                   (all.1)
+        True && all p (reverse zs)
+    =                                                   (&&)
+        all p (reverse zs)
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo:
+        ¿all p ((w:ws') ++ zs) = all p (reverse (w:ws')) && all p (reverse zs)?
+        
+        ¡all p (ws' ++ zs) = all p (reverse ws') && all p (reverse zs)!
+
+    -- LADO IZQUIERDO:
+
+        all p ((w:ws') ++ zs)
+    =                                                           ((++).2)
+        all p (w : (ws' ++ zs))
+    =                                                           (all.2)
+        p w && all p (ws' ++ zs)
+    =                                                           (HI)
+        p w && all p (reverse ws') && all p (reverse zs)
+    =                                                           (Lema AllReverse)
+        p w && all p ws' && all p (reverse zs)
+
+    -- LADO DERECHO:
+
+        all p (reverse (w:ws')) && all p (reverse zs)
+    =                                                           (Lema AllReverse)
+        all p (w:ws') && all p (reverse zs)
+    =                                                           (all.2)
+        p w && all p ws' && all p (reverse zs)
+
+    -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
+    Lema AllReverse: ¿para todo xs. all p xs = all p (reverse xs)?
+
+    Demostración:
+        Sea ws :: [a]. Por principio de inducción en la estructura
+        de ws es equivalente demostrar que:
+
+        Caso base (ws = []):
+            ¿all p [] = all p (reverse [])?
+
+        Caso inductivo (ws = (w:ws')):
+            Hipotesis inductiva:
+                ¡all p ws' = all p (reverse ws')!
+            
+            Tesis inductiva:
+                ¿all p (w:ws') = all p (reverse (w:ws'))?
+
+        Demostración caso base:
+            ¿all p [] = all p (reverse [])?
+
+        -- LADO IZQUIERDO
+
+            all p []
+
+        -- LADO DERECHO
+
+            all p (reverse [])
+        =                       (reverse.1)
+            all p []
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Demostración caso inductivo:
+            ¿all p (w:ws') = all p (reverse (w:ws'))?
+
+        -- LADO IZQUIERDO
+
+            all p (w:ws')
+        =                                       (all.2)
+            p w && all p ws'
+
+        -- LADO DERECHO
+
+            all p (reverse (w:ws'))
+        =                                       (reverse.2)
+            all p (reverse ws' ++ [w])
+        =                                       (Lema AllDist)
+            all p (reverse ws') && all p [w]
+        =                                       (HI)
+            all p ws' && all p (w:[])
+        =                                       (all.2)
+            all p ws' && p w && all p []
+        =                                       (all.1)
+            all p ws' && p w && True
+        =                                       ((&&).1)
+            p w && all p ws'
+
+        -- Ambos lados legan a lo mismo, el caso es válido y la propiedad también.
+
+    Lema AllDist: ¿para todo xs. para todo ys. all p (xs ++ ys) = all p xs && all p ys?
+
+    Demostración:
+        Sea ks :: [a], sea js :: [a]. Por principio de inducción en la estructura
+        de ks es equivalente demostrar:
+
+        Caso base (ks = []):
+            ¿all p ([] ++ js) = all p [] && all p js?
+
+        Caso inductivo (ks = (k:ks')):
+            Hipotesis inductiva:
+                ¡all p (ks' ++ js) = all p ks' && all p js!
+            
+            Tesis inductiva:
+                ¿all p ((k:ks') ++ js) = all p (k:ks') && all p js?
+
+        Demostración caso base:
+            ¿all p ([] ++ js) = all p [] && all p js?
+
+        -- LADO IZQUIERDO
+
+            all p ([] ++ js)
+        =                           ((++).1)
+            all p js
+
+        -- LADO DERECHO
+
+            all p [] && all p js
+        =                           (all.1)
+            True && all p js
+        =                           ((&&).1)
+            all p js
+
+        -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Demostración caso inductivo:
+            ¿all p ((k:ks') ++ js) = all p (k:ks') && all p js?
+
+        -- LADO IZQUIERDO
+
+            all p ((k:ks') ++ js)
+        =                                   ((++).2)
+            all p (k : (ks' ++ js))
+        =                                   (all.2)
+            p k && all p (ks' ++ js)
+        =                                   (HI)
+            p k && all p ks' && all p js
+
+        -- LADO DERECHO
+
+            all p (k:ks') && all p js
+        =                                   (all.2)
+            p k && all p ks' && all p js
+
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
 
 -- 2.K
 
