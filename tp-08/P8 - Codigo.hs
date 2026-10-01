@@ -950,7 +950,36 @@ Demostración:
 ¿para todo xs. para todo ys. unzip (zip xs ys) = (xs, ys)?
 
 Demostración:
-    a
+    Esta propiedad no se cumple para todo xs y para todo ys. Para demostrarlo, propongo el siguiente contraejemplo:
+        xs = [1, 2, 3]
+        ys = [4, 5]
+
+    -- LADO IZQUIERDO
+
+        unzip (zip [1, 2, 3] [4, 5])
+    =                                           (zip.3)
+        unzip ((1, 4) : zip [2, 3] [5])
+    =                                           (zip.3)
+        unzip ((1, 4) : (2, 5) : zip [3] [])
+    =                                           (zip.2)
+        unzip ((1, 4) : (2, 5) : [])
+    =                                           (unzip.2)
+        merge 1 4 (unzip ((2, 5) : []))
+    =                                           (unzip.2)
+        merge 1 4 (merge 2 5 (unzip []))
+    =                                           (unzip.1)
+        merge 1 4 (merge 2 5 ([], []))
+    =                                           (merge.1)
+        merge 1 4 ([2], [5])
+    =                                           (merge.1)
+        ([1, 2], [4, 5])
+
+    -- LADO DERECHO
+
+        ([1, 2, 3], [4, 5])
+
+    Con este contraejemplo, queda evidenciado que ambos lados llegan a conclusiones distintas, y por ende,
+    es inválida la propiedad. No vale para todo xs y para todo ys.
 
 
 #############################################################################################################################
