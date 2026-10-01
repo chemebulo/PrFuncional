@@ -710,7 +710,59 @@ Demostración:
 ¿para todo xs. para todo ys. reverse (xs ++ ys) = reverse ys ++ reverse xs?
 
 Demostración:
-    a
+    Sea ws :: [a], sea zs :: [a]. Por principio de inducción en la estructura
+    de ws es equivalente demostrar:
+
+    Caso base (ws = []):
+        ¿reverse ([] ++ zs) = reverse zs ++ reverse []?
+
+    Caso inductivo (ws = (w:ws')):
+        Hipotesis inductiva:
+            ¡reverse (ws' ++ zs) = reverse zs ++ reverse ws'!
+
+        Tesis inductiva:
+            ¿reverse ((w:ws') ++ zs) = reverse zs ++ reverse (w:ws')?
+
+    Demostración caso base:
+        ¿reverse ([] ++ zs) = reverse zs ++ reverse []?
+
+    -- LADO IZQUIERDO:
+
+        reverse ([] ++ zs)
+    =                                   ((++).1)
+        reverse zs
+
+    -- LADO DERECHO:
+
+        reverse zs ++ reverse []
+    =                                   (reverse.1)
+        [] ++ reverse zs
+    =                                   ((++).1)
+        reverse zs
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo:
+        ¿reverse ((w:ws') ++ zs) = reverse zs ++ reverse (w:ws')?
+
+    -- LADO IZQUIERDO:
+
+        reverse ((w:ws') ++ zs)
+    =                                           ((++).2)
+        reverse (w : (ws' ++ zs))
+    =                                           (reverse.2)
+        reverse (ws' ++ zs) ++ [w]
+    =                                           (HI)
+        reverse zs ++ reverse ws' ++ [w]
+
+    -- LADO DERECHO:
+
+        reverse zs ++ reverse (w:ws')
+    =                                           (reverse.2)
+        reverse zs ++ reverse ws' ++ [w]
+
+    -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
 
 -- 2.J
 
