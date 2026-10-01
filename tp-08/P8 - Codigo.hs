@@ -991,3 +991,90 @@ Demostración:
 
 ## SECCIÓN 3
 
+> Ejercicio 1:
+
+data ExpA = Cte Int
+          | Suma ExpA ExpA 
+          | Prod ExpA ExpA
+    deriving Show
+
+-- 1.A.I
+
+evalExpA :: ExpA -> Int
+evalExpA (Cte n)      =
+evalExpA (Suma e1 e2) =
+evalExpA (Prod e1 e2) =
+
+-- 1.A.II
+
+simplificarExpA :: ExpA -> ExpA
+simplificarExpA (Cte n)      =
+simplificarExpA (Suma e1 e2) =
+simplificarExpA (Prod e1 e2) =
+
+-- 1.A.III
+
+cantidadDeSumaCero :: ExpA -> Int
+cantidadDeSumaCero (Cte n)      =
+cantidadDeSumaCero (Suma e1 e2) =
+cantidadDeSumaCero (Prod e1 e2) =
+
+
+-- 1.B.I
+
+evalExpA . simplificarExpA = evalExpA 
+
+
+-- 1.B.II
+
+cantidadSumaCero . simplificarExpA = const 0
+
+
+
+> Ejercicio 2:
+
+data ExpS = CteS N
+          | SumS ExpS ExpS
+          | ProdS ExpS ExpS
+    deriving Show
+
+-- 2.A.I
+
+evalES :: ExpS -> Int
+evalES
+evalES
+evalES
+
+-- 2.A.II
+
+es2ExpA :: ExpS -> ExpA
+es2ExpA
+es2ExpA
+es2ExpA
+
+-- 2.A.III
+
+expA2es :: ExpA -> ExpS
+expA2es
+expA2es
+expA2es
+
+
+-- 2.B.I
+
+evalExpA . es2ExpA = evalES 
+
+
+-- 2.B.II
+
+evalES . expA2es = evalExpA 
+
+
+-- 2.B.III
+
+es2ExpA . expA2es = id 
+
+
+-- 2.B.IV
+
+expA2es . es2ExpA = id
