@@ -643,7 +643,66 @@ Demostración:
 ¿length = length . reverse?
 
 Demostración:
-    a
+    Por principio de extensionalidad, es equivalente demostrar que:
+    ¿para todo xs. length xs = (length . reverse) xs?
+
+    Por definición de (.) es equivalente demostrar que:
+    ¿para todo xs. length xs = length (reverse xs)?
+    
+    Sea ws :: [a]. Por principio de inducción en la estructura
+    de ws es equivalente demostrar:
+
+    Caso base (ws = []):
+        ¿length [] = length (reverse [])?
+
+    Caso inductivo (ws = (w:ws')):
+        Hipotesis inductiva:
+            ¡length ws' = length (reverse ws')!
+
+        Tesis inductiva:
+            ¿length (w:ws') = length (reverse (w:ws'))?
+
+    Demostración caso base:
+        ¿length [] = length (reverse [])?
+
+    -- LADO IZQUIERDO:
+
+        length []
+
+    -- LADO DERECHO:
+
+        length (reverse [])
+    =                                   (reverse.1)
+        length []
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo:
+        ¿length (w:ws') = length (reverse (w:ws'))?
+
+    -- LADO IZQUIERDO:
+
+        length (w:ws')
+    =                                           (length.2)
+        1 + length ws'
+    =                                           (HI)
+        1 + length (reverse ws')
+
+    -- LADO DERECHO:
+    
+        length (reverse (w:ws'))
+    =                                           (reverse.2)
+        length (reverse ws' ++ [w])
+    =                                           (Propiedad demostrada en S1.2.A)
+        length (reverse ws') + length (w:[])
+    =                                           (length.2)
+        length (reverse ws') + 1 + length []
+    =                                           (length.1)
+        length (reverse ws') + 1 + 0
+    =                                           (aritmética)
+        1 + length (reverse ws')
+
+    -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 2.I
