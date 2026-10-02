@@ -1399,12 +1399,6 @@ Demostración:
         TERMINAR
         TERMINAR
         TERMINAR
-        TERMINAR
-        TERMINAR
-        TERMINAR
-        TERMINAR
-        TERMINAR
-        TERMINAR
 
 
     Lema SimplProdCantCero: ¿para todo e'. para todo e''. cantidadDeSumaCero (simplificarProd e' e'') = cantidadDeSumaCero e' + cantidadDeSumaCero e''?
