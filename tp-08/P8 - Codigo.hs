@@ -1297,7 +1297,120 @@ Demostración:
 ¿cantidadSumaCero . simplificarExpA = const 0?
 
 Demostración:
+    Por principio de extensionalidad es equivalente demostrar que:
+    ¿para todo e. (cantidadDeSumaCero . simplificarExpA) e = const 0 e?
 
+    Por definición (.), y por definición const, es equivalente demostrar que:
+    ¿para todo e. cantidadDeSumaCero (simplificarExpA e) = 0?
+    
+    Sea e' :: ExpA. Por principio de inducción en la estructura
+    de e' es equivalente demostrar:
+
+    Caso base (e' = Cte n):
+        ¿cantidadDeSumaCero (simplificarExpA (Cte n)) = 0?
+
+    Caso inductivo 1 (e' = Suma e1 e2):
+        Hipotesis inductiva 1.1:
+            ¡cantidadDeSumaCero (simplificarExpA e1) = 0!
+
+        Hipotesis inductiva 1.2:
+            ¡cantidadDeSumaCero (simplificarExpA e2) = 0!
+
+        Tesis inductiva 1:
+            ¿cantidadDeSumaCero (simplificarExpA (Suma e1 e2)) = 0?
+
+    Caso inductivo 2 (e' = Prod e1 e2):
+        Hipotesis inductiva 2.1:
+            ¡cantidadDeSumaCero (simplificarExpA e1) = 0!
+
+        Hipotesis inductiva 2.2:
+            ¡cantidadDeSumaCero (simplificarExpA e2) = 0!
+
+        Tesis inductiva 2:
+            ¿cantidadDeSumaCero (simplificarExpA (Prod e1 e2)) = 0?
+
+    Demostración caso base:
+        ¿cantidadDeSumaCero (simplificarExpA (Cte n)) = 0?
+
+    -- LADO IZQUIERDO:
+
+        cantidadDeSumaCero (simplificarExpA (Cte n))
+    =                                                       (simplificarExpA.1)
+        cantidadDeSumaCero (Cte n)
+    =                                                       (cantidadDeSumaCero.1)
+        0
+
+    -- LADO DERECHO:
+
+        0
+    
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo 1:
+        ¿cantidadDeSumaCero (simplificarExpA (Suma e1 e2)) = 0?
+
+    -- LADO IZQUIERDO:
+
+        cantidadDeSumaCero (simplificarExpA (Suma e1 e2))
+    =                                                                                       (simplificarExpA.2)
+        cantidadDeSumaCero (simplificarSuma (simplificarExpA e1) (simplificarExpA e2))
+    =                                                                                       (Lema SimplSumaCantCero)
+        cantidadDeSumaCero (simplificarExpA e1) + cantidadDeSumaCero (simplificarExpA e2)
+    =                                                                                       (HI 1.1)
+        0 + cantidadDeSumaCero (simplificarExpA e2)
+    =                                                                                       (HI 1.2)
+        0 + 0
+    =                                                                                       (aritmética)
+        0
+
+    -- LADO DERECHO:
+
+        0
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo 2:
+        ¿cantidadDeSumaCero (simplificarExpA (Prod e1 e2)) = 0?
+
+    -- LADO IZQUIERDO:
+
+        cantidadDeSumaCero (simplificarExpA (Prod e1 e2))
+    =                                                                                       (simplificarExpA.3)
+        cantidadDeSumaCero (simplificarProd (simplificarExpA e1) (simplificarExpA e2))
+    =                                                                                       (Lema SimplProdCantCero)
+        cantidadDeSumaCero (simplificarExpA e1) + cantidadDeSumaCero (simplificarExpA e2)
+    =                                                                                       (HI 2.1)
+        0 + cantidadDeSumaCero (simplificarExpA e2)
+    =                                                                                       (HI 2.2)
+        0 + 0
+    =                                                                                       (aritmética)
+        0
+
+    -- LADO DERECHO:
+
+        0
+    
+    -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
+    Lema SimplSumaCantCero: ¿para todo e'. para todo e''. cantidadDeSumaCero (simplificarSuma e' e'') = cantidadDeSumaCero e' + cantidadDeSumaCero e''?
+
+    Demostración:
+        TERMINAR
+        TERMINAR
+        TERMINAR
+        TERMINAR
+        TERMINAR
+        TERMINAR
+        TERMINAR
+        TERMINAR
+        TERMINAR
+        TERMINAR
+
+
+    Lema SimplProdCantCero: ¿para todo e'. para todo e''. cantidadDeSumaCero (simplificarProd e' e'') = cantidadDeSumaCero e' + cantidadDeSumaCero e''?
+
+    Demostración:
+        a
 
 
 > Ejercicio 2:
