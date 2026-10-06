@@ -1015,24 +1015,90 @@ int2N :: Int -> N
 int2N 0 = Z
 int2N n = S (int2N (n-1))
 
+
 -- 1.B.I
 
 ¿Para todo n1. para todo n2. evalN (addN n1 n2) = evalN n1 + evalN n2?
+
+Demostración:
+    Sea m1 :: N, m2 :: N. Por principio de inducción en la estructura
+    de m1 es equivalente demostrar:
+
+    Caso base (m1 = Z):
+        ¿evalN (addN Z m2) = evalN Z + evalN m2?
+
+    Caso inductivo (m1 = (S n)):
+        Hipotesis inductiva:
+            ¡evalN (addN n m2) = evalN n + evalN m2!
+
+        Tesis inductiva:
+            ¿evalN (addN (S n) m2) = evalN (S n) + evalN m2?
+
+    Demostración caso base:
+        ¿evalN (addN Z m2) = evalN Z + evalN m2?
+
+    -- LADO IZQUIERDO:
+
+        evalN (addN Z m2)
+    =                               (addN.1)
+        evalN m2
+
+    -- LADO DERECHO:
+
+        evalN Z + evalN m2
+    =                               (evalN.1)
+        0 + evalN m2
+    =                               (aritmética)
+        evalN m2
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo:
+        ¿evalN (addN (S n) m2) = evalN (S n) + evalN m2?
+
+        ¡evalN (addN n m2) = evalN n + evalN m2!
+
+    -- LADO IZQUIERDO:
+
+        evalN (addN (S n) m2)
+    =                               (addN.2)
+        evalN (S (addN n m2))
+    =                               (evalN.2)
+        1 + evalN (addN n m2)
+    =                               (HI)
+        1 + evalN n + evalN m2
+
+    -- LADO DERECHO:
+
+        evalN (S n) + evalN m2
+    =                               (evalN.2)
+        1 + evalN n + evalN m2
+
+    -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 1.B.I
 
 ¿Para todo n1. para todo n2. evalN (prodN n1 n2) = evalN n1 * evalN n2?
 
+Demostración:
+    ...
+
 
 -- 1.B.I
 
 ¿int2N . evalN = id?
 
+Demostración:
+    ...
+
 
 -- 1.B.I
 
 ¿evalN . int2N = id?
+
+Demostración:
+    ...
 
 
 
