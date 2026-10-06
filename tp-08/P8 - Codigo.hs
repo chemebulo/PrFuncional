@@ -1907,3 +1907,97 @@ Demostración:
 ¿expA2es . es2ExpA = id?
 
 Demostración:
+    Por principio de extensionalidad, es equivalente demostrar que:
+    ¿para todo es. (expA2es . es2ExpA) es = id es?
+
+    Por definición de (.) y id es equivalente demostrar que:
+    ¿para todo es. expA2es (es2ExpA es) = es?
+
+    Sea es1 :: ExpS. Por principio de inducción en la estructura
+    de es1 es equivalente demostrar:
+
+    Caso base (es1 = CteS nz):
+        ¿expA2es (es2ExpA (CteS nz)) = CteS nz?
+
+    Caso inductivo 1 (es1 = SumS e1 e2):
+        Hipotesis inductiva 1.1:
+            ¡expA2es (es2ExpA e1) = e1!
+
+        Hipotesis inductiva 1.2:
+            ¡expA2es (es2ExpA e2) = e2!
+
+        Tesis inductiva 1:
+            ¿expA2es (es2ExpA (SumS e1 e2)) = SumS e1 e2?
+
+    Caso inductivo 2 (es1 = ProdS e1 e2):
+        Hipotesis inductiva 2.1:
+            ¡expA2es (es2ExpA e1) = e1!
+
+        Hipotesis inductiva 2.2:
+            ¡expA2es (es2ExpA e2) = e2!
+
+        Tesis inductiva 2:
+            ¿expA2es (es2ExpA (ProdS e1 e2)) = ProdS e1 e2?
+
+    Demostración caso base:
+        ¿expA2es (es2ExpA (CteS nz)) = CteS nz?
+
+    -- LADO IZQUIERDO:
+
+        expA2es (es2ExpA (CteS nz))
+    =                                       (es2ExpA.1)
+        expA2es (Cte (evalN nz))
+    =                                       (expA2es.1)
+        CteS (int2N (evalN nz))
+    =                                       (Demostración S2.1.B.III)
+        CteS (id nz)
+    =                                       (id, x <- n)
+        CteS nz
+
+    -- LADO DERECHO:
+
+        CteS nz
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo 1:
+        ¿expA2es (es2ExpA (SumS e1 e2)) = SumS e1 e2?
+
+    -- LADO IZQUIERDO:
+
+        expA2es (es2ExpA (SumS e1 e2))
+    =                                                           (es2ExpA.2)
+        expA2es (Suma (es2ExpA e1) (es2ExpA e2))
+    =                                                           (expA2es.2)
+        SumS (expA2es (es2ExpA e1)) (expA2es (es2ExpA e2))
+    =                                                           (HI 1.1)
+        SumS e1 (expA2es (es2ExpA e2))
+    =                                                           (HI 1.2)
+        SumS e1 e2
+    
+    -- LADO DERECHO:
+
+        SumS e1 e2
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo 2:
+        ¿expA2es (es2ExpA (ProdS e1 e2)) = Prod e1 e2?
+
+    -- LADO IZQUIERDO:
+
+        expA2es (es2ExpA (ProdS e1 e2))
+    =                                                           (es2ExpA.3)
+        expA2es (Prod (es2ExpA e1) (es2ExpA e2))
+    =                                                           (expA2es.2)
+        ProdS (expA2es (es2ExpA e1)) (expA2es (es2ExpA e2))
+    =                                                           (HI 2.1)
+        ProdS e1 (expA2es (es2ExpA e2))
+    =                                                           (HI 2.2)
+        ProdS e1 e2
+
+    -- LADO DERECHO:
+
+        ProdS e1 e2
+
+    -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
