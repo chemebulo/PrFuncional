@@ -1028,7 +1028,7 @@ simplificarProd e1      e1      = Prod e1 e2
 
 cantidadDeSumaCero :: ExpA -> Int
 cantidadDeSumaCero (Cte n)      = 0
-cantidadDeSumaCero (Suma e1 e2) = unoSi (esSumaCero e1 e2) + (cantidadDeSumaCero e1) (cantidadDeSumaCero e2)
+cantidadDeSumaCero (Suma e1 e2) = unoSi (esSumaCero e1 e2) + cantidadDeSumaCero e1 + cantidadDeSumaCero e2
 cantidadDeSumaCero (Prod e1 e2) = cantidadDeSumaCero e1 + cantidadDeSumaCero e2
 
 esSumaCero :: ExpA -> ExpA -> Bool
@@ -1138,8 +1138,8 @@ Demostración:
     Lema EvalSimpSuma: ¿para todo e1. para todo e2. evalExpA (simplificarSuma e1 e2) = evalExpA e1 + evalExpA e2?
 
     Demostración:
-        Sea e' :: ExpA, sea e'' :: ExpA. Se verá que:
-        ¿para todo e'. para todo e''. evalExpA (simplificarSuma e' e'') = evalExpA e' + evalExpA e''?
+        Sea e' :: ExpA, sea e'' :: ExpA. Se verá por casos que:
+        ¿evalExpA (simplificarSuma e' e'') = evalExpA e' + evalExpA e''?
 
         Caso 1 (e' = (Cte 0)):
 
@@ -1197,7 +1197,7 @@ Demostración:
 
     Demostración:
         Sea e' :: ExpA, sea e'' :: ExpA. Se verá que:
-        ¿para todo e'. para todo e''. evalExpA (simplificarProd e' e'') = evalExpA e' * evalExpA e''?
+        ¿evalExpA (simplificarProd e' e'') = evalExpA e' * evalExpA e''?
 
         Caso 1 (e' = (Cte 0)):
 
@@ -1377,7 +1377,7 @@ Demostración:
         cantidadDeSumaCero (simplificarExpA (Prod e1 e2))
     =                                                                                       (simplificarExpA.3)
         cantidadDeSumaCero (simplificarProd (simplificarExpA e1) (simplificarExpA e2))
-    =                                                                                       (Lema SimplProdCantCero)
+    =                                                                                       (Lema SimplProdCantCero, garantizado por HI 2.1 y HI 2.2)
         cantidadDeSumaCero (simplificarExpA e1) + cantidadDeSumaCero (simplificarExpA e2)
     =                                                                                       (HI 2.1)
         0 + cantidadDeSumaCero (simplificarExpA e2)
@@ -1395,16 +1395,168 @@ Demostración:
     Lema SimplSumaCantCero: ¿para todo e'. para todo e''. cantidadDeSumaCero (simplificarSuma e' e'') = cantidadDeSumaCero e' + cantidadDeSumaCero e''?
 
     Demostración:
-        TERMINAR
-        TERMINAR
-        TERMINAR
-        TERMINAR
+        Sea e1 :: ExpA, sea e2 :: ExpA. Se verá por casos que:
+        ¿cantidadDeSumaCero (simplificarSuma e1 e2) = cantidadDeSumaCero e1 + cantidadDeSumaCero e2?
+
+    Caso 1 (e1 = (Cte 0)):
+
+    -- LADO IZQUIERDO:
+
+        cantidadDeSumaCero (simplificarSuma (Cte 0) e2)
+    =                                                               (simplificarSuma.1)
+        cantidadDeSumaCero e2
+
+    -- LADO DERECHO:
+
+        cantidadDeSumaCero (Cte 0) + cantidadDeSumaCero e2
+    =                                                               (cantidadDeSumaCero.1)
+        0 + cantidadDeSumaCero e2
+    =                                                               (aritmética)
+        cantidadDeSumaCero e2
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Caso 2 (e2 = (Cte 0)):
+
+    -- LADO IZQUIERDO:
+
+        cantidadDeSumaCero (simplificarSuma e1 (Cte 0))
+    =                                                               (simplificarSuma.2)
+        cantidadDeSumaCero e1
+
+    -- LADO DERECHO:
+
+        cantidadDeSumaCero e1 + cantidadDeSumaCero (Cte 0)
+    =                                                               (cantidadDeSumaCero.1)
+        cantidadDeSumaCero e1 + 0
+    =                                                               (aritmética)
+        cantidadDeSumaCero e1
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Caso 3 (e1 /= (Cte 0), e2 /= (Cte 0)):
+
+    -- LADO IZQUIERDO:
+
+        cantidadDeSumaCero (simplificarSuma e1 e2)
+    =                                                                                   (simplificarSuma.3)
+        unoSi (esSumaCero e1 e2) + cantidadDeSumaCero e1 + cantidadDeSumaCero e2
+    =                                                                                   (esSumaCero.3)
+        unoSi False + cantidadDeSumaCero e1 + cantidadDeSumaCero e2
+    =                                                                                   (unoSi.2)
+        0 + cantidadDeSumaCero e1 + cantidadDeSumaCero e2
+    =                                                                                   (aritmética)
+        cantidadDeSumaCero e1 + cantidadDeSumaCero e2
+
+    -- LADO DERECHO:
+
+        cantidadDeSumaCero e1 + cantidadDeSumaCero e2
+
+    -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
-    Lema SimplProdCantCero: ¿para todo e'. para todo e''. cantidadDeSumaCero (simplificarProd e' e'') = cantidadDeSumaCero e' + cantidadDeSumaCero e''?
+    Lema SimplProdCantCero: Si cantidadDeSumaCero e' = 0 y cantidadDeSumaCero e'' = 0, entonces...
+    ¿cantidadDeSumaCero (simplificarProd e' e'') = cantidadDeSumaCero e' + cantidadDeSumaCero e''?
 
     Demostración:
-        a
+            Sea e1 :: ExpA, sea e2 :: ExpA. Se verá por casos que:
+            ¿cantidadDeSumaCero (simplificarProd e1 e2) = cantidadDeSumaCero e1 + cantidadDeSumaCero e2?
+
+    Caso 1 (e1 = (Cte 0)):
+
+    -- LADO IZQUIERDO:
+
+        cantidadDeSumaCero (simplificarProd (Cte 0) e2)
+    =                                                               (simplificarProd.1)
+        cantidadDeSumaCero (Cte 0)
+    =                                                               (cantidadDeSumaCero.1)
+        0
+
+    -- LADO DERECHO:
+
+        cantidadDeSumaCero (Cte 0) + cantidadDeSumaCero e2
+    =                                                               (cantidadDeSumaCero.1)
+        0 + cantidadDeSumaCero e2
+    =                                                               (aritmética)
+        cantidadDeSumaCero e2
+    =                                                               (Hipotesis del Lema)
+        0
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Caso 2 (e2 = (Cte 0)):
+
+    -- LADO IZQUIERDO:
+
+        cantidadDeSumaCero (simplificarProd e1 (Cte 0))
+    =                                                               (simplificarProd.2)
+        cantidadDeSumaCero (Cte 0)
+    =                                                               (cantidadDeSumaCero.1)
+        0
+
+    -- LADO DERECHO:
+
+        cantidadDeSumaCero e1 + cantidadDeSumaCero (Cte 0)
+    =                                                               (cantidadDeSumaCero.1)
+        cantidadDeSumaCero e1 + 0
+    =                                                               (aritmética)
+        cantidadDeSumaCero e1
+    =                                                               (Hipotesis del Lema)
+        0
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Caso 3 (e1 = (Cte 1)):
+
+    -- LADO IZQUIERDO:
+
+        cantidadDeSumaCero (simplificarProd (Cte 1) e2)
+    =                                                               (simplificarProd.3)
+        cantidadDeSumaCero e2
+
+    -- LADO DERECHO:
+
+        cantidadDeSumaCero (Cte 1) + cantidadDeSumaCero e2
+    =                                                               (cantidadDeSumaCero.1)
+        0 + cantidadDeSumaCero e2
+    =                                                               (aritmética)
+        cantidadDeSumaCero e2
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Caso 4 (e2 = (Cte 1)):
+
+    -- LADO IZQUIERDO:
+
+        cantidadDeSumaCero (simplificarProd e1 (Cte 1))
+    =                                                               (simplificarProd.4)
+        cantidadDeSumaCero e1
+
+    -- LADO DERECHO:
+
+        cantidadDeSumaCero e1 + cantidadDeSumaCero (Cte 1)
+    =                                                               (cantidadDeSumaCero.1)
+        cantidadDeSumaCero e1 + 0
+    =                                                               (aritmética)
+        cantidadDeSumaCero e1
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Caso 5 (e1 /= (Cte 0), e1 /= (Cte 1), e2 /= (Cte 0), e2 /= (Cte 1)):
+
+    -- LADO IZQUIERDO:
+
+        cantidadDeSumaCero (simplificarProd e1 e2)
+    =                                                                                   (simplificarProd.5)
+        cantidadDeSumaCero (Prod e1 e2)
+    =                                                                                   (cantidadDeSumaCero.3)
+        cantidadDeSumaCero e1 + cantidadDeSumaCero e2
+
+    -- LADO DERECHO:
+
+        cantidadDeSumaCero e1 + cantidadDeSumaCero e2
+
+    -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 > Ejercicio 2:
