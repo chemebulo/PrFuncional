@@ -1566,26 +1566,29 @@ data ExpS = CteS N
           | ProdS ExpS ExpS
     deriving Show
 
+data N = Z | S N
+    deriving Show
+
 -- 2.A.I
 
 evalES :: ExpS -> Int
-evalES (CteS n)      =
-evalES (SumS e1 e2)  = 
-evalES (ProdS e1 e2) =
+evalES (CteS nz)     = evalN nz
+evalES (SumS e1 e2)  = evalES e1 + evalES e2
+evalES (ProdS e1 e2) = evalES e1 * evalES e2
 
 -- 2.A.II
 
 es2ExpA :: ExpS -> ExpA
-es2ExpA (CteS n)      = 
-es2ExpA (SumS e1 e2)  =
-es2ExpA (ProdS e1 e2) =
+es2ExpA (CteS nz)     = Cte (evalN nz)
+es2ExpA (SumS e1 e2)  = Suma (evalES e1) (evalES e2)
+es2ExpA (ProdS e1 e2) = Prod (evalES e1) (evalES e2)
 
 -- 2.A.III
 
 expA2es :: ExpA -> ExpS
-expA2es (CteS n)      =
-expA2es (SumS e1 e2)  =
-expA2es (ProdS e1 e2) =
+expA2es (Cte n)      = CteS (int2N n)
+expA2es (Suma e1 e2) = SumS (evalES e1) (evalES e2)
+expA2es (Prod e1 e2) = ProdS (evalES e1) (evalES e2)
 
 
 -- 2.B.I
