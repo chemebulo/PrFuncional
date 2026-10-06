@@ -1580,15 +1580,15 @@ evalES (ProdS e1 e2) = evalES e1 * evalES e2
 
 es2ExpA :: ExpS -> ExpA
 es2ExpA (CteS nz)     = Cte (evalN nz)
-es2ExpA (SumS e1 e2)  = Suma (evalES e1) (evalES e2)
-es2ExpA (ProdS e1 e2) = Prod (evalES e1) (evalES e2)
+es2ExpA (SumS e1 e2)  = Suma (es2ExpA e1) (es2ExpA e2)
+es2ExpA (ProdS e1 e2) = Prod (es2ExpA e1) (es2ExpA e2)
 
 -- 2.A.III
 
 expA2es :: ExpA -> ExpS
 expA2es (Cte n)      = CteS (int2N n)
-expA2es (Suma e1 e2) = SumS (evalES e1) (evalES e2)
-expA2es (Prod e1 e2) = ProdS (evalES e1) (evalES e2)
+expA2es (Suma e1 e2) = SumS (expA2es e1) (expA2es e2)
+expA2es (Prod e1 e2) = ProdS (expA2es e1) (expA2es e2)
 
 
 -- 2.B.I
@@ -1596,6 +1596,103 @@ expA2es (Prod e1 e2) = ProdS (evalES e1) (evalES e2)
 ¿evalExpA . es2ExpA = evalES? 
 
 Demostración:
+    Por principio de extensionalidad, es equivalente demostrar que:
+    ¿para todo es. (evalExpA . es2ExpA) es = evalES es?
+
+    Por definición de (.) es equivalente demostrar que:
+    ¿para todo es. evalExpA (es2ExpA es) = evalES es?
+
+    Sea es1 :: ExpS. Por principio de inducción en la estructura
+    de es1 es equivalente demostrar:
+
+    Caso base (es1 = CteS nz):
+        ¿evalExpA (es2ExpA (CteS nz)) = evalES (CteS nz)?
+
+    Caso inductivo 1 (es1 = SumS e1 e2):
+        Hipotesis inductiva 1.1:
+            ¡evalExpA (es2ExpA e1) = evalES e1!
+
+        Hipotesis inductiva 1.2:
+            ¡evalExpA (es2ExpA e2) = evalES e2!
+
+        Tesis inductiva 1:
+            ¿evalExpA (es2ExpA (SumS e1 e2)) = evalES (SumS e1 e2)?
+
+    Caso inductivo 2 (es1 = ProdS e1 e2):
+        Hipotesis inductiva 2.1:
+            ¡evalExpA (es2ExpA e1) = evalES e1!
+
+        Hipotesis inductiva 2.2:
+            ¡evalExpA (es2ExpA e2) = evalES e2!
+
+        Tesis inductiva 2:
+            ¿evalExpA (es2ExpA (ProdS e1 e2)) = evalES (ProdS e1 e2)?
+
+    Demostración caso base:
+        ¿evalExpA (es2ExpA (CteS nz)) = evalES (CteS nz)?
+
+    -- LADO IZQUIERDO:
+
+        evalExpA (es2ExpA (CteS nz))
+    =                                                   (es2ExpA.1)
+        evalExpA (Cte (evalN nz))
+    =                                                   (evalExpA.1)
+        (evalN nz)
+
+    -- LADO DERECHO:
+
+        evalES (CteS nz)
+    =                                                   (evalES.1)
+        (evalN nz)
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo 1:
+        ¿evalExpA (es2ExpA (SumS e1 e2)) = evalES (SumS e1 e2)?
+
+    -- LADO IZQUIERDO:
+
+        evalExpA (es2ExpA (SumS e1 e2))
+    =                                                   (es2ExpA.2)
+        evalExpA (Suma (es2ExpA e1) (es2ExpA e2))
+    =                                                   (evalExpA.2)
+        evalExpA (es2ExpA e1) + evalExpA (es2ExpA e2)
+    =                                                   (HI 1.1)
+        evalES e1 + evalExpA (es2ExpA e2)
+    =                                                   (HI 1.2)
+        evalES e1 + evalES e2 
+
+    -- LADO DERECHO:
+
+        evalES (SumS e1 e2)
+    =                                                   (evalES.2)
+        evalES e1 + evalES e2
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo 2:
+        ¿evalExpA (es2ExpA (ProdS e1 e2)) = evalES (ProdS e1 e2)?
+
+    -- LADO IZQUIERDO:
+
+        evalExpA (es2ExpA (ProdS e1 e2))
+    =                                                   (es2ExpA.3)
+        evalExpA (Prod (es2ExpA e1) (es2ExpA e2))
+    =                                                   (evalExpA.3)
+        evalExpA (es2ExpA e1) * evalExpA (es2ExpA e2)
+    =                                                   (HI 2.1)
+        evalES e1 * evalExpA (es2ExpA e2)
+    =                                                   (HI 2.2)
+        evalES e1 * evalES e2
+
+    -- LADO DERECHO:
+
+        evalES (ProdS e1 e2)
+    =                                                   (evalES.3)
+        evalES e1 * evalES e2
+
+    -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
+
 
 -- 2.B.II
 
