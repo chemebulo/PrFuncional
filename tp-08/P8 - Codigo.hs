@@ -988,6 +988,67 @@ Demostración:
 
 > Ejercicio 1:
 
+data N = Z | S N
+    deriving Show
+
+-- 1.A.I
+
+evalN :: N -> Int
+evalN Z     = 0
+evalN (S n) = 1 + evalN n
+
+-- 1.A.II
+
+addN :: N -> N -> N
+addN Z     m = m
+addN (S n) m = S (addN n m)
+
+-- 1.A.III
+
+prodN :: N -> N -> N
+prodN Z     m = Z
+prodN (S n) m = addN m (prodN n m)
+
+-- 1.A.IV
+
+int2N :: Int -> N
+int2N 0 = Z
+int2N n = S (int2N (n-1))
+
+-- 1.B.I
+
+¿Para todo n1. para todo n2. evalN (addN n1 n2) = evalN n1 + evalN n2?
+
+
+-- 1.B.I
+
+¿Para todo n1. para todo n2. evalN (prodN n1 n2) = evalN n1 * evalN n2?
+
+
+-- 1.B.I
+
+¿int2N . evalN = id?
+
+
+-- 1.B.I
+
+¿evalN . int2N = id?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1004,6 +1065,78 @@ Demostración:
 
 > Ejercicio 4:
 
+type NDec = [DigDec]
+
+data DigDec = D0 | D1 | D2 | D3 | D4 | D5 | D6 | D7 | D8 | D9
+    deriving Show
+
+-- 4.A.I
+
+evalND :: NDec -> Int
+evalND []       = 0
+evalND (nd:nds) = ddAsInt nd + (10 * evalND nds) ???
+
+ddAsInt :: DigDec -> Int ???
+ddAsInt D0 = 0
+ddAsInt D1 = 1
+ddAsInt D2 = 2
+ddAsInt D3 = 3
+ddAsInt D4 = 4
+ddAsInt D5 = 5
+ddAsInt D6 = 6
+ddAsInt D7 = 7
+ddAsInt D8 = 8
+ddAsInt D9 = 9
+
+-- 4.A.II
+
+normalizarND :: NDec -> NDec
+normalizarND []       =
+normalizarND (nd:nds) =
+
+-- 4.A.III
+
+succNDec :: NDec -> NDec
+succNDec []       =
+succNDec (nd:nds) =
+
+-- 4.A.IV
+
+addNDec :: NDec -> NDec -> NDec
+addNDec []       md =
+addNDec (nd:nds) md =
+
+-- 4.A.V
+
+nd2nb :: NDec -> NBin
+nd2nb []       =
+nd2nb (nd:nds) =
+
+-- 4.A.VI
+
+nb2nd :: NBin -> NDec
+nb2nd []       =
+nb2nd (nb:nbs) =
+
+
+-- 4.B.I
+
+evalNDec . succNDec = (+1) . evalNDec
+
+
+-- 4.B.II
+
+¿para todo n1. para todo n2. evalNDec (addNDec n1 n2) = evalNDec n1 + evalNDec n2?
+
+
+-- 4.B.III
+
+nd2nb . nb2nd = normalizarNB
+
+
+-- 4.B.IV
+
+nb2nd . nd2nb = id
 
 
 > Ejercicio 5:
