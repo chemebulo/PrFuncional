@@ -1122,19 +1122,21 @@ Demostración:
     -- LADO IZQUIERDO:
 
         evalN (prodN (S n) m2)
-    =                                       (prodN.2)
+    =                                           (prodN.2)
         evalN (addN m2 (prodN n m2))
-    =                                       (Demostración S2.1.B.I)
+    =                                           (Demostración S2.1.B.I)
         evalN m2 + evalN (prodN n m2)
 
     -- LADO DERECHO:
 
         evalN (S n) * evalN m2
-    =                                       (evalN.2)
+    =                                           (evalN.2)
         (1 + evalN n) * evalN m2
-    =                                       (distributiva y aritmética)
+    =                                           (distributiva)
+        (1 * evalN m2) + (evalN n * evalN m2)
+    =                                           (aritmética)
         evalN m2 + (evalN n * evalN m2)
-    =                                       (HI)
+    =                                           (HI)
         evalN m2 + evalN (prodN n m2)
 
     -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
@@ -1218,36 +1220,52 @@ Demostración:
     de m es equivalente demostrar:
 
     Caso base (m = 0):
-        ¿?
+        ¿evalN (int2N 0) = 0?
 
-    Caso inductivo (m = (n'+1)):
+    Caso inductivo (m = (n' + 1)):
         Hipotesis inductiva:
-            ¡!
+            ¡evalN (int2N n') = n'!
 
         Tesis inductiva:
-            ¿?
+            ¿evalN (int2N (n' + 1)) = (n' + 1)?
 
     Demostración caso base:
+        ¿evalN (int2N 0) = 0?
 
     -- LADO IZQUIERDO:
 
-
+        evalN (int2N 0)
+    =                           (int2N.1)
+        evalN Z
+    =                           (evalN.1)
+        0
 
     -- LADO DERECHO:
 
-
+        0
 
     -- Ambos lados llegan a lo mismo el caso es válido.
 
     Demostración caso inductivo:
+        ¿evalN (int2N (n' + 1)) = (n' + 1)?
 
     -- LADO IZQUIERDO:
 
-
+        evalN (int2N (n' + 1))
+    =                                       (int2N.2)
+        evalN (S (int2N (n' + 1 - 1)))
+    =                                       (aritmética)
+        evalN (S (int2N n'))
+    =                                       (evalN.2)
+        1 + evalN (int2N n')
+    =                                       (conmutatividad)
+        evalN (int2N n') + 1
+    =                                       (HI)        
+        (n' + 1)
 
     -- LADO DERECHO:
 
-
+        (n' + 1)
 
     -- Ambos lados llegan a lo mismo el caso es válido y la propiedad también.
 
