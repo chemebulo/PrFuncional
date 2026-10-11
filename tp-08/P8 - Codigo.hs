@@ -1099,34 +1099,43 @@ Demostración:
     -- LADO IZQUIERDO:
 
         evalN (prodN Z m2)
-    =                                   (prodN)
-        TERMINAR
-        TERMINAR
-        TERMINAR
-        TERMINAR
+    =                                   (prodN.1)
+        evalN Z
+    =                                   (evalN.1)
+        0
 
     -- LADO DERECHO:
 
         evalN Z * evalN m2
-
+    =                                   (evalN.1)
+        0 * evalN m2
+    =                                   (aritmética)
+        0
 
     -- Ambos lados llegan a lo mismo, el caso es válido.
-
-
-
-
 
     Demostración caso inductivo:
         ¿evalN (prodN (S n) m2) = evalN (S n) * evalN m2?
 
+            ¡evalN (prodN n m2) = evalN n * evalN m2!
 
     -- LADO IZQUIERDO:
 
-
+        evalN (prodN (S n) m2)
+    =                                       (prodN.2)
+        evalN (addN m2 (prodN n m2))
+    =                                       (Lema EvalSimpAddN)
+        evalN m2 + evalN (prodN n m2)
 
     -- LADO DERECHO:
 
-
+        evalN (S n) * evalN m2
+    =                                       (evalN.2)
+        (1 + evalN n) * evalN m2
+    =                                       (distributiva y aritmética)
+        evalN m2 + (evalN n * evalN m2)
+    =                                       (HI)
+        evalN m2 + evalN (prodN n m2)
 
     -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
