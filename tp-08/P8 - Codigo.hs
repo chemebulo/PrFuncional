@@ -1124,7 +1124,7 @@ Demostración:
         evalN (prodN (S n) m2)
     =                                       (prodN.2)
         evalN (addN m2 (prodN n m2))
-    =                                       (Lema EvalSimpAddN)
+    =                                       (Demostración S2.1.B.I)
         evalN m2 + evalN (prodN n m2)
 
     -- LADO DERECHO:
@@ -1145,7 +1145,62 @@ Demostración:
 ¿int2N . evalN = id?
 
 Demostración:
-    Sea m1 :: N, sea m2 :: N.
+    Por principio de extensionalidad es equivalente demostrar que:
+    ¿para todo n. (int2N . evalN) n = id n?
+
+    Por definición de (.) y id es equivalente demostrar que:
+    ¿para todo n. int2N (evalN n) = n?
+    
+    Sea m :: N. Por principio de inducción en la estructura
+    de m es equivalente demostrar:
+
+    Caso base (m = Z):
+        ¿int2N (evalN Z) = Z?
+
+    Caso inductivo (m = (S n')):
+        Hipotesis inductiva:
+            ¡int2N (evalN n') = n'!
+
+        Tesis inductiva:
+            ¿int2N (evalN (S n')) = (S n')?
+
+    Demostración caso base:
+        ¿int2N (evalN Z) = Z?
+
+    -- LADO IZQUIERDO:
+
+        int2N (evalN Z)
+    =                           (evalN.1)
+        int2N 0
+    =                           (int2N.1)
+        Z
+
+    -- LADO DERECHO:
+
+        Z
+
+    -- Ambos lados llegan a lo mismo el caso es válido.
+
+    Demostración caso inductivo:
+        ¿int2N (evalN (S n')) = (S n')?
+
+    -- LADO IZQUIERDO:
+
+        int2N (evalN (S n'))
+    =                                   (evalN.2)
+        int2N (1 + evalN n')
+    =                                   (int2N.2, porque (1 + evalN n') no es 0)
+        S (int2N (1 + evalN n' - 1))
+    =                                   (aritmética)
+        S (int2N (evalN n'))
+    =                                   (HI)
+        (S n')
+
+    -- LADO DERECHO:
+
+        (S n')
+
+    -- Ambos lados llegan a lo mismo el caso es válido y la propiedad también.
 
 
 -- 1.B.IV
@@ -1153,25 +1208,48 @@ Demostración:
 ¿evalN . int2N = id?
 
 Demostración:
-    ...
+    Por principio de extensionalidad es equivalente demostrar que:
+    ¿para todo n. (evalN . int2N) n = id n?
+
+    Por definición de (.) y id es equivalente demostrar que:
+    ¿para todo n. evalN (int2N n) = n?
+    
+    Sea m :: Int. Por principio de inducción en la estructura
+    de m es equivalente demostrar:
+
+    Caso base (m = 0):
+        ¿?
+
+    Caso inductivo (m = (n'+1)):
+        Hipotesis inductiva:
+            ¡!
+
+        Tesis inductiva:
+            ¿?
+
+    Demostración caso base:
+
+    -- LADO IZQUIERDO:
 
 
 
+    -- LADO DERECHO:
 
 
 
+    -- Ambos lados llegan a lo mismo el caso es válido.
+
+    Demostración caso inductivo:
+
+    -- LADO IZQUIERDO:
 
 
 
+    -- LADO DERECHO:
 
 
 
-
-
-
-
-
-
+    -- Ambos lados llegan a lo mismo el caso es válido y la propiedad también.
 
 
 > Ejercicio 2:
