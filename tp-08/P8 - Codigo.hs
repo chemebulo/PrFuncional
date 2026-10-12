@@ -1584,7 +1584,6 @@ addNB :: NBin -> NBin -> NBin
 addNB []       dbs2 =
 addNB (db:dbs) dbs2 = 
 
-
 -- 3.A.V
 
 nb2n :: NBin -> N
