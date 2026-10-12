@@ -1272,6 +1272,55 @@ Demostración:
 
 > Ejercicio 2:
 
+type NU = [()]
+
+-- 2.A.I
+
+evalNU :: NU -> Int
+evalNU []     = 0
+evalNU (_:us) = 1 + evalNU us
+
+-- 2.A.II
+
+succNU :: NU -> NU
+succNU []     = [()]
+succNU (u:us) = u : succNU us 
+
+-- 2.A.III
+
+addNU :: NU -> NU -> NU
+addNU []     us2 = us2
+addNU (u:us) us2 = u : addNU us us2
+
+-- 2.A.IV
+
+nu2n :: NU -> N
+nu2n []     = Z
+nu2n (_:us) = S (nu2n us)
+
+-- 2.A.V
+
+n2nu :: N -> NU
+n2nu Z      = []
+n2nu (S n') = () : n2nu n'
+
+
+-- 2.B.I
+
+
+
+-- 2.B.II
+
+
+
+-- 2.B.III
+
+
+
+-- 2.B.IV
+
+
+
 
 
 
