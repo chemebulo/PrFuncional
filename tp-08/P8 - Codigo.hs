@@ -1433,43 +1433,60 @@ Demotración:
 
 Demotración:
     Por principio de extensionalidad, es equivalente demostrar que:
-    ¿para todo n. (evalNU . succNU) n = ((+1) . evalNU) n?
+    ¿para todo n. (nu2n . n2nu) n = id n?
 
-    Por definición de (.) y (+) es equivalente demostrar que:
-    ¿para todo n. evalNU (succNU n) = 1 + evalNU n?
+    Por definición de (.) y id es equivalente demostrar que:
+    ¿para todo n. nu2n (n2nu n) = n?
 
-    Sea n1 :: NU. Por principio de inducción en la estructura
+    Sea n1 :: N. Por principio de inducción en la estructura
     de n1 es equivalente demostrar:
 
-    Caso base (n1 = []):
-        ¿?
+    Caso base (n1 = Z):
+        ¿nu2n (n2nu Z) = Z?
 
-    Caso inductivo (n1 = (u:us)):
+    Caso inductivo (n1 = (S n')):
         Hipotesis inductiva:
-            ¡!
+            ¡nu2n (n2nu n') = n'!
 
         Tesis inductiva: 
-            ¿?
+            ¿nu2n (n2nu (S n')) = (S n')?
 
     Demostración caso base:
+        ¿nu2n (n2nu Z) = Z?
 
     -- LADO IZQUIERDO:
 
+        nu2n (n2nu Z)
+    =                           (n2nu.1)
+        nu2n []
+    =                           (nu2n.1)
+        Z
 
     -- LADO DERECHO:
 
+        Z
 
     -- Ambos lados llegan a lo mismo el caso es válido.
 
     Demostración caso inductivo:
+        ¿nu2n (n2nu (S n')) = (S n')?
 
     -- LADO IZQUIERDO:
 
+        nu2n (n2nu (S n'))
+    =                               (n2nu.2)
+        nu2n (() : n2nu n')
+    =                               (nu2n.2)
+        S (nu2n (n2nu n'))
+    =                               (HI)
+        (S n')
 
     -- LADO DERECHO:
 
+        (S n')
 
     -- Ambos lados llegan a lo mismo el caso es válido y la propiedad también.
+
 
 -- 2.B.IV
 
