@@ -1311,18 +1311,18 @@ n2nu (S n') = () : n2nu n'
 
 Demotración:
     Por principio de extensionalidad, es equivalente demostrar que:
-    ¿para todo n. (evalNU . succNU) n = ((+1) . evalNU) n?
+    ¿para todo nu. (evalNU . succNU) nu = ((+1) . evalNU) nu?
 
     Por definición de (.) y (+) es equivalente demostrar que:
-    ¿para todo n. evalNU (succNU n) = 1 + evalNU n?
+    ¿para todo nu. evalNU (succNU nu) = 1 + evalNU nu?
 
-    Sea n1 :: NU. Por principio de inducción en la estructura
-    de n1 es equivalente demostrar:
+    Sea nu1 :: NU. Por principio de inducción en la estructura
+    de nu1 es equivalente demostrar:
 
-    Caso base (n1 = []):
+    Caso base (nu1 = []):
         ¿evalNU (succNU []) = 1 + evalNU []?
 
-    Caso inductivo (n1 = (u:us)):
+    Caso inductivo (nu1 = (u:us)):
         Hipotesis inductiva:
             ¡evalNU (succNU us) = 1 + evalNU us!
 
@@ -1373,44 +1373,59 @@ Demotración:
 ¿para todo n1. para todo n2. evalNU (addNU n1 n2) = evalNU n1 + evalNU n2?
 
 Demotración:
-    Por principio de extensionalidad, es equivalente demostrar que:
-    ¿para todo n. (evalNU . succNU) n = ((+1) . evalNU) n?
+    Sea nu1 :: NU, nu2 :: NU. Por principio de inducción en la estructura
+    de nu1 es equivalente demostrar:
 
-    Por definición de (.) y (+) es equivalente demostrar que:
-    ¿para todo n. evalNU (succNU n) = 1 + evalNU n?
+    Caso base (nu1 = []):
+        ¿evalNU (addNU [] nu2) = evalNU [] + evalNU nu2?
 
-    Sea n1 :: NU. Por principio de inducción en la estructura
-    de n1 es equivalente demostrar:
-
-    Caso base (n1 = []):
-        ¿?
-
-    Caso inductivo (n1 = (u:us)):
+    Caso inductivo (nu1 = (u:us)):
         Hipotesis inductiva:
-            ¡!
+            ¡evalNU (addNU us nu2) = evalNU us + evalNU nu2!
 
         Tesis inductiva: 
-            ¿?
+            ¿evalNU (addNU (u:us) nu2) = evalNU (u:us) + evalNU nu2?
 
     Demostración caso base:
+        ¿evalNU (addNU [] nu2) = evalNU [] + evalNU nu2?
 
     -- LADO IZQUIERDO:
 
+        evalNU (addNU [] nu2)
+    =                                       (addNU.1)
+        evalNU nu2
 
     -- LADO DERECHO:
 
+        evalNU [] + evalNU nu2
+    =                                       (evalNU.1)
+        0 + evalNU nu2
+    =                                       (aritmética)
+        evalNU nu2
 
     -- Ambos lados llegan a lo mismo el caso es válido.
 
     Demostración caso inductivo:
+        ¿evalNU (addNU (u:us) nu2) = evalNU (u:us) + evalNU nu2?
 
     -- LADO IZQUIERDO:
 
+        evalNU (addNU (u:us) nu2)
+    =                                           (addNU.2)
+        evalNU (u : addNU us nu2)
+    =                                           (evalNU.2)
+        1 + evalNU (addNU us nu2)
+    =                                           (HI)
+        1 + evalNU us + evalNU nu2
 
     -- LADO DERECHO:
 
+        evalNU (u:us) + evalNU nu2
+    =                                           (evalNU.2)
+        1 + evalNU us + evalNU nu2
 
     -- Ambos lados llegan a lo mismo el caso es válido y la propiedad también.
+
 
 -- 2.B.III
 
