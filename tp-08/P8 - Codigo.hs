@@ -1551,6 +1551,96 @@ Demotración:
 
 > Ejercicio 3:
 
+type NBin = [DigBin]
+
+data DigBin = O | I
+	deriving Show
+
+-- 3.A.I
+
+evalNB :: NBin -> Int
+evalNB []       = 0
+evalNB (db:dbs) = dbAsInt db + (2 * evalNB dbs)
+
+dbAsInt :: DigBin -> Int
+dbAsInt O = 0
+dbAsInt I = 1
+
+-- 3.A.II
+
+normalizarNB :: NBin -> NBin
+normalizarNB []       =
+normalizarNB (db:dbs) = 
+
+-- 3.A.III
+
+succNB :: NBin -> NBin
+succNB []       =
+succNB (db:dbs) = 
+
+-- 3.A.IV
+
+addNB :: NBin -> NBin -> NBin
+addNB []       dbs2 =
+addNB (db:dbs) dbs2 = 
+
+
+-- 3.A.V
+
+nb2n :: NBin -> N
+nb2n []       =
+nb2n (db:dbs) = 
+
+-- 3.A.VI
+
+n2nb  ::  N  ->  NBin
+n2nb Z      =
+n2nb (S n') =
+
+
+-- 3.B.I
+
+¿evalNB . succNB = (+1) . evalNB?
+
+
+-- 3.B.II
+
+¿evalNB . succNB = (+1) . evalNB?
+
+
+-- 3.B.III
+
+¿para todo n1. para todo n2. evalNB (addNB n1 n2) = evalNB n1 + evalNB n2?
+
+
+-- 3.B.IV
+
+¿nb2n . n2nb = id?
+
+
+-- 3.B.V
+
+¿normalizarNB . normalizarNB = normalizarNB?
+
+
+-- 3.C.I
+
+¿n2nb . nb2n = id?
+
+
+
+-- 3.C.II
+
+¿n2nb . nb2n = normalizarNB?
+
+
+
+
+
+
+
+
+
 
 
 
