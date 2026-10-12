@@ -1307,21 +1307,198 @@ n2nu (S n') = () : n2nu n'
 
 -- 2.B.I
 
+¿evalNU . succNU = (+1) . evalNU?
+
+Demotración:
+    Por principio de extensionalidad, es equivalente demostrar que:
+    ¿para todo n. (evalNU . succNU) n = ((+1) . evalNU) n?
+
+    Por definición de (.) y (+) es equivalente demostrar que:
+    ¿para todo n. evalNU (succNU n) = 1 + evalNU n?
+
+    Sea n1 :: NU. Por principio de inducción en la estructura
+    de n1 es equivalente demostrar:
+
+    Caso base (n1 = []):
+        ¿evalNU (succNU []) = 1 + evalNU []?
+
+    Caso inductivo (n1 = (u:us)):
+        Hipotesis inductiva:
+            ¡evalNU (succNU us) = 1 + evalNU us!
+
+        Tesis inductiva: 
+            ¿evalNU (succNU (u:us)) = 1 + evalNU (u:us)?
+
+    Demostración caso base:
+        ¿evalNU (succNU []) = 1 + evalNU []?
+
+    -- LADO IZQUIERDO:
+
+        evalNU (succNU [])
+    =                               (succNU.1)
+        evalNU [()]
+    =                               (evalNU.2)
+        1 + evalNU []
+
+    -- LADO DERECHO:
+
+        1 + evalNU []
+
+    -- Ambos lados llegan a lo mismo el caso es válido.
+
+    Demostración caso inductivo:
+        ¿evalNU (succNU (u:us)) = 1 + evalNU (u:us)?
+
+    -- LADO IZQUIERDO:
+
+        evalNU (succNU (u:us))
+    =                                       (succNU.2)
+        evalNU (u : succNU us)
+    =                                       (evalNU.2)
+        1 + evalNU (succNU us)
+    =                                       (HI)
+        1 + 1 + evalNU us
+
+    -- LADO DERECHO:
+
+        1 + evalNU (u:us)
+    =                                       (evalNU.2) 
+        1 + 1 + evalNU us
+
+    -- Ambos lados llegan a lo mismo el caso es válido y la propiedad también.
 
 
 -- 2.B.II
 
+¿para todo n1. para todo n2. evalNU (addNU n1 n2) = evalNU n1 + evalNU n2?
 
+Demotración:
+    Por principio de extensionalidad, es equivalente demostrar que:
+    ¿para todo n. (evalNU . succNU) n = ((+1) . evalNU) n?
+
+    Por definición de (.) y (+) es equivalente demostrar que:
+    ¿para todo n. evalNU (succNU n) = 1 + evalNU n?
+
+    Sea n1 :: NU. Por principio de inducción en la estructura
+    de n1 es equivalente demostrar:
+
+    Caso base (n1 = []):
+        ¿?
+
+    Caso inductivo (n1 = (u:us)):
+        Hipotesis inductiva:
+            ¡!
+
+        Tesis inductiva: 
+            ¿?
+
+    Demostración caso base:
+
+    -- LADO IZQUIERDO:
+
+
+    -- LADO DERECHO:
+
+
+    -- Ambos lados llegan a lo mismo el caso es válido.
+
+    Demostración caso inductivo:
+
+    -- LADO IZQUIERDO:
+
+
+    -- LADO DERECHO:
+
+
+    -- Ambos lados llegan a lo mismo el caso es válido y la propiedad también.
 
 -- 2.B.III
 
+¿nu2n . n2nu = id?
 
+Demotración:
+    Por principio de extensionalidad, es equivalente demostrar que:
+    ¿para todo n. (evalNU . succNU) n = ((+1) . evalNU) n?
+
+    Por definición de (.) y (+) es equivalente demostrar que:
+    ¿para todo n. evalNU (succNU n) = 1 + evalNU n?
+
+    Sea n1 :: NU. Por principio de inducción en la estructura
+    de n1 es equivalente demostrar:
+
+    Caso base (n1 = []):
+        ¿?
+
+    Caso inductivo (n1 = (u:us)):
+        Hipotesis inductiva:
+            ¡!
+
+        Tesis inductiva: 
+            ¿?
+
+    Demostración caso base:
+
+    -- LADO IZQUIERDO:
+
+
+    -- LADO DERECHO:
+
+
+    -- Ambos lados llegan a lo mismo el caso es válido.
+
+    Demostración caso inductivo:
+
+    -- LADO IZQUIERDO:
+
+
+    -- LADO DERECHO:
+
+
+    -- Ambos lados llegan a lo mismo el caso es válido y la propiedad también.
 
 -- 2.B.IV
 
+¿n2nu . nu2n = id?
+
+Demotración:
+    Por principio de extensionalidad, es equivalente demostrar que:
+    ¿para todo n. (evalNU . succNU) n = ((+1) . evalNU) n?
+
+    Por definición de (.) y (+) es equivalente demostrar que:
+    ¿para todo n. evalNU (succNU n) = 1 + evalNU n?
+
+    Sea n1 :: NU. Por principio de inducción en la estructura
+    de n1 es equivalente demostrar:
+
+    Caso base (n1 = []):
+        ¿?
+
+    Caso inductivo (n1 = (u:us)):
+        Hipotesis inductiva:
+            ¡!
+
+        Tesis inductiva: 
+            ¿?
+
+    Demostración caso base:
+
+    -- LADO IZQUIERDO:
 
 
+    -- LADO DERECHO:
 
+
+    -- Ambos lados llegan a lo mismo el caso es válido.
+
+    Demostración caso inductivo:
+
+    -- LADO IZQUIERDO:
+
+
+    -- LADO DERECHO:
+
+
+    -- Ambos lados llegan a lo mismo el caso es válido y la propiedad también.
 
 
 > Ejercicio 3:
