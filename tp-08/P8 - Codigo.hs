@@ -1494,41 +1494,57 @@ Demotración:
 
 Demotración:
     Por principio de extensionalidad, es equivalente demostrar que:
-    ¿para todo n. (evalNU . succNU) n = ((+1) . evalNU) n?
+    ¿para todo nu. (n2nu . nu2n) nu = id nu?
 
-    Por definición de (.) y (+) es equivalente demostrar que:
-    ¿para todo n. evalNU (succNU n) = 1 + evalNU n?
+    Por definición de (.) y id es equivalente demostrar que:
+    ¿para todo nu. n2nu (nu2n nu) = nu?
 
-    Sea n1 :: NU. Por principio de inducción en la estructura
-    de n1 es equivalente demostrar:
+    Sea nu1 :: NU. Por principio de inducción en la estructura
+    de nu1 es equivalente demostrar:
 
-    Caso base (n1 = []):
-        ¿?
+    Caso base (nu1 = []):
+        ¿n2nu (nu2n []) = []?
 
-    Caso inductivo (n1 = (u:us)):
+    Caso inductivo (nu1 = (u:us)):
         Hipotesis inductiva:
-            ¡!
+            ¡n2nu (nu2n us) = us!
 
         Tesis inductiva: 
-            ¿?
+            ¿n2nu (nu2n (u:us)) = (u:us)?
 
     Demostración caso base:
+        ¿n2nu (nu2n []) = []?
 
     -- LADO IZQUIERDO:
 
+        n2nu (nu2n [])
+    =                           (nu2n.1)
+        n2nu Z
+    =                           (n2nu.1)
+        []
 
     -- LADO DERECHO:
 
+        []
 
     -- Ambos lados llegan a lo mismo el caso es válido.
 
     Demostración caso inductivo:
+        ¿n2nu (nu2n (u:us)) = (u:us)?
 
     -- LADO IZQUIERDO:
-
+        
+        n2nu (nu2n (u:us))
+    =                               (nu2n.2)
+        n2nu (S (nu2n us))
+    =                               (n2nu.2)
+        () : n2nu (nu2n us)
+    =                               (HI)
+        () : us                     -- Esto es lo mismo que escribir (u:us), porque el único 'u' válido es ().
 
     -- LADO DERECHO:
 
+        (u:us)
 
     -- Ambos lados llegan a lo mismo el caso es válido y la propiedad también.
 
