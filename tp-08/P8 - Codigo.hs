@@ -284,7 +284,7 @@ Demostración:
     Por principio de extensionalidad (dos veces), es equivalente demostrar que:
     ¿para todo x. para todo xs. elem x xs = (any . (==)) x xs?
 
-    Por definición de (.) es equivalente demostrar que:
+    Por definición de (.) es equivalente reescribir la propiedad como:
     ¿para todo x. para todo xs. elem x xs = any ((==) x) xs?
 
     Sea z :: a, sea ys :: [a]. Por principio de inducción en la estructura
@@ -347,7 +347,7 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que:
     ¿para todo x. para todo xss. any (elem x) xss = (elem x . concat) xss?
 
-    Por definición de (.) es equivalente demostrar que:
+    Por definición de (.) es equivalente reescribir la propiedad como:
     ¿para todo x. para todo xss. any (elem x) xss = elem x (concat xss)?
 
     Sea z :: a, sea yss :: [[a]]. Por principio de inducción en la estructura
@@ -525,7 +525,7 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que:
     ¿para todo xss. all null xss = (null . concat) xss?
 
-    Por definición de (.) es equivalente demostrar que:
+    Por definición de (.) es equivalente reescribir la propiedad como:
     ¿para todo xss. all null xss = null (concat xss)?
 
     Sea wss :: [[a]]. Por principio de inducción en la estructura
@@ -646,7 +646,7 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que:
     ¿para todo xs. length xs = (length . reverse) xs?
 
-    Por definición de (.) es equivalente demostrar que:
+    Por definición de (.) es equivalente reescribir la propiedad como:
     ¿para todo xs. length xs = length (reverse xs)?
     
     Sea ws :: [a]. Por principio de inducción en la estructura
@@ -1150,7 +1150,7 @@ Demostración:
     Por principio de extensionalidad es equivalente demostrar que:
     ¿para todo n. (int2N . evalN) n = id n?
 
-    Por definición de (.) y id es equivalente demostrar que:
+    Por definición de (.) y id es equivalente reescribir la propiedad como:
     ¿para todo n. int2N (evalN n) = n?
     
     Sea m :: N. Por principio de inducción en la estructura
@@ -1213,7 +1213,7 @@ Demostración:
     Por principio de extensionalidad es equivalente demostrar que:
     ¿para todo n. (evalN . int2N) n = id n?
 
-    Por definición de (.) y id es equivalente demostrar que:
+    Por definición de (.) y id es equivalente reescribir la propiedad como:
     ¿para todo n. evalN (int2N n) = n?
     
     Sea m :: Int. Por principio de inducción en la estructura
@@ -1313,7 +1313,7 @@ Demotración:
     Por principio de extensionalidad, es equivalente demostrar que:
     ¿para todo nu. (evalNU . succNU) nu = ((+1) . evalNU) nu?
 
-    Por definición de (.) y (+) es equivalente demostrar que:
+    Por definición de (.) y (+) es equivalente reescribir la propiedad como:
     ¿para todo nu. evalNU (succNU nu) = 1 + evalNU nu?
 
     Sea nu1 :: NU. Por principio de inducción en la estructura
@@ -1435,7 +1435,7 @@ Demotración:
     Por principio de extensionalidad, es equivalente demostrar que:
     ¿para todo n. (nu2n . n2nu) n = id n?
 
-    Por definición de (.) y id es equivalente demostrar que:
+    Por definición de (.) y id es equivalente reescribir la propiedad como:
     ¿para todo n. nu2n (n2nu n) = n?
 
     Sea n1 :: N. Por principio de inducción en la estructura
@@ -1496,7 +1496,7 @@ Demotración:
     Por principio de extensionalidad, es equivalente demostrar que:
     ¿para todo nu. (n2nu . nu2n) nu = id nu?
 
-    Por definición de (.) y id es equivalente demostrar que:
+    Por definición de (.) y id es equivalente reescribir la propiedad como:
     ¿para todo nu. n2nu (nu2n nu) = nu?
 
     Sea nu1 :: NU. Por principio de inducción en la estructura
@@ -1618,7 +1618,46 @@ n2nb (S n) = succNB (n2nb n)
 
 ¿evalNB . normalizarNB = evalNB?
 
+Demostración:
+    Por principio de extensionalidad, es equivalente demostrar que:
+    ¿para todo nb1. (evalNB . normalizarNB) nb1 = evalNB nb1?
 
+    Por definición de (.) es equivalente reescribir la propiedad como:
+    ¿para todo nb1. evalNB (normalizarNB nb1) = evalNB nb1?
+
+    Sea nb :: NBin. Por principio de inducción sobre la estructura nb
+    es equivalente demostrar:
+
+    Caso base (nb = []): 
+        ¿evalNB (normalizarNB []) = evalNB []?
+
+    Caso inductivo (nb = (db:dbs)):
+        Hipotesis inductiva:
+            ¡evalNB (normalizarNB dbs) = evalNB dbs!
+
+        Tesis inductiva:
+            ¿evalNB (normalizarNB (db:dbs)) = evalNB (db:dbs)?
+
+    Demostración caso base:
+
+    -- LADO IZQUIERDO:
+
+
+    -- LADO DERECHO:
+
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo:
+
+
+    -- LADO IZQUIERDO:
+
+
+    -- LADO DERECHO:
+
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
 
 
 -- 3.B.II
@@ -1921,7 +1960,7 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que:
     ¿para todo e. (evalExpA . simplificarExpA) e = evalExpA e?
 
-    Por definición de (.) es equivalente demostrar que:
+    Por definición de (.) es equivalente reescribir la propiedad como:
     ¿para todo e. evalExpA (simplificarExpA e) = evalExpA e?
 
     Sea e' :: ExpA. Por principio de inducción en la estructura
@@ -2176,7 +2215,7 @@ Demostración:
     Por principio de extensionalidad es equivalente demostrar que:
     ¿para todo e. (cantidadDeSumaCero . simplificarExpA) e = const 0 e?
 
-    Por definición (.), y por definición const, es equivalente demostrar que:
+    Por definición (.), y por definición const, es equivalente reescribir la propiedad como:
     ¿para todo e. cantidadDeSumaCero (simplificarExpA e) = 0?
     
     Sea e' :: ExpA. Por principio de inducción en la estructura
@@ -2475,7 +2514,7 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que:
     ¿para todo es. (evalExpA . es2ExpA) es = evalES es?
 
-    Por definición de (.) es equivalente demostrar que:
+    Por definición de (.) es equivalente reescribir la propiedad como:
     ¿para todo es. evalExpA (es2ExpA es) = evalES es?
 
     Sea es1 :: ExpS. Por principio de inducción en la estructura
@@ -2578,7 +2617,7 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que:
     ¿para todo ea. (evalES . expA2es) ea = evalExpA ea?
 
-    Por definición de (.) es equivalente demostrar que:
+    Por definición de (.) es equivalente reescribir la propiedad como:
     ¿para todo ea. evalES (expA2es ea) = evalExpA ea?
 
     Sea ea1 :: ExpA. Por principio de inducción en la estructura
@@ -2685,7 +2724,7 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que:
     ¿para todo ea. (es2ExpA . expA2es) ea = id ea?
 
-    Por definición de (.) y id es equivalente demostrar que:
+    Por definición de (.) y id es equivalente reescribir la propiedad como:
     ¿para todo ea. es2ExpA (expA2es ea) = ea?
 
     Sea ea1 :: ExpA. Por principio de inducción en la estructura
@@ -2786,7 +2825,7 @@ Demostración:
     Por principio de extensionalidad, es equivalente demostrar que:
     ¿para todo es. (expA2es . es2ExpA) es = id es?
 
-    Por definición de (.) y id es equivalente demostrar que:
+    Por definición de (.) y id es equivalente reescribir la propiedad como:
     ¿para todo es. expA2es (es2ExpA es) = es?
 
     Sea es1 :: ExpS. Por principio de inducción en la estructura
