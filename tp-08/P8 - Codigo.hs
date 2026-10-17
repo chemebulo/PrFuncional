@@ -1560,7 +1560,7 @@ data DigBin = O | I
 
 evalNB :: NBin -> Int
 evalNB []       = 0
-evalNB (db:dbs) = dbAsInt db + (2 * evalNB dbs)
+evalNB (db:dbs) = dbAsInt db + 2 * evalNB dbs
 
 dbAsInt :: DigBin -> Int
 dbAsInt O = 0
@@ -1569,42 +1569,164 @@ dbAsInt I = 1
 -- 3.A.II
 
 normalizarNB :: NBin -> NBin
-normalizarNB []       =
-normalizarNB (db:dbs) = 
+normalizarNB []       = []
+normalizarNB (db:dbs) = normalizarDB db (normalizarNB dbs)
+
+normalizarDB :: DigBin -> NBin -> NBin
+normalizarDB O []   = []
+normalizarDB db dbs = (db:dbs)
 
 -- 3.A.III
 
 succNB :: NBin -> NBin
-succNB []       =
-succNB (db:dbs) = 
+succNB []       = [I]
+succNB (O:dbs)  = I : dbs
+succNB (I:dbs)  = O : succNB dbs
 
 -- 3.A.IV
 
 addNB :: NBin -> NBin -> NBin
-addNB []       dbs2 =
-addNB (db:dbs) dbs2 = 
+addNB []       dbs2 = dbs2
+addNB dbs1     []   = dbs1
+addNB (db:dbs) dbs2 = addDB2NB d1 d2 (addNB ds1 ds2)
+
+addDB2NB :: DigBin -> DigBin -> NBin -> NBin
+addDB2NB O O ds = O : ds
+addDB2NB O I ds = I : ds
+addDB2NB I O ds = I : ds
+addDB2NB I I ds = O : succNB ds
 
 -- 3.A.V
 
 nb2n :: NBin -> N
-nb2n []       =
-nb2n (db:dbs) = 
+nb2n []      = Z
+nb2n (O:nbs) = dobleN (nb2n nbs)
+nb2n (I:nbs) = S (dobleN (nb2n nbs))
+
+dobleN :: N -> N
+dobleN Z     = Z
+dobleN (S n) = S (S (dobleN n))
 
 -- 3.A.VI
 
 n2nb  ::  N  ->  NBin
-n2nb Z      =
-n2nb (S n') =
+n2nb Z     = []
+n2nb (S n) = succNB (n2nb n)
 
 
 -- 3.B.I
 
-¿evalNB . succNB = (+1) . evalNB?
+¿evalNB . normalizarNB = evalNB?
+
+
 
 
 -- 3.B.II
 
 ¿evalNB . succNB = (+1) . evalNB?
+
+Demostración:
+    Por principio de extensionalidad, es equivalente demostrar que:
+    ¿para todo nb1. (evalNB . succNB) nb1 = ((+1) . evalNB) nb1?
+
+    Por definición de (.) y (+1) es equivalente reescribir la propiedad como:
+    ¿para todo nb1. evalNB (succNB nb1) = 1 + evalNB nb1?
+
+    Sea nb :: NBin. Por principio de inducción sobre la estructura nb
+    es equivalente demostrar:
+
+    Caso base (nb = []): 
+        ¿evalNB (succNB []) = 1 + evalNB []?
+
+    Caso inductivo (nb = (db:dbs)):
+        Hipotesis inductiva:
+            ¡evalNB (succNB dbs) = 1 + evalNB dbs!
+
+        Tesis inductiva:
+            ¿evalNB (succNB (db:dbs)) = 1 + evalNB (db:dbs)?
+
+    Demostración caso base:
+        ¿evalNB (succNB []) = 1 + evalNB []?
+
+    -- LADO IZQUIERDO:
+
+        evalNB (succNB [])
+    =                               (succNB.1)
+        evalNB [I]
+    =                               (evalNB.2)
+        dbAsInt I + 2 * evalNB []
+    =                               (evalNB.1)
+        dbAsInt I + 2 * 0
+    =                               (dbAsInt.2)
+        1 + 2 * 0
+    =                               (aritmética)
+        1
+
+    -- LADO DERECHO:
+
+        1 + evalNB []
+    =                               (evalNB.1)
+        1 + 0 
+    =                               (aritmética)
+        1
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo:
+
+    Caso 1 (db = O):
+        ¿evalNB (succNB (O:dbs)) = 1 + (evalNB (O:dbs))?
+
+    -- LADO IZQUIERDO:
+
+        evalNB (succNB (O:dbs))
+    =                                           (succNB.2)
+        evalNB (I : dbs)
+    =                                           (evalNB.2)
+        dbAsInt I + 2 * evalNB dbs
+    =                                           (dbAsInt.2)
+        1 + 2 * evalNB dbs
+
+    -- LADO DERECHO:
+
+        1 + (evalNB (O:dbs))
+    =                                           (evalNB.2)
+        1 + dbAsInt O + 2 * evalNB dbs
+    =                                           (dbAsInt.1)
+        1 + 0 + 2 * evalNB dbs
+    =                                           (aritmética)
+        1 + 2 * evalNB dbs
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Caso 2 (db = I):
+        ¿evalNB (succNB (I:dbs)) = 1 + (evalNB (I:dbs))?
+
+    -- LADO IZQUIERDO:
+
+        evalNB (succNB (I:dbs))
+    =                                           (succNB.3)
+        evalNB (O : succNB dbs)
+    =                                           (evalNB.2)
+        dbAsInt O + 2 * evalNB (succNB dbs)
+    =                                           (HI)
+        dbAsInt O + 2 * (1 + evalNB dbs)
+    =                                           (dbAsInt.1)
+        0 + 2 * 1 + 2 * evalNB dbs
+    =                                           (aritmética)
+        2 + 2 * evalNB dbs
+
+    -- LADO DERECHO:
+
+        1 + (evalNB (I:dbs))
+    =                                       (evalNB.2)
+        1 + dbAsInt I + 2 * evalNB dbs
+    =                                       (dbAsInt.2)
+        1 + 1 + 2 * evalNB dbs
+    =                                       (aritmética)
+        2 + 2 * evalNB dbs
+
+    -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 3.B.III
