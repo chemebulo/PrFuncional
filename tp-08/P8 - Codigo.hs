@@ -1573,7 +1573,7 @@ normalizarNB []       = []
 normalizarNB (db:dbs) = normalizarDB db (normalizarNB dbs)
 
 normalizarDB :: DigBin -> NBin -> NBin
-normalizarDB O []   = []
+normalizarDB O  []  = []
 normalizarDB db dbs = (db:dbs)
 
 -- 3.A.III
@@ -1639,25 +1639,114 @@ Demostración:
             ¿evalNB (normalizarNB (db:dbs)) = evalNB (db:dbs)?
 
     Demostración caso base:
+        ¿evalNB (normalizarNB []) = evalNB []?
 
     -- LADO IZQUIERDO:
 
+        evalNB (normalizarNB [])
+    =                                       (normalizarNB.1)
+        evalNB []
 
     -- LADO DERECHO:
 
+        evalNB []
 
     -- Ambos lados llegan a lo mismo, el caso es válido.
 
     Demostración caso inductivo:
-
+        ¿evalNB (normalizarNB (db:dbs)) = evalNB (db:dbs)?
 
     -- LADO IZQUIERDO:
 
+        evalNB (normalizarNB (db:dbs))
+    =                                                   (normalizarNB.1)
+        evalNB (normalizarDB db (normalizarNB dbs))
+    =                                                   (EvalNorm, db' <- db, nbs' <- dbs)
+        dbAsInt db + 2 * evalNB dbs
 
     -- LADO DERECHO:
 
+        evalNB (db:dbs)
+    =                                                   (evalNB.2)
+        dbAsInt db + 2 * evalNB dbs
 
     -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Lema EvalNorm: ¿para todo db'. para todo nbs'. evalNB (normalizarDB db' nbs') = dbAsInt db' + 2 * evalNB nbs'?
+
+    Demostración:
+        Sea db :: DigBin, sea :: nbs :: NBin. Por principio de inducción en la
+        estructura nbs es equivalente demostrar que:
+
+        Caso base (nbs = []):
+            ¿evalNB (normalizarDB db []) = dbAsInt db + 2 * evalNB []?
+
+        Caso inductivo (nbs = (nb:nbs'))
+            Hipotesis inductiva:
+                ¡evalNB (normalizarDB db nbs') = dbAsInt db + 2 * evalNB nbs'!
+
+            Tesis inductiva:
+                ¿evalNB (normalizarDB db (nb:nbs')) = dbAsInt db + 2 * evalNB (nb:nbs')?
+
+        Demostración caso base:
+            ¿evalNB (normalizarDB db []) = dbAsInt db + 2 * evalNB []?
+
+            Caso 1 (db = O):
+
+            -- LADO IZQUIERDO
+
+                evalNB (normalizarDB O [])
+            =                                   (normalizarDB.1)
+                evalNB []
+            =                                   (evalNB.1)
+                0
+
+            -- LADO DERECHO
+
+                dbAsInt O + 2 * evalNB []
+            =                                   (evalNB.1)
+                dbAsInt O + 2 * 0
+            =                                   (aritmética)
+                dbAsInt O + 0
+            =                                   (aritmética)
+                dbAsInt O
+            =                                   (dbAsInt.2)
+                0
+
+            -- Ambos lados llegan a lo mismo, el caso es válido.
+
+            Caso 2 (db = I):
+
+            -- LADO IZQUIERDO
+
+                evalNB (normalizarDB I [])
+            =                                   (normalizarDB.2)
+                evalNB (I:[])
+            =                                   (evalNB.2)
+                dbAsInt I + 2 * evalNB []
+
+            -- LADO DERECHO
+
+                dbAsInt I + 2 * evalNB []
+
+            -- Ambos lados llegan a lo mismo, el caso es válido.
+
+        Demostración caso inductivo:
+            ¿evalNB (normalizarDB db (nb:nbs')) = dbAsInt db + (2 * evalNB (nb:nbs'))?
+
+        -- LADO IZQUIERDO
+
+            evalNB (normalizarDB db (nb:nbs'))
+        =                                               (normalizarDB.2) -- Aca ya sé que la lista no es [], por eso cae en el segundo caso.
+            evalNB (db:(nb:nbs'))
+        =                                               (evalNB.2)
+            dbAsInt db + 2 * evalNB (nb:nbs')
+
+        -- LADO DERECHO
+
+            dbAsInt db + 2 * evalNB (nb:nbs')
+
+        -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 3.B.II
