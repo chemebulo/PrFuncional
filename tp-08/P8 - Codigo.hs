@@ -1859,7 +1859,86 @@ Demostración:
 
 -- 3.B.III
 
-¿para todo n1. para todo n2. evalNB (addNB n1 n2) = evalNB n1 + evalNB n2?
+¿P(n1): para todo n2. evalNB (addNB n1 n2) = evalNB n1 + evalNB n2?
+
+Demostración:
+    Sea nb1 :: NBin, sea nb2 :: NBin. Por principio de inducción sobre la estructura nb1
+    es equivalente demostrar:
+
+    Caso base (nb1 = []): 
+        ¿para todo nb2. evalNB (addNB [] nb2) = evalNB [] + evalNB nb2?
+
+    Caso inductivo (nb1 = (db1:dbs1)):
+        Hipotesis inductiva:
+            para todo nb2. ¡evalNB (addNB dbs1 nb2) = evalNB dbs1 + evalNB nb2!
+
+        Tesis inductiva:
+            para todo nb2. ¿evalNB (addNB (db1:dbs1) nb2) = evalNB (db1:dbs1) + evalNB nb2?
+
+    Demostración caso base:
+        Sea nb2 cualquiera. ¿evalNB (addNB [] nb2) = evalNB [] + evalNB nb2?
+
+    -- LADO IZQUIERDO:
+
+        evalNB (addNB [] nb2)
+    =                               (addNB.1)
+        evalNB nb2
+
+    -- LADO DERECHO:
+    
+        evalNB [] + evalNB nb2
+    =                               (evalNB.1)
+        0 + evalNB nb2
+    =                               (aritmética)
+        evalNB nb2
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Demostración caso inductivo: Sea nb2 cualquiera. Se prueba por casos sobre nb2:
+
+    Caso 1 (nb2 = []):
+        ¿evalNB (addNB (db1:dbs1) []) = evalNB (db1:dbs1) + evalNB []?
+
+    -- LADO IZQUIERDO:
+
+        evalNB (addNB (db1:dbs1) [])
+    =                                           (addNB.2)
+        evalNB (db1:dbs1)
+
+    -- LADO DERECHO:
+
+        evalNB (db1:dbs1) + evalNB []
+    =                                           (evalNB.1)
+        evalNB (db1:dbs1) + 0
+    =                                           (aritmética)
+        evalNB (db1:dbs1)
+
+    -- Ambos lados llegan a lo mismo, el caso es válido.
+
+    Caso 2 (nb2 = (db2:dbs2)):
+        ¿evalNB (addNB (db1:dbs1) (db2:dbs2)) = evalNB (db1:dbs1) + evalNB (db2:dbs2)?
+
+    -- LADO IZQUIERDO:
+
+        evalNB (addNB (db1:dbs1) (db2:dbs2))
+    =                                                                       (addNB.3)
+        evalNB (addDB2NB db1 db2 (addNB dbs1 dbs2))
+    =                                                                       (Lema EvalAddNB, ds <- addNB dbs1 dbs2)
+        dbAsInt db1 + dbAsInt db2 + 2 * evalNB (addNB dbs1 dbs2)
+    =                                                                       (HI, nb2 <- dbs2)
+        dbAsInt db1 + dbAsInt db2 + 2 * (evalNB dbs1 + evalNB dbs2)
+
+    -- LADO DERECHO:
+
+        evalNB (db1:dbs1) + evalNB (db2:dbs2)
+    =                                                                       (evalNB.2, dos veces)
+        (dbAsInt db1 + 2 * evalNB dbs1) + (dbAsInt db2 + 2 * evalNB dbs2)
+    =                                                                       (conmutatividad y asociatividad de la (+))
+        dbAsInt db1 + dbAsInt db2 + (2 * evalNB dbs1 + 2 * evalNB dbs2)
+    =                                                                       (factor común)
+        dbAsInt db1 + dbAsInt db2 + 2 * (evalNB dbs1 + evalNB dbs2)
+
+    -- Ambos lados llegan a lo mismo, el caso es válido y la propiedad también.
 
 
 -- 3.B.IV
@@ -1881,16 +1960,6 @@ Demostración:
 -- 3.C.II
 
 ¿n2nb . nb2n = normalizarNB?
-
-
-
-
-
-
-
-
-
-
 
 
 > Ejercicio 4:
