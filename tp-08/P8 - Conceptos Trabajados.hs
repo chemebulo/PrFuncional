@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------------------------------
 
---                      TRABAJO PRÁCTICO N°8: Inducción y Recursión Estructural I                     --
+--                      TRABAJO PRÁCTICO N°8: Inducción y Recursión Estructural II                    --
 --                                         Conceptos Trabajados                                       --
 
 --------------------------------------------------------------------------------------------------------

@@ -2373,7 +2373,7 @@ Demostración:
     Por principio de extensionalidad es equivalente demostrar que:
     ¿para todo e. (cantidadDeSumaCero . simplificarExpA) e = const 0 e?
 
-    Por definición (.), y por definición const, es equivalente reescribir la propiedad como:
+    Por definición (.), y const, es equivalente reescribir la propiedad como:
     ¿para todo e. cantidadDeSumaCero (simplificarExpA e) = 0?
     
     Sea e' :: ExpA. Por principio de inducción en la estructura
