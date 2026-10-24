@@ -86,41 +86,74 @@ pizzaProcesadaV2 fc fp = go
 -- 4.A
 
 cantidadCapasQueCumplen :: (Ingrediente -> Bool) -> Pizza -> Int 
-cantidadCapasQueCumplen f
+cantidadCapasQueCumplen f = pizzaProcesada (\i p' -> unoSi (f i) + p') 0
+
+cantidadCapasQueCumplenV2 :: (Ingrediente -> Bool) -> Pizza -> Int
+cantidadCapasQueCumplenV2 = (\f -> pizzaProcesada (\i p' -> unoSi (f i) + p') 0)
 
 -- 4.B
 
 conCapasTransformadas :: (Ingrediente -> Ingrediente) -> Pizza -> Pizza 
-conCapasTransformadas f
+conCapasTransformadas f = pizzaProcesada (\i p' -> Capa (f i) p') Prepizza
+
+conCapasTransformadasV2 :: (Ingrediente -> Ingrediente) -> Pizza -> Pizza 
+conCapasTransformadasV2 = (\f -> pizzaProcesada (\i p' -> Capa (f i) p') Prepizza)
 
 -- 4.C
 
 soloLasCapasQue :: (Ingrediente -> Bool) -> Pizza -> Pizza
-soloLasCapasQue f
+soloLasCapasQue f = pizzaProcesada (\i p' -> if f i then Capa i p' else p') Prepizza
+
+soloLasCapasQueV2 :: (Ingrediente -> Bool) -> Pizza -> Pizza
+soloLasCapasQueV2 = (\f -> pizzaProcesada (\i p' -> if f i then Capa i p' else p') Prepizza)
 
 -- 4.D
 
 sinLactosa :: Pizza -> Pizza 
-sinLactosa
+sinLactosa = pizzaProcesada (\i p' -> if esQueso i then p' else Capa i p') Prepizza
 
 -- 4.E
 
 aptaIntolerantesLactosa :: Pizza -> Bool 
-aptaIntolerantesLactosa
+aptaIntolerantesLactosa = pizzaProcesada (\i p' -> not (esQueso i) && p') True
 
 -- 4.F
 
 cantidadDeQueso :: Pizza -> Int 
-cantidadDeQueso
+cantidadDeQueso = pizzaProcesada (\i p' -> unoSi (esQueso i) + p') 0
 
 -- 4.G
 
 conElDobleDeAceitunas :: Pizza -> Pizza
-conElDobleDeAceitunas
+conElDobleDeAceitunas = pizzaProcesada (\i p' -> Capa (dobleAceitunas i) p') Prepizza
 
 
 > Ejercicio 5:
 
+-- 5.A
+
+cantidadAceitunas :: Pizza -> Int
+cantidadAceitunas
+
+-- 5.B
+
+capasQueCumplen :: (Ingrediente -> Bool) -> Pizza -> [Ingrediente]
+capasQueCumplen f
+
+-- 5.C
+
+conDescripcionMejorada :: Pizza -> Pizza
+conDescripcionMejorada
+
+-- 5.D
+
+conCapasDe :: Pizza -> Pizza -> Pizza
+conCapasDe
+
+-- 5.E
+
+primerasNCapas :: Int -> Pizza -> Pizza
+primerasNCapas
 
 
 > Ejercicio 6:
