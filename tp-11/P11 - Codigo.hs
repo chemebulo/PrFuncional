@@ -71,6 +71,14 @@ dobleAceitunas i             = i
 > Ejercicio 3:
 
 pizzaProcesada :: (Ingrediente -> b -> b) -> b -> Pizza -> b
+pizzaProcesada f x Prepizza   = x
+pizzaProcesada f x (Capa i p) = f i (pizzaProcesada f x p)
+
+
+pizzaProcesadaV2 :: (Ingrediente -> b -> b) -> b -> Pizza -> b
+pizzaProcesadaV2 fc fp = go
+    where go Prepizza   = fp 
+          go (Capa i p) = fc i (go p)
 
 
 > Ejercicio 4:
