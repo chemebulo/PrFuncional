@@ -191,8 +191,12 @@ ramaMasLarga (NodeT x ti td) = x : if length (ramaMasLarga ti) >= length (ramaMa
 -- 3.A.XII
 
 todosLosCaminos :: Tree a -> [[a]]
-todosLosCaminos EmptyT          =
-todosLosCaminos (NodeT x ti td) =
+todosLosCaminos EmptyT          = []
+todosLosCaminos (NodeT x ti td) = [x] : agregarACaminos x (todosLosCaminos ti) ++ agregarACaminos x (todosLosCaminos td)
+
+agregarACaminos :: a -> [[a]] -> [[a]] -> [[a]]
+agregarACaminos x []       = []
+agregarACaminos x (xs:xss) = (x:xs) : agregarACaminos x xss 
 
 
 -- 3.B.I
