@@ -83,6 +83,40 @@ pizzaProcesadaV2 fc fp = go
 
 > Ejercicio 4:
 
+-- 4.A
+
+cantidadCapasQueCumplen :: (Ingrediente -> Bool) -> Pizza -> Int 
+cantidadCapasQueCumplen f
+
+-- 4.B
+
+conCapasTransformadas :: (Ingrediente -> Ingrediente) -> Pizza -> Pizza 
+conCapasTransformadas f
+
+-- 4.C
+
+soloLasCapasQue :: (Ingrediente -> Bool) -> Pizza -> Pizza
+soloLasCapasQue f
+
+-- 4.D
+
+sinLactosa :: Pizza -> Pizza 
+sinLactosa
+
+-- 4.E
+
+aptaIntolerantesLactosa :: Pizza -> Bool 
+aptaIntolerantesLactosa
+
+-- 4.F
+
+cantidadDeQueso :: Pizza -> Int 
+cantidadDeQueso
+
+-- 4.G
+
+conElDobleDeAceitunas :: Pizza -> Pizza
+conElDobleDeAceitunas
 
 
 > Ejercicio 5:
@@ -90,6 +124,34 @@ pizzaProcesadaV2 fc fp = go
 
 
 > Ejercicio 6:
+
+-- 6.A
+
+map :: (a -> b) -> [a] -> [b] 
+
+-- 6.B
+
+filter :: (a -> Bool) -> [a] -> [a] 
+
+-- 6.C
+
+foldr :: (a -> b -> b) -> b -> [a] -> b 
+
+-- 6.D
+
+recr :: b -> (a -> [a] -> b -> b) -> [a] -> b 
+
+-- 6.E
+
+foldr1 :: (a -> a -> a) -> [a] -> a 
+
+-- 6.F
+
+zipWith :: (a -> b -> c) -> [a] -> [b] -> [c] 
+
+-- 6.G
+
+scanr :: (a -> b -> b) -> b -> [a] -> [b]
 
 
 > Ejercicio 7:
@@ -159,90 +221,61 @@ pizzaProcesadaV2 fc fp = go
 
 sum :: [Int] -> Int
 
-
-
 -- 9.B
 
 length :: a -> Int
-
-
 
 -- 9.C
 
 map :: (a -> b) -> [a] -> [b]
 
-
-
 -- 9.D
 
 filter :: (a -> Bool) -> [a] -> [a]
-
-
 
 -- 9.E
 
 find :: (a -> Bool) -> [a] -> Maybe a
 
-
-
 -- 9.F
 
 any :: (a -> Bool) -> [a] -> Bool
-
-
 
 -- 9.G
 
 all :: (a -> Bool) -> [a] -> Bool
 
-
-
 -- 9.H
 
 countBy :: (a -> Bool) -> [a] -> Int
-
-
 
 -- 9.I
 
 partition :: (a -> Bool) -> [a] -> ([a], [a])
 
-
-
 -- 9.J
 
 zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
-
-
 
 -- 9.K
 
 scanr :: (a -> b -> b) -> b -> [a] -> [b]
 
-
-
 -- 9.L
 
 takeWhile :: (a -> Bool) -> [a] -> [a]
-
-
 
 -- 9.M
 
 take :: Int -> [a] -> [a]
 
-
-
 -- 9.N
 
 drop :: Int -> [a] -> [a]
 
-
-
 -- 9.O
 
 elemAt :: Int -> [a] -> a
-
 
 
 > Ejercicio 10:
