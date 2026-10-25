@@ -133,62 +133,74 @@ conElDobleDeAceitunas = pizzaProcesada (\i p' -> Capa (dobleAceitunas i) p') Pre
 -- 5.A
 
 cantidadAceitunas :: Pizza -> Int
-cantidadAceitunas
+cantidadAceitunas = pizzaProcesada (\i p' -> cantidadAc i + p') 0
+    where cantidadAc (Aceitunas n) = n
+          cantidadAc _             = 0
 
 -- 5.B
 
 capasQueCumplen :: (Ingrediente -> Bool) -> Pizza -> [Ingrediente]
-capasQueCumplen f
+capasQueCumplen f = pizzaProcesada (\i is -> if f i then (i : is) else is ) []
 
+capasQueCumplenV2 :: (Ingrediente -> Bool) -> Pizza -> [Ingrediente]
+capasQueCumplenV2 = (\f -> pizzaProcesada (\i is -> if f i then (i : is) else is ) [])
+    
 -- 5.C
 
 conDescripcionMejorada :: Pizza -> Pizza
-conDescripcionMejorada
+conDescripcionMejorada = pizzaProcesada (\i p' -> descMejorada i p') Prepizza
+    where descMejorada (Aceitunas n) (Capa (Aceitunas n') p) = Capa (Aceitunas (n + n')) p
+          descMejorada i             p                       = Capa i p
 
 -- 5.D
 
 conCapasDe :: Pizza -> Pizza -> Pizza
-conCapasDe
+conCapasDe = (\p2 -> flip (pizzaProcesada (\i p' -> Capa i p')) p2)
 
 -- 5.E
 
 primerasNCapas :: Int -> Pizza -> Pizza
-primerasNCapas
+primerasNCapas = flip (pizzaProcesada ctk (\n -> Prepizza))
+    where ctk i p' = (\n -> if == 0 then Prepizza else Capa i (p' (n-1)))
+
+primerasNCapasV2 :: Int -> Pizza -> Pizza
+primerasNCapasV2 = flip (pizzaProcesada (\i p' -> (\n -> if n == 0 then Prepizza else Capa i (p' (n-1)))) (\n -> Prepizza))
 
 
 > Ejercicio 6:
 
--- 6.A
 
-map :: (a -> b) -> [a] -> [b] 
-
--- 6.B
-
-filter :: (a -> Bool) -> [a] -> [a] 
-
--- 6.C
-
-foldr :: (a -> b -> b) -> b -> [a] -> b 
-
--- 6.D
-
-recr :: b -> (a -> [a] -> b -> b) -> [a] -> b 
-
--- 6.E
-
-foldr1 :: (a -> a -> a) -> [a] -> a 
-
--- 6.F
-
-zipWith :: (a -> b -> c) -> [a] -> [b] -> [c] 
-
--- 6.G
-
-scanr :: (a -> b -> b) -> b -> [a] -> [b]
 
 
 > Ejercicio 7:
 
+-- 7.A
+
+map :: (a -> b) -> [a] -> [b] 
+
+-- 7.B
+
+filter :: (a -> Bool) -> [a] -> [a] 
+
+-- 7.C
+
+foldr :: (a -> b -> b) -> b -> [a] -> b 
+
+-- 7.D
+
+recr :: b -> (a -> [a] -> b -> b) -> [a] -> b 
+
+-- 7.E
+
+foldr1 :: (a -> a -> a) -> [a] -> a 
+
+-- 7.F
+
+zipWith :: (a -> b -> c) -> [a] -> [b] -> [c] 
+
+-- 7.G
+
+scanr :: (a -> b -> b) -> b -> [a] -> [b]
 
 
 > Ejercicio 8:
