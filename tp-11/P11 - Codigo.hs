@@ -177,30 +177,59 @@ primerasNCapasV2 = flip (pizzaProcesada (\i p' -> (\n -> if n == 0 then Prepizza
 -- 7.A
 
 map :: (a -> b) -> [a] -> [b] 
+map f []     = []
+map f (x:xs) = f x : map f xs 
 
 -- 7.B
 
 filter :: (a -> Bool) -> [a] -> [a] 
+filter p []     = []
+filter p (x:xs) = if p x then x : filter p xs
+                         else filter p xs
 
 -- 7.C
 
 foldr :: (a -> b -> b) -> b -> [a] -> b 
+foldr f z []     = z
+foldr f z (x:xs) = f x (foldr f z xs)
 
 -- 7.D
 
 recr :: b -> (a -> [a] -> b -> b) -> [a] -> b 
+recr z f []     = z
+recr z f (x:xs) = f x xs (recr z f xs)
 
 -- 7.E
 
 foldr1 :: (a -> a -> a) -> [a] -> a 
+foldr1 f []     = error "No existen elementos en la lista"
+foldr1 f [x]    = x
+foldr1 f (x:xs) = f x (foldr1 f xs)
 
 -- 7.F
 
 zipWith :: (a -> b -> c) -> [a] -> [b] -> [c] 
+zipWith f (x:xs) (y:ys) = f x y : zipWith f xs ys
+zipWith f _      _      = []
 
 -- 7.G
 
 scanr :: (a -> b -> b) -> b -> [a] -> [b]
+-- COSTO: O(n).
+scanr _ z []     = [z]
+scanr f z (x:xs) = let (y:ys) = scanr f z xs
+					 in f x y : (y:ys)
+
+scanrV2 :: (a -> b -> b) -> b -> [a] -> [b]
+-- COSTO: O(n).
+scanrV2 _ z []     = [z]
+scanrV2 f z (x:xs) = case (scanrV2 f z xs) of
+                        (y:ys) -> f x y : (y:ys)
+
+scanrV3 :: (a -> b -> b) -> b -> [a] -> [b]
+-- COSTO: O(n^2).
+scanrV3 f z []     = [z]
+scanrV3 f z (x:xs) = f x (foldr f z xs) : (scanrV3 f z xs)
 
 
 > Ejercicio 8:
