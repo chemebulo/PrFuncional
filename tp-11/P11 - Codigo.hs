@@ -172,6 +172,12 @@ primerasNCapasV2 = flip (pizzaProcesada (\i p' -> (\n -> if n == 0 then Prepizza
 
 
 
+
+
+
+
+
+
 > Ejercicio 7:
 
 -- 7.A
@@ -249,7 +255,9 @@ scanrV3 f z (x:xs) = f x (foldr f z xs) : (scanrV3 f z xs)
 
 
 
+
 -- 8.D
+
 
 
 
@@ -259,7 +267,9 @@ scanrV3 f z (x:xs) = f x (foldr f z xs) : (scanrV3 f z xs)
 
 
 
+
 -- 8.F
+
 
 
 
@@ -269,7 +279,9 @@ scanrV3 f z (x:xs) = f x (foldr f z xs) : (scanrV3 f z xs)
 
 
 
+
 -- 8.H
+
 
 
 
@@ -279,7 +291,9 @@ scanrV3 f z (x:xs) = f x (foldr f z xs) : (scanrV3 f z xs)
 
 
 
+
 -- 8.J
+
 
 
 
@@ -294,62 +308,86 @@ scanrV3 f z (x:xs) = f x (foldr f z xs) : (scanrV3 f z xs)
 -- 9.A
 
 sum :: [Int] -> Int
+sum = foldr (+) 0
 
 -- 9.B
 
-length :: a -> Int
+length :: [a] -> Int
+length = foldr (\_ xs' -> 1 + xs') 0 
 
 -- 9.C
 
 map :: (a -> b) -> [a] -> [b]
+map = (\f -> foldr (\x xs' -> f x : xs') [])
 
 -- 9.D
 
 filter :: (a -> Bool) -> [a] -> [a]
+filter = (\p -> foldr (\x xs' -> if p x then x : xs' else xs') [])
 
 -- 9.E
 
 find :: (a -> Bool) -> [a] -> Maybe a
+find = (\p -> foldr (\x xs' -> if p x then Just x else xs') Nothing)
 
 -- 9.F
 
 any :: (a -> Bool) -> [a] -> Bool
+any = (\f -> foldr (\x xs' -> f x || xs') False)
 
 -- 9.G
 
 all :: (a -> Bool) -> [a] -> Bool
+all = (\f -> foldr (\x xs' -> f x && xs') True)
 
 -- 9.H
 
 countBy :: (a -> Bool) -> [a] -> Int
+countBy = (\f -> foldr (\x xs' -> if f x then 1 + xs' else xs') 0)
 
 -- 9.I
 
 partition :: (a -> Bool) -> [a] -> ([a], [a])
+partition = (\f -> foldr (\x xs' -> 
+                let (xs1, xs2) in if f x then (x:xs1, xs2) else (xs1, x:xs2))
+                ([], [])
+            )
 
 -- 9.J
 
 zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+zipWith f = foldr ctk (\_ -> [])
+    where ctk x xs' = \ys -> case ys of
+                                (y:ys') -> f x y : xs' ys' 
+                                []      -> []
 
 -- 9.K
 
 scanr :: (a -> b -> b) -> b -> [a] -> [b]
+scanr = (\f z -> foldr (\x xs' -> let (y:ys) = xs' in f x y : xs') [z])
 
 -- 9.L
 
 takeWhile :: (a -> Bool) -> [a] -> [a]
+takeWhile = (\f -> foldr (\x xs' -> if f x then x : xs' else []) [])
 
 -- 9.M
 
 take :: Int -> [a] -> [a]
+take = flip (foldr ctk (\n -> []))
+    where ctk x xs' = (\n -> if n == 0 then [] else x : xs' (n-1))
 
 -- 9.N
 
 drop :: Int -> [a] -> [a]
+drop = flip (foldr ctk (\n -> []))
+    where ctk x xs' = (\n -> if n == 0 then x : xs' n else xs' (n-1))
 
 -- 9.O
 
 elemAt :: Int -> [a] -> a
+elemAt = flip (foldr ctk (\n -> error "No existe esa posición en la lista"))
+    where ctk x xs' = (\n -> if n == 0 then x else xs' (n-1))
 
 
 > Ejercicio 10:
