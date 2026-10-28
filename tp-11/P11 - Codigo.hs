@@ -391,3 +391,43 @@ elemAt = flip (foldr ctk (\n -> error "No existe esa posición en la lista"))
 
 
 > Ejercicio 10:
+
+-- 10.A
+
+filter id :: [Bool] -> [Bool]
+
+-- 10.B
+
+map (\x y z -> (x, y, z)) :: [a] -> [b -> c -> (a, b, c)]
+
+-- 10.C
+
+map (+) :: [Int] -> [Int -> Int]
+
+-- 10.D
+
+filter fst :: [(Bool, a)] -> [(Bool, a)]
+
+-- 10.E
+
+filter (flip const (+)) :: [Bool] -> [Bool]
+
+-- 10.F
+
+map const :: [a] -> [b -> a]
+
+-- 10.G
+
+map twice :: [a -> a] -> [a -> a]
+
+-- 10.H
+
+foldr twice :: a -> [a -> a] -> a
+
+-- 10.I
+
+zipWith fst :: [(a -> b, c)] -> [a] -> [b]
+
+-- 10.J
+
+foldr (\x r z -> (x, z) : r z) (const []) :: [a] -> b -> [(a, b)]
