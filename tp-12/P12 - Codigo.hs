@@ -176,7 +176,7 @@ data Tree a = EmptyT
 -- 3.A
 
 foldT :: b -> (a -> b -> b -> b) -> Tree a -> b
-foldT z f EmptyT          = b
+foldT z f EmptyT          = z
 foldT z f (NodeT x ti td) = f x (foldT z f ti) (foldT z f td)
 
 -- 3.B.I
@@ -278,7 +278,7 @@ mergeLevel (xs:xss) (ys:yss) = (xs ++ ys) : mergeLevel xss yss
 -- 3.B.XV
 
 nivelN :: Tree a -> Int -> [a]
-nivelN = foldT (\n -> []) fNodeT
+nivelN = foldT (const []) fNodeT
     where fNodeT x _    _    0 = [x]
           fNodeT _ fxsi fxsd n = fxsi (n-1) ++ fxsd (n-1)
 
@@ -305,3 +305,126 @@ caminoHasta x = recT [] fNodeT
 		 							 EQ -> [y]
 									 LT -> y : xsi
 									 GT -> y : xsd
+
+caminoHasta :: Eq a => a -> Tree a -> [a]
+caminoHasta x = recT [] fNodeT
+    where fNodeT y ti xsi td xsd = if x == y
+                                      then [y]
+                                      else if elem x xsi
+                                              then y : xsi
+                                              else y : xsd
+
+
+
+
+> Ejercicio 6:
+
+data Dir = Left | Right | Straight
+    deriving Show
+
+data Mapa a = Cofre [a]
+            | Nada (Mapa a)
+            | Bifurcacion [a] (Mapa a) (Mapa a)
+    deriving Show
+
+-- 6.A
+
+foldM :: ([a] -> b) -> (b -> b) -> ([a] -> b -> b -> b) -> Mapa a -> b
+foldM fc fn fb (Cofre xs)             = fc xs
+foldM fc fn fb (Nada m)               = fn (foldM fc fn fb m)
+foldM fc fn fb (Bifurcacion xs mi md) = fb xs (foldM fc fn fb mi) (foldM fc fn fb md)
+
+recM :: ([a] -> b) -> (Mapa a -> b -> b) -> ([a] -> Mapa a -> b -> Mapa a -> b -> b) -> Mapa a -> b
+recM fc fn fb (Cofre xs)             = fc xs
+recM fc fn fb (Nada m)               = fn m (recM fc fn fb m)
+recM fc fn fb (Bifurcacion xs mi md) = fb xs mi (recM fc fn fb mi) md (recM fc fn fb md)
+
+-- 6.B.I
+
+objects :: Mapa a -> [a]
+objects = foldM id id fBifurcacion
+    where fBifurcacion xs xsi xsd = xs ++ xsi ++ xsd
+
+-- 6.B.II
+
+mapM :: (a -> b) -> Mapa a -> Mapa b
+mapM f = foldM fCofre id fBifurcacion
+    where fCofre xs = Cofre (map f xs);
+		  fBifurcacion xs mi md = Bifurcacion (map f xs) mi md
+
+mapMV2 :: (a -> b) -> Mapa a -> Mapa b
+mapMV2 f = foldM (Cofre . map f) id fBifurcacion
+    where fBifurcacion xs mi md = Bifurcacion (map f xs) mi md
+
+-- 6.B.III
+
+has :: (a -> Bool) -> Mapa a -> Bool
+has f = foldM (any f) id fBifurcacion
+    where fBifurcacion xs bi bd = any f xs || bi || bd
+
+-- 6.B.IV
+
+hasObjectAt :: (a -> Bool) -> Mapa a -> [Dir] -> Bool
+hasObjectAt f = foldM fCofre fNada fBifurcacion
+    where fCofre xs []                       = any f xs;
+          fCofre xs _                        = False;
+          fNada  fb (Straight:ds)            = fb ds;
+          fNada  fb _                        = False;
+          fBifurcacion xs fbi fbd []         = any f xs
+          fBifurcacion xs fbi fbd (Left:ds)  = fbi ds;
+          fBifurcacion xs fbi fbd (Right:ds) = fbd ds;
+          fBifurcacion xs fbi fbd _          = False;
+
+hasObjectAtV2 :: (a -> Bool) -> Mapa a -> [Dir] -> Bool
+hasObjectAtV2 f = foldM fCofre fNada fBifurcacion
+    where fCofre xs ds = case ds of
+                           [] -> any f xs
+                           _  -> False;
+          fNada fb  ds = case ds of
+                            (Straight:ds) -> fb ds
+                            _             -> False;
+          fBifurcacion xs fbi fbd ds = case ds of 
+                                        []         -> any f xs
+                                        (Left:ds)  -> fbi ds
+                                        (Right:ds) -> fbd ds
+                                        _          -> False
+
+-- 6.B.V
+
+longestPath :: Mapa a -> [Dir]
+longestPath = foldM (const []) (Straight:) fBifurcacion
+    where fBifurcacion xs dsi dsd = if length dsi >= length dsd
+                                       then Left  : dsi
+                                       else Right : dsd
+
+-- 6.B.VI
+
+objectsOfLongestPath :: Mapa a -> [a]
+objectsOfLongestPath m = let (ds, xs) = objectsOfLongestPath' m
+                         in xs
+
+objectsOfLongestPath' :: Mapa a -> ([Dir], [a])
+objectsOfLongestPath' = foldM fCofre fNada fBifurcacion
+    where fCofre xs      = ([], xs);
+		  fNada (ds, xs) = (Straight:ds, xs);
+          fBifurcacion _ (dsi, xsi) (dsd, xsd) = if length dsi >= length dsd
+                                                    then (Left : dsi, xsi)
+                                                    else (Right : dsd, xsd)
+
+-- 6.B.VII
+
+allPaths :: Mapa a -> [[Dir]]
+allPaths = foldM (const [[]]) (map (Straight:)) fBifurcacion
+    where fBifurcacion _ dssi dssd = map (Left:) dssi ++ map (Right:) dssd
+
+-- 6.B.VIII
+
+objectsPerLevel :: Mapa a -> [[a]]
+objectsPerLevel = foldM fCofre ([]:) fBifurcacion
+    where fCofre xs = [xs];
+          fBifurcacion xs xssi xssd = xs : mergeLevel xssi xssd
+
+mergeLevel :: [[a]] -> [[a]] -> [[a]]
+mergeLevel []       yss      = yss
+mergeLevel xss      []       = xss
+mergeLevel (xs:xss) (ys:yss) = (xs ++ ys) : mergeLevel xss yss  
