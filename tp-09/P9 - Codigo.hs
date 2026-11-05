@@ -212,19 +212,145 @@ agregarACaminos x (xs:xss) = (x:xs) : agregarACaminos x xss
 
 > Ejercicio 4:
 
+data AppList a = Single a
+               | Append (AppList a) (AppList a)
+    deriving Show
 
+foldAL :: (a -> b) -> (b -> b -> b) -> AppList a -> b
+foldAL fs fa (Single x)       = fs x
+foldAL fs fa (Append ali ald) = fa (foldAL fs fa ali) (foldAL fs fa ald)
 
+recAL :: (a -> b) -> (AppList a -> b -> AppList a -> b -> b) -> AppList a -> b
+recAL fs fa (Single x)       = fs x
+recAL fs fa (Append ali ald) = fa ali (recAL fs fa ali) ald (recAL fs fa ald)
 
+-- 4.A.I
+
+lenAL :: AppList a -> Int
+lenAL = foldAL (const 1) (+)
+
+-- 4.A.II
+
+consAL :: a -> AppList a -> AppList a
+consAL x =  recAL Single fAppend
+    where fAppend ali _ ald _ = Append (Single x) (Append ali ald)
+
+consALV2 :: a -> AppList a -> AppList a
+consALV2 x al = Append (Single x) al 
+
+-- 4.A.III
+
+headAL :: AppList a -> a
+headAL = foldAL id fAppend
+    where fAppend ali' _ = ali'
+
+-- 4.A.IV
+
+tailAL :: AppList a -> AppList a
+tailAL = recAL (const (error "No se puede quitar el elemento, ya que no se puede representar una lista vacía")) fAppend
+    where fAppend (Single x) _    ald _ = ald;
+          fAppend _          ali' ald _ = Append ali' ald 
+
+tailALV2 :: AppList a -> AppList a
+tailALV2 = recAL (const (error "No se puede quitar el elemento, ya que no se puede representar una lista vacía")) fAppend
+    where fAppend ali ali' ald _ = case ali of
+                                     (Single x) -> ald
+                                     _          -> Append ali' ald
+
+-- 4.A.V
+
+snocAL :: AppList a -> a -> AppList a
+snocAL = recAL fSingle fAppend
+    where fSingle x            y = Append (Single x) (Single y)
+          fAppend ali _ _ ald' y = Append ali (ald' y)
+
+-- 4.A.VI
+
+lastAL :: AppList a -> a
+lastAL = foldAL id fAppend
+    where fAppend _ ald' = ald'
+
+-- 4.A.VII
+
+initAL :: AppList a -> AppList a
+initAL = recAL (const (error "No se puede quitar el elemento, ya que no se puede representar una lista vacía")) fAppend
+    where fAppend ali _ ald ald' = case ald of
+                                     (Single x) -> ali
+                                     _          -> Append ali ald'
+
+-- 4.A.VIII
+
+reverseAL :: AppList a -> AppList a
+reverseAL = foldAL Single fAppend 
+    where fAppend ali' ald' = Append ald' ali'
+
+-- 4.A.IX
+
+elemAL :: Eq a => a -> AppList a -> Bool
+elemAL x = foldAL (x==) (||)
+
+-- 4.A.X
+
+appendAL :: AppList a -> AppList a -> AppList a
+appendAL al1 al2 = Append al1 al2
+
+appendALV2 :: AppList a -> AppList a -> AppList a
+appendALV2 = recAL fSingle fAppend
+    where fSingle x            al2 = Append (Single x) al2 
+          fAppend ali _ _ ald' al2 = Append ali (ald' al2)
+
+-- 4.A.XI
+
+appListToList :: AppList a -> [a]
+appListToList = foldAL (:[]) (++)
 
 
 > Ejercicio 5:
 
+data QuadTree a = LeafQ a
+                | NodeQ (QuadTree a) (QuadTree a) (QuadTree a) (QuadTree a)
+    deriving Show
+
+data Color = RGB Int Int Int
+    deriving Show
+
+type Image = QuadTree Color
+
+foldQT :: 
 
 
 
-> FUNCIONES ALTERNATIVAS A LAS PROPUESTAS:
+recQT ::
 
--- CountLeaves:
+
+-- 5.A.I
+
+heightQT :: QuadTree a -> Int
+
+-- 5.A.II
+
+countLeavesQT :: QuadTree a -> Int
+
+-- 5.A.III
+
+sizeQT :: QuadTree a -> Int
+
+-- 5.A.IV
+
+compress :: QuadTree a -> QuadTree a
+
+-- 5.A.V
+
+uncompress :: QuadTree a -> QuadTree a
+
+-- 5.A.VI
+
+render :: Image -> Int -> Image
+
+
+> Funciones Alternativas a las Propuestas:
+
+> CountLeaves:
 
 countLeavesV2 :: Tree a -> Int
 countLeavesV2 EmptyT          = 0
@@ -240,7 +366,7 @@ countLeavesV3 (NodeT _ ti td) = case (ti, td) of
                                     (EmptyT, EmptyT) -> 1
                                     _                -> countLeavesV3 ti + countLeavesV3 td
 
--- LevelN:
+> LevelN:
 
 levelNV2 :: Int -> Tree a -> [a]
 levelNV2 n EmptyT          = []
