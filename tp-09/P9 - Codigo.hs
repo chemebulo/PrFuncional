@@ -242,7 +242,7 @@ consALV2 x al = Append (Single x) al
 
 headAL :: AppList a -> a
 headAL = foldAL id fAppend
-    where fAppend ali' _ = ali'
+    where fAppend x _ = x
 
 -- 4.A.IV
 
@@ -268,7 +268,7 @@ snocAL = recAL fSingle fAppend
 
 lastAL :: AppList a -> a
 lastAL = foldAL id fAppend
-    where fAppend _ ald' = ald'
+    where fAppend _ x = x
 
 -- 4.A.VII
 
@@ -316,36 +316,68 @@ data Color = RGB Int Int Int
 
 type Image = QuadTree Color
 
-foldQT :: 
+foldQT :: (a -> b) -> (b -> b -> b -> b -> b) -> QuadTree a -> b
+foldQT fl fn (LeafQ x)           = fl x
+foldQT fl fn (NodeQ q1 q2 q3 q4) = fn (foldQT fl fn q1) (foldQT fl fn q2) (foldQT fl fn q3) (foldQT fl fn q4)
 
-
-
-recQT ::
-
+recQT :: (a -> b) -> (QuadTree a -> b -> QuadTree a -> b -> QuadTree a -> b -> QuadTree a -> b -> b) -> QuadTree a -> b
+recQT fl fn (LeafQ x)           = fl x
+recQT fl fn (NodeQ q1 q2 q3 q4) = fn q1 (recQT fl fn q1)
+                                     q2 (recQT fl fn q2)
+                                     q3 (recQT fl fn q3)
+                                     q4 (recQT fl fn q4)
 
 -- 5.A.I
 
 heightQT :: QuadTree a -> Int
+heightQT = foldQT (const 0) fNodeQ
+    where fNodeQ h1 h2 h3 h4 = 1 + (max h1 $ max h2 $ max h3 h4) 
 
 -- 5.A.II
 
 countLeavesQT :: QuadTree a -> Int
+countLeavesQT = foldQT (const 1) fNodeQ
+    where fNodeQ n1 n2 n3 n4 = n1 + n2 + n3 + n4
 
 -- 5.A.III
 
 sizeQT :: QuadTree a -> Int
+sizeQT = foldQT (const 1) fNodeQ
+    where fNodeQ n1 n2 n3 n4 = 1 + n1 + n2 + n3 + n4
 
 -- 5.A.IV
 
-compress :: QuadTree a -> QuadTree a
+compress :: Eq a => QuadTree a -> QuadTree a
+compress = recQT LeafQ fNodeQ
+    where fNodeQ (LeafQ x1) q1' (LeafQ x2) q2' (LeafQ x3) q3' (LeafQ x4) q4' =
+            if x1 == x2 && x2 == x3 && x3 == x4
+			   then LeafQ x1
+			   else NodeQ (LeafQ x1) (LeafQ x2) (LeafQ x3) (LeafQ x4);
+		  fNodeQ _ q1' _ q2' _ q3' _ q4' = NodeQ q1' q2' q3' q4'
 
 -- 5.A.V
 
 uncompress :: QuadTree a -> QuadTree a
+uncompress qt = uncompress' qt (0, heightQT qt)
+
+uncompress' :: QuadTree a -> (Int, Int) -> QuadTree a
+uncompress' = foldQT fLeafQ fNodeQ
+    where fLeafQ x (ha, hqt) = if ha == hqt
+                                  then LeafQ x
+                                  else NodeQ (LeafQ x) (LeafQ x) (LeafQ x) (LeafQ x);
+          fNodeQ q1' q2' q3' q4' (ha, hqt) = NodeQ (q1' (ha+1, hqt))
+                                                   (q2' (ha+1, hqt))
+                                                   (q3' (ha+1, hqt))
+                                                   (q4' (ha+1, hqt))  
 
 -- 5.A.VI
 
 render :: Image -> Int -> Image
+render img t = uncompress' img (0, log4 t)
+
+log4 :: Int -> Int
+log4 1 = 0
+log4 n = 1 + (log4 $ div n 4)
 
 
 > Funciones Alternativas a las Propuestas:
