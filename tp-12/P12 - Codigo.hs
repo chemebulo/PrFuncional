@@ -315,8 +315,6 @@ caminoHasta x = recT [] fNodeT
                                               else y : xsd
 
 
-
-
 > Ejercicio 6:
 
 data Dir = Left | Right | Straight
