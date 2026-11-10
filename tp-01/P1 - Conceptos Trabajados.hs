@@ -128,5 +128,5 @@
                 numeroAHelado n = if n > 0 
                                         then heladoV
                                         else heladoC
-                    where heladoV = Vasito Chocolate
-                        heladoC = Cucurucho Chocolate Sambayon
+                    where heladoV = Vasito Chocolate;
+                          heladoC = Cucurucho Chocolate Sambayon

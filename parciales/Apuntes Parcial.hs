@@ -143,9 +143,18 @@
 
             zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
             zipWith f = foldr ctk (\_ -> [])
-                  where ctk x xs' = \ys -> case ys of
-                                             (y:ys') -> f x y : xs' ys' 
-                                             []      -> []
+                  where ctk x xs' (y:ys) = f x y : xs' ys';
+                        ctk _ _   []     = []
+
+            nivelN :: Tree a -> Int -> [a]
+            nivelN = foldT (const []) fNodeT
+                  where fNodeT x _    _    0 = [x]
+                        fNodeT _ fxsi fxsd n = fxsi (n-1) ++ fxsd (n-1)
+
+            appendAL :: AppList a -> AppList a -> AppList a
+            appendAL = recAL fSingle fAppend
+                  where fSingle x            al2 = Append (Single x) al2 
+                        fAppend ali _ _ ald' al2 = Append ali (ald' al2)
 
             partitionT :: (a -> Bool) -> Tree a -> ([a], [a])
             partitionT f = foldT ([], []) fNodeT
@@ -173,11 +182,6 @@
             mergeLevel []       yss      = yss
             mergeLevel xss      []       = xss
             mergeLevel (xs:xss) (ys:yss) = (xs ++ ys) : mergeLevel xss yss  
-
-            nivelN :: Tree a -> Int -> [a]
-            nivelN = foldT (const []) fNodeT
-                  where fNodeT x _    _    0 = [x]
-                        fNodeT _ fxsi fxsd n = fxsi (n-1) ++ fxsd (n-1)
 
 
       > Operadores:
