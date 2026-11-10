@@ -306,8 +306,8 @@ caminoHasta x = recT [] fNodeT
 									 LT -> y : xsi
 									 GT -> y : xsd
 
-caminoHasta :: Eq a => a -> Tree a -> [a]
-caminoHasta x = recT [] fNodeT
+caminoHastaV2 :: Eq a => a -> Tree a -> [a]
+caminoHastaV2 x = recT [] fNodeT
     where fNodeT y ti xsi td xsd = if x == y
                                       then [y]
                                       else if elem x xsi

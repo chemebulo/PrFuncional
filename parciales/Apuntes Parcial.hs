@@ -7,44 +7,37 @@
                                then GT
                                else LT
 
-      {- (No hace falta definirla)
             caminoHasta :: Ord a => a -> Tree a -> [a]
             caminoHasta x = recT [] fNodeT
                   where fNodeT y ti xsi td xsd = case (compare x y) of
                                                    EQ -> [y]
                                                    LT -> y : xsi
                                                    GT -> y : xsd
-      -}
 
       maybe :: a -> (b -> a) -> Maybe b -> a
       maybe _ f (Just x) = f x
       maybe z _ Nothing  = z
 
-      {- (Hay que definirla)
             findAtAndTransform :: a -> (b -> a) -> b -> Tree b -> a 
             findAtAndTransform z f x t = maybe z f (findAt x t)
 
             findAt :: a -> Tree a -> Maybe a
-      -}
 
       transformMaybe :: (a -> a -> a) -> Maybe a -> Maybe a -> Maybe a
       transformMaybe f (Just x) my = Just (maybe x (f x) my)
       transformMaybe _ Nothing  my = my
 
-      {- (Hay que definirla)
             cantidadAntecesores :: Eq a => a -> Tree a -> Maybe Int 
             cantidadAntecesores z EmptyT          = Nothing
             cantidadAntecesores z (NodeT x ti td) = 
                   if x == z
                      then Just 1
                      else transformMaybe (+) (cantidadAntecesores z ti) (cantidadAntecesores z td) 
-      -}
 
       elegirEntre :: Maybe a -> Maybe a -> Maybe a
       elegirEntre (Just x) m = Just x
       elegirEntre Nothing  m = m
 
-      {- (Hay que definirla)
             findAt :: Eq a => a -> Tree a -> Maybe a
             findAt z EmptyT          = Nothing
             findAt z (NodeT x ti td) = if x == z
@@ -54,19 +47,16 @@
             elegirEntre :: Maybe a -> Maybe a -> Maybe a
             elegirEntre (Just x) m = Just x
             elegirEntre Nothing  m = m
-      -}
 
       agregarA :: a -> Maybe [a] -> Maybe [a]
       agregarA y Nothing   = Nothing
       agregarA y (Just xs) = Just (y:xs)
 
-      {- (Hay que definirla)
             filterBy :: (a -> Bool) -> [a] -> Maybe [a]
             filterBy f []     = Nothing
             filterBy f (x:xs) = if f x
                                    then agregarA x (filterBy f xs)
                                    else filterBy f xs
-      -}
 
 
 > Funciones Fundamentales:
@@ -147,9 +137,71 @@
                          in f x y : (y:ys)
 
 
+> Funciones y Operadores Interesantes:
+
+      > Funciones:
+
+            zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+            zipWith f = foldr ctk (\_ -> [])
+                  where ctk x xs' = \ys -> case ys of
+                                             (y:ys') -> f x y : xs' ys' 
+                                             []      -> []
+
+            partitionT :: (a -> Bool) -> Tree a -> ([a], [a])
+            partitionT f = foldT ([], []) fNodeT
+                  where fNodeT x pi pd = let (xsi1, xsd1) = pi;
+                                             (xsi2, xsd2) = pd
+                                         in if f x
+                                               then (x : xsi1 ++ xsi2, xsd1 ++ xsd2)
+                                               else (xsi1 ++ xsi2, x : xsd1 ++ xsd2)
+
+            caminoMasLargo :: Tree a -> [a]
+            caminoMasLargo = foldT [] fNodeT
+                  where fNodeT x xsi xsd = x : if length xsi >= length xsd
+                                                  then xsi
+                                                  else xsd
+
+            todosLosCaminos :: Tree a -> [[a]]
+            todosLosCaminos = foldT [] fNodeT
+                  where fNodeT x xssi xssd = [x] : map (x:) (xssi ++ xssd)
+
+            todosLosNiveles :: Tree a -> [[a]]
+            todosLosNiveles = foldT [] fNodeT
+                  where fNodeT x xssi xssd = [x] : mergeLevel xssi xssd
+
+            mergeLevel :: [[a]] -> [[a]] -> [[a]]
+            mergeLevel []       yss      = yss
+            mergeLevel xss      []       = xss
+            mergeLevel (xs:xss) (ys:yss) = (xs ++ ys) : mergeLevel xss yss  
+
+            nivelN :: Tree a -> Int -> [a]
+            nivelN = foldT (const []) fNodeT
+                  where fNodeT x _    _    0 = [x]
+                        fNodeT _ fxsi fxsd n = fxsi (n-1) ++ fxsd (n-1)
+
+
+      > Operadores:
+
+            -- Dada una función, la aplica a un dato y devuelve la aplicación de la misma.
+            -- Se usa para quitar paréntesis.
+            ($) :: (a -> b) -> a -> b
+
+            -- Dado un número, devuelve el siguiente del mismo. 
+            -- Es una muestra que la forma del operador de la suma parcial ser así.
+            (1+) :: Int -> Int
+
+            -- Dado un número, devuelve el mismo pero restado por 10.
+            -- Representa la resta (-10), el número que le des le resta 10.
+            subtract 10 :: Int -> Int
+
+
 > Conceptos Vistos en Funciones:
 
       > Variables globales que cambian en el tiempo:
+            > La idea es terminar teniendo una función como resultado, donde el tipo
+              suele ser (Int -> a). Es por eso que por currificación se puede escribir
+              explícitamente que el resultado es una función.
+            > Es cuestión de gusto si poner del lado izquierdo o derecho el Int.
 
             take :: Int -> [a] -> [a]
             take = flip $ foldr ctk $ const []
@@ -177,56 +229,77 @@
 
 
       > Variables globales que no cambian en el tiempo:
+            > La idea es tener de referencia un dato para operar en la recursión.
+            > Como no varía en el tiempo, no hace falta actualizarlo y basta declararlo una vez.
+
+            insertT :: a -> Tree a -> Tree a
+            insertT x = recT (NodeT x EmptyT EmptyT) fNodeT
+                  where fNodeT y ti ti' td td' = case (compare x y) of
+                                                   EQ -> NodeT y ti  td
+                                                   LT -> NodeT y ti' td
+                                                   GT -> NodeT y ti  td'
+
+            caminoHasta :: Ord a => a -> Tree a -> [a]
+            caminoHasta x = recT [] fNodeT
+                  where fNodeT y ti xsi td xsd = case (compare x y) of
+                                                   EQ -> [y]
+                                                   LT -> y : xsi
+                                                   GT -> y : xsd
 
 
+      > Tuppling / Algoritmos Similares:
+            > La idea es tener una función que tome el resultado de otra función que realiza
+              la búsqueda y suele devolver una tupla de tipo (a, a) con los datos necesarios.
+            > En la función que toma el resultado simplemente se interpreta el resultado.
+            > En la función que realiza la recursión se modifica la tupla con los datos necesarios.
+
+            > Tuppling:
+
+                  objectsOfLongestPath :: Mapa a -> [a]
+                  objectsOfLongestPath m = let (ds, xs) = objectsOfLongestPath' m
+                                          in xs
+
+                  objectsOfLongestPath' :: Mapa a -> ([Dir], [a])
+                  objectsOfLongestPath' = foldM fCofre fNada fBifurcacion
+                        where fCofre xs                            = ([], xs);
+                              fNada (ds, xs)                       = (Straight:ds, xs);
+                              fBifurcacion _ (dsi, xsi) (dsd, xsd) = if length dsi >= length dsd
+                                                                        then (Left : dsi, xsi)
+                                                                        else (Right : dsd, xsd)
+
+            > Algoritmos Similares:
+
+                  losAntecesoresDe :: Eq a => Tree a -> a -> [a]
+                  losAntecesoresDe t x = case (antecesoresDe x t) of
+                                          Just xs -> xs
+                                          Nothing -> error "El elemento no se encuentra en el árbol"
+
+                  antecesoresDe :: Eq a => a -> Tree a -> Maybe [a]
+                  antecesoresDe x EmptyT          = Nothing
+                  antecesoresDe x (NodeT y n1 n2) = if x == y 
+                                                      then Just [] 
+                                                      else elegirRama y (antecesoresDe x n1)
+                                                                        (antecesoresDe x n2)
+
+                  elegirRama :: a -> Maybe [a] -> Maybe [a] -> Maybe [a]
+                  elegirRama x (Just xs) _         = Just (x:xs)
+                  elegirRama x _         (Just xs) = Just (x:xs)
+                  elegirRama _ _         _         = Nothing 
 
 
-      > Tuppling:
+      > Diferencia entre PreOrder - InOrder - PostOrder:
 
-      losAntecesoresDe :: Eq a => Tree a -> a -> [a]
-      losAntecesoresDe t x = case (buscarAntecesoresSiExiste x t) of
-            Just xs -> xs
-            Nothing ->  error "El elemento no se encuentra en el árbol"
+            preOrder :: Tree a -> [a]
+            preOrder = foldT [] fNodeT
+                  where fNodeT x xsi xsd = x : xsi ++ xsd
 
-      buscarAntecesoresSiExiste :: Eq a => a -> Tree a -> Maybe [a]
-      buscarAntecesoresSiExiste x EmptyT          = Nothing
-      buscarAntecesoresSiExiste x (NodeT e n1 n2) = if (x == e) 
-                                                       then Just [] 
-                                                       else elegirRama e (buscarAntecesoresSiExiste x n1)
-                                                                         (buscarAntecesoresSiExiste x n2)
+            inOrder :: Tree a -> [a]
+            inOrder = foldT [] fNodeT
+                  where fNodeT x xsi xsd = xsi ++ [x] ++ xsd
 
-      elegirRama :: a -> Maybe [a] -> Maybe [a] -> Maybe [a]
-      elegirRama e (Just xs) _ = Just (e:xs)
-      elegirRama e _ (Just ys) = Just (e:ys)
-      elegirRama e _         _ = Nothing 
-
-      longestPathFold :: Mapa a -> [Dir]
-      longestPathFold = fst . caminoMasLargoYObjetosFold            
-
-      objectsOfLongestPathFold :: Mapa a-> [a]
-      objectsOfLongestPathFold = snd . caminoMasLargoYObjetosFold
-
-      caminoMasLargoYObjetosFold :: Mapa a -> ([Dir],[a])
-      caminoMasLargoYObjetosFold = foldMapa caminoLargoYObjetosCOFRE caminoLargoYObjetosNADA caminoLargoYObjetosBIFUR
-                  where caminoLargoYObjetosCOFRE xs = ([],xs)
-                        caminoLargoYObjetosNADA (ds,objs) = (Straight:ds,objs)
-                        caminoLargoYObjetosBIFUR xs (ds1,obj1) (ds2,obj2) =
-                                          if length ds1 > length ds2
-                                          then (Left:ds1, xs ++ obj1)
-                                          else (Right:ds2, xs ++ obj2)                                                                      
-
-      hasObjectAtFold :: (a -> Bool) -> Mapa a -> ([Dir] -> Bool)
-      hasObjectAtFold f =  foldMapa hasObjectAtFoldCOFRE hasObjectAtFoldNADA hasObjectAtFoldBIFUR
-                  where hasObjectAtFoldCOFRE xs [] = any f xs
-                        hasObjectAtFoldCOFRE xs _  = error "camino invalido"
-
-                        hasObjectAtFoldNADA h (Straight:ds) = h ds
-                        hasObjectAtFoldNADA h _            = error "camino invalido"
-
-                        hasObjectAtFoldBIFUR xs h1 h2 []           = any f xs
-                        hasObjectAtFoldBIFUR xs h1 h2 (Left: ds)   = h1 ds
-                        hasObjectAtFoldBIFUR xs h1 h2 (Right: ds)  = h2 ds
-                        hasObjectAtFoldBIFUR xs h1 h2 _            = error "camino invalido"
+            postOrder :: Tree a -> [a]
+            inOrder = foldT [] fNodeT
+                  where fNodeT x xsi xsd = xsi ++ xsd ++ [x]
 
 
 > Esquemas de Funciones:
@@ -278,7 +351,7 @@
       {- ExpA:
             data ExpA = Cte Int
                       | Suma ExpA ExpA
-                      | Prod ExpA Exp
+                      | Prod ExpA ExpA
       -}
 
       foldExpA :: (Int -> b) -> (b -> b -> b) -> (b -> b -> b) -> ExpA -> b

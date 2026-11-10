@@ -230,7 +230,7 @@ scanrV2 :: (a -> b -> b) -> b -> [a] -> [b]
 -- COSTO: O(n).
 scanrV2 _ z []     = [z]
 scanrV2 f z (x:xs) = case (scanrV2 f z xs) of
-                        (y:ys) -> f x y : (y:ys)
+                       (y:ys) -> f x y : (y:ys)
 
 scanrV3 :: (a -> b -> b) -> b -> [a] -> [b]
 -- COSTO: O(n^2).
