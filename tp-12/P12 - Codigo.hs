@@ -218,7 +218,7 @@ inOrder = foldT [] fNodeT
 -- 3.B.VII
 
 postOrder :: Tree a -> [a]
-inOrder = foldT [] fNodeT
+postOrder = foldT [] fNodeT
     where fNodeT x xsi xsd = xsi ++ xsd ++ [x]
 
 -- 3.B.XIII
