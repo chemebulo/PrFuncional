@@ -21,7 +21,7 @@
             findAtAndTransform :: a -> (b -> a) -> b -> Tree b -> a 
             findAtAndTransform z f x t = maybe z f (findAt x t)
 
-            findAt :: a -> Tree a -> Maybe a
+            findAt :: Eq a => a -> Tree a -> Maybe a
 
       transformMaybe :: (a -> a -> a) -> Maybe a -> Maybe a -> Maybe a
       transformMaybe f (Just x) my = Just (maybe x (f x) my)
@@ -29,10 +29,10 @@
 
             cantidadAntecesores :: Eq a => a -> Tree a -> Maybe Int 
             cantidadAntecesores z EmptyT          = Nothing
-            cantidadAntecesores z (NodeT x ti td) = 
-                  if x == z
-                     then Just 1
-                     else transformMaybe (+) (cantidadAntecesores z ti) (cantidadAntecesores z td) 
+            cantidadAntecesores z (NodeT x ti td) = if x == z
+                                                       then Just 1
+                                                       else transformMaybe (+) (cantidadAntecesores z ti)
+                                                                               (cantidadAntecesores z td) 
 
       elegirEntre :: Maybe a -> Maybe a -> Maybe a
       elegirEntre (Just x) m = Just x
@@ -41,8 +41,8 @@
             findAt :: Eq a => a -> Tree a -> Maybe a
             findAt z EmptyT          = Nothing
             findAt z (NodeT x ti td) = if x == z
-							then Just x
-							else elegirEntre (findAt z ti) (findAt z td)
+                                          then Just x
+                                          else elegirEntre (findAt z ti) (findAt z td)
 
             elegirEntre :: Maybe a -> Maybe a -> Maybe a
             elegirEntre (Just x) m = Just x
@@ -60,21 +60,6 @@
 
 
 > Funciones Fundamentales:
-
-      first :: (a, b) -> a
-      first (x, _) = x 
-
-      second :: (a, b) -> b
-      second (_, y) = y
-
-      swap :: (a, b) -> (b, a)
-      swap (x, y) = (y, x)
-
-      const :: a -> b -> a
-      const x y = x
-
-      id :: a -> a
-      id x = x
 
       many :: Int -> (a -> a) -> a -> a 
       many 0 f = id
@@ -119,7 +104,7 @@
       appFork :: (a -> b , a -> c) -> a -> (b , c)
       appFork (f, g) x = (f x, g x)
 
-      appPar :: (a -> b , c -> d) -> ((a , c) -> (b , d))
+      appPar :: (a -> b , c -> d) -> (a , c) -> (b , d)
       appPar (f, g) (x, y) = (f x, g y)
 
       appDist :: (a -> b) -> (a , a) -> (b , b)
@@ -133,8 +118,7 @@
 
       scanr :: (a -> b -> b) -> b -> [a] -> [b]
       scanr _ z []     = [z]
-      scanr f z (x:xs) = let (y:ys) = scanr f z xs
-                         in f x y : (y:ys)
+      scanr f z (x:xs) = let (y:ys) = scanr f z xs in f x y : (y:ys)
 
 
 > Funciones y Operadores Interesantes:
@@ -205,7 +189,6 @@
             > La idea es terminar teniendo una función como resultado, donde el tipo
               suele ser (Int -> a). Es por eso que por currificación se puede escribir
               explícitamente que el resultado es una función.
-            > Es cuestión de gusto si poner del lado izquierdo o derecho el Int.
 
             take :: Int -> [a] -> [a]
             take = flip $ foldr ctk $ const []
@@ -253,7 +236,7 @@
 
       > Tuppling / Algoritmos Similares:
             > La idea es tener una función que tome el resultado de otra función que realiza
-              la búsqueda y suele devolver una tupla de tipo (a, a) con los datos necesarios.
+              la búsqueda y suele devolver una tupla de tipo (a, b) con los datos necesarios.
             > En la función que toma el resultado simplemente se interpreta el resultado.
             > En la función que realiza la recursión se modifica la tupla con los datos necesarios.
 
@@ -286,9 +269,6 @@
                                                                         (antecesoresDe x n2)
 
                   elegirRama :: a -> Maybe [a] -> Maybe [a] -> Maybe [a]
-                  elegirRama x (Just xs) _         = Just (x:xs)
-                  elegirRama x _         (Just xs) = Just (x:xs)
-                  elegirRama _ _         _         = Nothing 
 
 
       > Diferencia entre PreOrder - InOrder - PostOrder:
@@ -385,103 +365,38 @@
             where go (Single x)	  = fs x;
                   go (Append ali ald) = fa ali (go ali) ald (go ald)
 
-      {- QuadTree:
-            data QuadTree a = LeafQ a
-                            | NodeQ (QuadTree a) (QuadTree a) (QuadTree a) (QuadTree a)
-      -}
-
-      foldQT :: (a -> b) -> (b -> b -> b -> b -> b) -> QuadTree a -> b
-      foldQT fl fn = go
-            where go (LeafQ x)           = fl x;
-                  go (NodeQ q1 q2 q3 q4) = fn (go q1) (go q2) (go q3) (go q4)
-
-      recQT :: (a -> b) -> (QuadTree a -> b -> QuadTree a -> b -> QuadTree a -> b -> QuadTree a -> b -> b) -> QuadTree a -> b
-      recQT fl fn = go
-            where go (LeafQ x)           = fl x;
-                  go (NodeQ q1 q2 q3 q4) = fn q1 (go q1) q2 (go q2) q3 (go q3) q4 (go q4)
-
 
 > Significado de Términos Utilizados:
 
       > Recursión implícita:
-            > 
+            > Es cuando se utiliza un esquema de función para realizar recursión sobre una estructura.
 
       > Recursión explícita:
-            >
+            > Es cuando se plantean los casos necesarios para realizar recursión sobre una estructura
+              de forma explícita.
 
 
-      > Funciones totales:
-            > Son aquellas que nunca dan bottom si recibe valores totalmente definidos.
-            > Ejemplos:
-                  - succ
-                  - dup
+      > Funciones totales y parciales:
+            > Las funciones totales, son aquellas que nunca dan bottom si recibe valores totalmente definidos.
+            > Las funciones parciales, son aquellas que pueden dar bottom al recibir valores totalmente definidos. 
 
-      > Funciones parciales:
-            > Son aquellas que pueden dar bottom al recibir valores totalmente definidos. 
-            > Ejemplos:
-                  - div
-                  - many
+      > Funciones estrictas y no estrictas:
+            > Las funciones estrictas, son aquellas que siempre devuelve bottom si recibe bottom.
+            > Las funciones no estrictas, son aquellas que pueden devolver algo diferente a bottom si recibe bottom.
 
 
-      > Funciones estrictas:
-            > Son aquellas que siempre devuelve bottom si recibe bottom.
-            > Ejemplos:
-                  - uncurry
-                  - apply
+      > Forma de asociación en funciones y en el tipo:
+            > La forma de asociación en funciones es a izquierda.
+            > La forma de asociación en el tipo es a derecha.
 
-      > Funciones no estrictas:
-            > Son aquellas que pueden devolver algo diferente a bottom si recibe bottom.
-            > Ejemplos:
-                  - const
-                  - dup
-
-
-      > Forma de asociación en funciones:
-            > Las funciones asocian a izquierda.
-            > Ejemplo de uso correcto:
-
-                  ((compose twice) suma) 2         |     compose twice suma 2
-                  ((curry (\p -> fst p)) 3) 2      |     curry (\p -> fst p) 3 2
-
-            > Ejemplo de uso incorrecto:
-
-                  uncurry (curry snd)              |     uncurry curry snd
-                  compose (compose doble doble)    |     compose compose doble doble
-
-      > Forma de asociación en el tipo:
-            > El tipo de una función asocia a derecha.
-            > Ejemplo de uso correcto:
-
-                  (((a -> (b -> c)) -> a) -> b) -> c    |     (a -> b -> c) -> a -> b -> c
-                  (((a, a) -> b) -> a) -> b             |     ((a, a) -> b) -> a -> b
-
-            > Ejemplo de uso incorrecto:
-
-                  (Int -> Int) -> Int -> Int            |     Int -> Int -> Int -> Int
-                  (a -> b -> c) -> (a -> b) -> a -> c   |     (a -> b -> c) -> a -> b -> a -> c 
-
-
-      > Pasaje de parámetros de un lado a otro:
-
-            > Lado derecho a izquierdo:
-                  - Ejemplo:
-                        cuadruple x = compose doble doble x         |     cuadruple = (\x -> compose doble doble x)
-                        fourTimes f x = f (f (f (f x)))             |     fourTimes = (\f x -> f (f (f (f x))))
-
-            > Lado izquierdo a derecho: 
-                  - Ejemplo:
-                        cuadruple = (\x -> compose doble doble x)   |    cuadruple x = compose doble doble x
-                        fourTimes = (\f x -> f (f (f (f x))))       |    fourTimes f x = f (f (f (f x)))
-    
 
       > Sección de operadores:
-
             > Es una sintaxis especial para aplicación parcial en operadores infijos.
             > La notación infijo es aquella donde el nombre se encuentra entre sus argumentos.
             > La notación prefijo es aquella donde el nombre se encuentra antes de sus argumentos.
 
             > Al poner entre paréntesis el operador y uno de sus argumentos devuelve una función
-            intermedia que espera el segundo argumento.
+              intermedia que espera el segundo argumento.
 
             > Sección Izquierda:
                   Infijo:  (2*)
@@ -496,47 +411,123 @@
                   Prefijo: (+) `foldr` 0
 
 
+> Reglas para Definir Conjuntos Inductivos:
+
+      > Reglas base:
+            > Una o varias afirmaciones directas que determinan qué elemento es parte del conjunto.
+            > Ejemplo: Habitacion a está en el conjunto Dungeon a.
+            
+
+      > Reglas inductivas:
+            > Una o varias implicaciones (productivas) que determinan qué elemento es parte del conjunto.
+            > Ejemplo: Si m está en el conjunto Maybe a, d está en el conjunto Dungeon a, entonces
+                       Pasaje m d está en el conjunto Dungeon a.
+
+
+      > Condición Adicional:
+            > Que se pida el menor de todos los conjuntos es porque, sería totalmente válido sin la regla
+              adicional que sea válido un conjunto que tenga el conjunto inductivo buscado y además otros
+              más dentro del mismo, porque cumpliría las reglas.
+            > La idea entonces es que SOLAMENTE tenga sentido quedarse con el que ÚNICAMENTE tenga el
+              conjunto inductivo buscado y nada más: "el menor de los que cumplen".
+            > Por eso esta regla provee unicidad, ya que siempre el resultado va a ser el conjunto
+              inductivo buscado.
+
+
 > Conceptos Vistos en Demostraciones:
 
-      > A
+      > Ley de Morgan [P6-E2-A y P6-E2-B]:
+            - Para todo x. para todo y. x && y = not ((not x) || (not y))
+            - Para todo x. para todo y. not (x || y) = not x && not y
+
+
+      > La identidad en funciones que toman dos parámetros [P6-E4-A y P6-E4-B]:
+            - Para todo f. curry (uncurry f) = f 
+            - Para todo f. uncurry (curry f) = f 
+
+
+      > La identidad para pares [P6-E3-III-B]:
+            - swap . swap = id
+
+
+      > Asociatividad de la composición [P6-E7-B-III]:
+            - Para todo f. para todo g. para todo h. f . (g . h) = (f . g) . h
+
+
+      > Aplicar el cambio de asociación en pares es lo mismo que componer ambas funciones [P6-E3-III-B]:
+            - Para todo f. appAssoc f = f . assoc
+
+
+      > Manipular simbólicamente una estructura ida y vuelta devuelve lo mismo [P8-E3-III-B]:
 
 
 
 
-      > A
 
 
 
 
-      > A
 
 
 
 
-      > A
 
 
 
+> Distintas formas de expresar situaciones en los planteos de las demostraciones:
 
-      > A
+      > Estructuras de demostraciones con principio de extensionalidad:
+            > Versión 1 (Básica):
+            - Por principio de extensionalidad, es equivalente demostrar que:
+                  ¿...?
+
+                  Sea ... Se verá que ¿...?
+
+            > Versión 2 (Aplicando definiciones):
+            - Por principio de extensionalidad, es equivalente demostrar que:
+                  ¿...?
+
+                  Por definición de ... es equivalente demostrar que:
+                  ¿...?
+
+                  Sea ... Se verá que ¿...?
+
+            > Versión 3 (Aplicando definiciones y varias veces el principio):
+            - Por principio de extensionalidad (nro_veces), es equivalente demostrar que:
+                  ¿...?
+
+                  Por definición de ... es equivalente demostrar que:
+                  ¿...?
+
+                  Sea ... Se verá que ¿...?
 
 
+      > Expresiones válidas dentro del "Sea ...":
+            > Si únicamente hay una variable:
+            - "Sea x :: a. Se verá que ¿f x = g x?"
+
+            > Si hay más de dos variables:
+            - "Sea x :: a, sea y :: b, ... Se verá que ¿f x y = g x y?"
+
+            > Formas de expresar los distintos tipos de variables:
+            > Pares:
+                  - "Sea (x, y) un par de tipo (a, b). Se verá que ¿f (x, y) = g (x, y)?"
+                  - "Sea (x, y) :: (a, b). Se verá que ¿f (x, y) = g (x, y)?"
+                  
+                  - "Sea p un par de tipo (a, b). Se verá que ¿f p = g p?"
+                  - "Sea p :: (a, b). Se verá que ¿f p = g p?"
+
+            > Funciones:
+                  - "Sea h :: (a -> b). Se verá que ¿h x = g x?"
+                  - "Sea h una función de tipo (a -> b). Se verá que ¿h x = g x?"
+                  - "Sea h una función cualquiera. Se verá que ¿h x = g x?"
+
+            > Elementos de tipos polimórficos:
+                  - "Sea x :: a. Se verá que ¿f x = g y?"
+                  - "Sea x :: a, sea y :: b. Se verá que ¿f x = g y?"
 
 
-      > A
-
-
-
-
-      > A
-
-
-
-
-      > A
-
-
-
-
-      > A
-
+            > Elementos con tipos instanciados:
+                  - "Sea n un número. Se verá que ¿f n = g y?"
+                  - "Sea n y m dos números. Se verá que ¿f n = g m?"
+                  - "Sea b un booleano. Se verá que ¿f x = g y?"
