@@ -286,7 +286,7 @@
                   where fNodeT x xsi xsd = xsi ++ xsd ++ [x]
 
 
-> Esquemas de Funciones:
+> Esquemas de Recursión:
 
       map :: (a -> b) -> [a] -> [b] 
       map f []     = []
@@ -312,7 +312,7 @@
       recr z f (x:xs) = f x xs (recr z f xs)
 
 
-> Esquemas de Funciones sobre Tipos Algebraicos:
+> Esquemas de Recursión sobre Tipos Algebraicos:
 
       {- Mapa:
             data Mapa a = Cofre [a]
@@ -436,70 +436,100 @@
 
 > Conceptos Vistos en Demostraciones:
 
-      > Ley de Morgan [P6-E2-A y P6-E2-B]:
-            - Para todo x. para todo y. x && y = not ((not x) || (not y))
-            - Para todo x. para todo y. not (x || y) = not x && not y
+      > Ley de Morgan:
+            - [P6.E2.A] Para todo x. para todo y. x && y = not ((not x) || (not y))
+            - [P6.E2.B] Para todo x. para todo y. not (x || y) = not x && not y
 
 
-      > La identidad en funciones que toman dos parámetros [P6-E4-A y P6-E4-B]:
-            - Para todo f. curry (uncurry f) = f 
-            - Para todo f. uncurry (curry f) = f 
+      > Identidad:
+            - [P6.E5.A] Para todo f. curry (uncurry f) = f 
+            - [P6.E5.B] Para todo f. uncurry (curry f) = f 
+            - [P6.E7.B.II] swap . swap = id
+            - [P8.S1.E2.H] length = length . reverse
+            - [P8.S2.E1.B.III] int2N . evalN = id 
+            - [P8.S2.E1.B.IV] evalN . int2N = id
+
+      > Consideraciones en Demostraciones de Identidad:
+            > Es muy probable aplicar principio de Extensionalidad al menos una vez.
+            > Es probable aplicar principio de Inducción en al menos una estructura.
+            > Es probable aplicar la HI en la demostración del caso inductivo. 
 
 
-      > La identidad para pares [P6-E3-III-B]:
-            - swap . swap = id
+      > Asociatividad:
+            - [P6.E3.III.B] Para todo f. appAssoc f = f . assoc
+            - [P6.E7.B.III] Para todo f. para todo g. para todo h. f . (g . h) = (f . g) . h
+            - [P8.S1.E2.B] Para todo xs. para todo ys. para todo zs. (xs ++ ys) ++ zs = xs ++ (ys ++ zs)
+
+      > Consideraciones en Demostraciones de Asociatividad:
+            > Es muy probable aplicar principio de Extensionalidad al menos una vez.
 
 
-      > Asociatividad de la composición [P6-E7-B-III]:
-            - Para todo f. para todo g. para todo h. f . (g . h) = (f . g) . h
+      > Distributividad:
+            - [P8.S1.E2.A] Para todo xs. para todo ys. length (xs ++ ys) = length xs + length ys
+            - [P8.S1.E2.I] Para todo xs. para todo ys. reverse (xs ++ ys) = reverse ys ++ reverse xs
+            - [P8.S2.E1.B.I] Para todo n1. para todo n2. evalN (addN n1 n2) = evalN n1 + evalN n2
+            - [P8.S2.E1.B.II] Para todo n1. para todo n2. evalN (prodN n1 n2) = evalN n1 * evalN n2
+            - [P8.S2.E2.B.II] Para todo n1. para todo n2. evalNU (addNU n1 n2) = evalNU n1 + evalNU n2
+
+      > Consideraciones en Demostraciones de Distributividad:
+            > Es muy probable aplicar principio de Inducción en al menos una estructura.
+            > Es probable aplicar la HI en la demostración del caso inductivo. 
+            > Es probable NO aplicar un Lema para destrabar la demostración del caso inductivo. 1 
 
 
-      > Aplicar el cambio de asociación en pares es lo mismo que componer ambas funciones [P6-E3-III-B]:
-            - Para todo f. appAssoc f = f . assoc
-
-
-      > Manipular simbólicamente una estructura ida y vuelta devuelve lo mismo [P8-E3-III-B]:
-
-
-
-
-
-
-
-
-
-
-
-
-
+      > La Evaluación de Simplificar una Estructura es lo Mismo que su Evaluación sin Simplificarla:
+            - [P8.S2.E3.B.I] evalNB . normalizarNB = evalNB
+            - [P8.S3.E1.B.I] evalExpA . simplificarExpA = evalExpA
+      
+      > Consideraciones en Demostraciones de este Tipo:
+            > Es muy probable aplicar principio de Extensionalidad al menos una vez.
+            > Es muy probable aplicar principio de Inducción en al menos una estructura.
+            > Es probable aplicar la HI en la demostración del caso inductivo.
+            > Es probable aplicar un Lema para destrabar la demostración del caso inductivo.
 
 
 > Distintas formas de expresar situaciones en los planteos de las demostraciones:
 
-      > Estructuras de demostraciones con principio de extensionalidad:
+      > Planteo en demostraciones con principio de extensionalidad:
             > Versión 1 (Básica):
-            - Por principio de extensionalidad, es equivalente demostrar que:
+                  Por principio de extensionalidad, es equivalente demostrar que:
                   ¿...?
 
                   Sea ... Se verá que ¿...?
 
             > Versión 2 (Aplicando definiciones):
-            - Por principio de extensionalidad, es equivalente demostrar que:
+                  Por principio de extensionalidad, es equivalente demostrar que:
                   ¿...?
 
-                  Por definición de ... es equivalente demostrar que:
+                  Por definición de ... es equivalente reescribir la propiedad como:
                   ¿...?
 
                   Sea ... Se verá que ¿...?
 
             > Versión 3 (Aplicando definiciones y varias veces el principio):
-            - Por principio de extensionalidad (nro_veces), es equivalente demostrar que:
+                  Por principio de extensionalidad (nro_veces), es equivalente demostrar que:
                   ¿...?
 
-                  Por definición de ... es equivalente demostrar que:
+                  Por definición de ... es equivalente reescribir la propiedad como:
                   ¿...?
 
                   Sea ... Se verá que ¿...?
+
+
+      > Planteo en demostraciones con principio de inducción:
+            > Única versión:
+                  Sea ... Por principio de inducción en la estructura de ...
+                  es equivalente demostrar que:
+
+                  Caso base (...):
+                        ¿...?
+                  
+                  Caso inductivo (...):
+                        Hipotesis inductiva:
+                              ¡...!
+
+                        Tesis inductiva:
+                              ¿...?
 
 
       > Expresiones válidas dentro del "Sea ...":
@@ -509,25 +539,33 @@
             > Si hay más de dos variables:
             - "Sea x :: a, sea y :: b, ... Se verá que ¿f x y = g x y?"
 
-            > Formas de expresar los distintos tipos de variables:
+
+      > Formas de expresar los distintos tipos de variables:
             > Pares:
                   - "Sea (x, y) un par de tipo (a, b). Se verá que ¿f (x, y) = g (x, y)?"
                   - "Sea (x, y) :: (a, b). Se verá que ¿f (x, y) = g (x, y)?"
-                  
                   - "Sea p un par de tipo (a, b). Se verá que ¿f p = g p?"
                   - "Sea p :: (a, b). Se verá que ¿f p = g p?"
 
             > Funciones:
-                  - "Sea h :: (a -> b). Se verá que ¿h x = g x?"
-                  - "Sea h una función de tipo (a -> b). Se verá que ¿h x = g x?"
+                  - "Sea h :: (a -> b), sea g :: (a -> b). Se verá que ¿h x = g x?"
+                  - "Sea h una función de tipo (a -> b), y sea g una función de tipo (a -> b).
+                     Se verá que ¿h x = g x?"
                   - "Sea h una función cualquiera. Se verá que ¿h x = g x?"
 
             > Elementos de tipos polimórficos:
                   - "Sea x :: a. Se verá que ¿f x = g y?"
                   - "Sea x :: a, sea y :: b. Se verá que ¿f x = g y?"
 
-
             > Elementos con tipos instanciados:
                   - "Sea n un número. Se verá que ¿f n = g y?"
                   - "Sea n y m dos números. Se verá que ¿f n = g m?"
                   - "Sea b un booleano. Se verá que ¿f x = g y?"
+
+
+> Estrategia del Orden de Resolución en el Parcial:
+      1. Definición del Planteo de la Demostración.
+      2. Definición de los Esquemas de Recursión Estructural o Primitiva.
+      3. Definición de Funciones con Recursión Explícita. 
+      4. Definición de Funciones con Recursión Implicita.
+      5. Resolución de los Casos de la Demostración.
